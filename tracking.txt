@@ -1,4 +1,5 @@
 $${
+//You will need the entitiesiterator module for this;
 TOGGLE(@look);
 IF(@look);
 	LOG(&6&lTracking started);
