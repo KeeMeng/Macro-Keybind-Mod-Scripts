@@ -1,4 +1,5 @@
 $${
+//You need the Utilities Module for this, for the MOD action;
 MOD(#phase,%DAY%,8);
 &moon = "Full moon,Waning gibbous,Third quarter,Waning crescent,New moon,Waxing crescent,First quarter,Waxing gibbous";
 SPLIT(",",%&moon%,&moonphase[]);
