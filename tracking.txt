@@ -1,0 +1,19 @@
+$${
+TOGGLE(@look);
+IF(@look);
+	LOG(&6&lTracking started);
+	DO;
+		UNSAFE(10000);
+		FOREACH(entities(filter:{type:player}));
+			IF(ENTITYNAME != %PLAYER%);
+				POPUPMESSAGE(&6&lTracking &e&l%ENTITYNAME%);
+				LOOK(%ENTITYYAWFROMPLAYER%,%ENTITYPITCHFROMPLAYER%);
+				BREAK;
+			ENDIF;
+		NEXT;
+		ENDUNSAFE;
+	UNTIL(!@look);
+ELSE;
+	LOG(&6&lTracking stopped);
+ENDIF;
+}$$

@@ -1,0 +1,6 @@
+$${
+MOD(#phase,%DAY%,8);
+&moon = "Full moon,Waning gibbous,Third quarter,Waning crescent,New moon,Waxing crescent,First quarter,Waxing gibbous";
+SPLIT(",",%&moon%,&moonphase[]);
+TITLE("&7&lMoon Phase:","&f&l%&moonphase[%#phase%]% &7&l(&f&l%#phase%&7&l)");
+}$$

@@ -1,0 +1,22 @@
+$${
+PROMPT(&input,"$$?","Rainbowfier Input");
+SPLIT("",%&input%,&array[]);
+ARRAYSIZE(&array[],#length);
+SPLIT(" ","&4 &c &6 &e &2 &a &b &3 &1 &9 &d &5",&code[]);
+#count = 0;
+#count2 = 0;
+DO;
+    IF(#count2 == 12);
+        #count2 = 0;
+    ENDIF;
+    IF(&array[%#count%] == " ");
+        #count2 = #count2 - 1;
+    ELSE;
+        &array[%#count%] = %&code[%#count2%]%&l%&array[%#count%]%;
+    ENDIF;
+    INC(#count);
+    INC(#count2);
+UNTIL(#length == #count);
+JOIN("",&array[],&output);
+ECHO(%&output%);
+}$$

@@ -1,0 +1,24 @@
+$${
+//For The Dalek Mod 1.12.2
+&effect = "Health Boost,Glowing,Jump Boost,Night Vision,Strength,Fire Resistance,Invisibility,Luck,Water Breathing,Haste";
+SPLIT(",",%&effect%,&effects[]);
+GETSLOTITEM(%INVSLOT%,"","","",&nbt);
+IF(&nbt="null");
+	POPUPMESSAGE("&4&lFood Cube Not Found...");
+	STOP(NUMPAD8);
+ENDIF;
+REPLACE(&nbt,"{prop:[I;");
+REPLACE(&nbt,",");
+REPLACE(&nbt,"]}");
+&out = "&4&lFood &c&lCube &e&lEffects: ";
+SPLIT("",%&nbt%,&code[]);
+FOREACH(&code[],&item);
+	&out = %&out%-&a&l%&effects[%&item%]%;
+NEXT;
+SPLIT("-",%&out%,&output[]);
+LOG("&6&l----------------");
+FOREACH(&output[],&i);
+	LOG(%&i%);
+NEXT;
+LOG("&6&l----------------")
+}$$
