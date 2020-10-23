@@ -1,4 +1,4 @@
-__**Blockdata \ Entitydata Editor:**__
+# Blockdata / Entitydata Editor:
 *Designed for 1.12.2, should work with older versions.*
 
 This macro helps you edit blockdata or entitydata, by showing you a list of all the data the block/entity contains. 
