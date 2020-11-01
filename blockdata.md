@@ -8,7 +8,7 @@ This macro helps you edit blockdata or entitydata, by showing you a list of all 
 - Use a file include eg `$$<blockdata.txt>`
 
 **Usage:**
-- Look at either a tile entity block*(Anything with blockdata)*, or an entity.
+- Look at either a tile entity block *(Anything with blockdata)*, or an entity.
 - Activate the script using a button or a keybind. 
 - If you looked at an entity, you will need to select the target manually, such as `@e[type=pig]`.
 - It will show you a gui menu with all of the block/entities data. 
