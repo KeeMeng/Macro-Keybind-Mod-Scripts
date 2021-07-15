@@ -1,0 +1,10 @@
+$${
+function greet(&name);
+	set(&message,"Hello %&name%!");
+	log("%&message%");
+	return(%&message%);
+endfunction;
+
+greet("World!");
+call(greet,"There!");
+}$$

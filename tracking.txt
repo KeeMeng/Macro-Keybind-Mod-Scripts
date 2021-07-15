@@ -1,20 +1,20 @@
 $${
 //You will need the entitiesiterator module for this;
-TOGGLE(@look);
-IF(@look);
-	LOG(&6&lTracking started);
-	DO;
-		UNSAFE(10000);
-		FOREACH(entities(filter:{type:player}));
-			IF(ENTITYNAME != %PLAYER%);
-				POPUPMESSAGE(&6&lTracking &e&l%ENTITYNAME%);
-				LOOK(%ENTITYYAWFROMPLAYER%,%ENTITYPITCHFROMPLAYER%);
-				BREAK;
-			ENDIF;
-		NEXT;
-		ENDUNSAFE;
-	UNTIL(!@look);
-ELSE;
-	LOG(&6&lTracking stopped);
-ENDIF;
+toggle(@look);
+if(@look);
+	log("&6&lTracking started");
+	do;
+		unsafe(10000);
+			foreach(entities(filter:{type:player}));
+				if(ENTITYNAME != %PLAYER%);
+					popupmessage("&6&lTracking &e&l%ENTITYNAME%");
+					look(%ENTITYYAWFROMPLAYER%,%ENTITYPITCHFROMPLAYER%);
+					break;
+				endif;
+			next;
+		endunsafe;
+	until(!@look);
+else;
+	log("&6&lTracking stopped");
+endif;
 }$$

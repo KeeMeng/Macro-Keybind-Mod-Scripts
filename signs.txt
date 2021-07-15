@@ -1,20 +1,15 @@
-Place the copied sign down:
-
 $${
-SPLIT(">-<",%@&signdata%,&sign[]);
-PLACESIGN(%&sign[0]%,%&sign[1]%,%&sign[2]%,%&sign[3]%);
-LOG(&6&lSign Pasted);
-}$$
+//Place the copied sign down;
+split(">-<",%@&signdata%,&sign[]);
+placesign(%&sign[0]%,%&sign[1]%,%&sign[2]%,%&sign[3]%);
+log("&6&lSign Pasted");
 
-
-Copy sign that you are looking at:
-
-$${
-IF(HITNAME == "Sign");
-	JOIN(">-<",SIGNTEXT[],@&signdata);
-	STRIP(@&signdata,%@&signdata%);
-	LOG(&6&lSign Copied);
-ELSE;
-	LOG(&4&lNo Sign Found)
-ENDIF;
+//Copy sign that you are looking at;
+if(HITNAME == "Sign");
+	join(">-<",SIGNTEXT[],@&signdata);
+	strip(@&signdata,%@&signdata%);
+	log("&6&lSign Copied");
+else;
+	log("&4&lNo Sign Found");
+endif;
 }$$

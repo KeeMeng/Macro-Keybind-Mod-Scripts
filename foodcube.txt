@@ -1,24 +1,24 @@
 $${
-//For The Dalek Mod 1.12.2
-&effect = "Health Boost,Glowing,Jump Boost,Night Vision,Strength,Fire Resistance,Invisibility,Luck,Water Breathing,Haste";
-SPLIT(",",%&effect%,&effects[]);
-GETSLOTITEM(%INVSLOT%,"","","",&nbt);
-IF(&nbt="null");
-	POPUPMESSAGE("&4&lFood Cube Not Found...");
-	STOP(NUMPAD8);
-ENDIF;
-REPLACE(&nbt,"{prop:[I;");
-REPLACE(&nbt,",");
-REPLACE(&nbt,"]}");
-&out = "&4&lFood &c&lCube &e&lEffects: ";
-SPLIT("",%&nbt%,&code[]);
-FOREACH(&code[],&item);
-	&out = %&out%-&a&l%&effects[%&item%]%;
-NEXT;
-SPLIT("-",%&out%,&output[]);
-LOG("&6&l----------------");
-FOREACH(&output[],&i);
-	LOG(%&i%);
-NEXT;
-LOG("&6&l----------------")
+//For The Dalek Mod 1.12.2;
+set(&effect,"Health Boost,Glowing,Jump Boost,Night Vision,Strength,Fire Resistance,Invisibility,Luck,Water Breathing,Haste");
+split(",",%&effect%,&effects[]);
+getslotitem(%INVSLOT%,"","","",&nbt);
+if(&nbt == "null");
+	popupmessage("&4&lFood Cube Not Found...");
+	stop(KEY_NUMPAD8);
+endif;
+replace(&nbt,"{prop:[I;");
+replace(&nbt,",");
+replace(&nbt,"]}");
+set(&out,"&4&lFood &c&lCube &e&lEffects: ");
+split("",%&nbt%,&code[]);
+foreach(&code[],&item);
+	set(&out,%&out%-&a&l%&effects[%&item%]%);
+next;
+split("-",%&out%,&output[]);
+log("&6&l----------------");
+foreach(&output[],&i);
+	log(%&i%);
+next;
+log("&6&l----------------");
 }$$

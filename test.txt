@@ -1,0 +1,30 @@
+$${
+	//MKB Syntax Highlighter;
+	//Syntax Highlighter, Autocomplete, Popup Hints, Indenter, 
+	//Linter, Built in wiki, Command palette support and more...
+
+	normal_boolean = True;			for
+	@global_boolean = False;
+	#normal_number = -1;
+	@#global_number = 1;
+	&normal_string = "hello";
+	@&global_string = "world";
+	&array[] = ["item1","item2"];
+	@&global_array[] = ["items"];
+
+	operators = + - / * := || && !
+	comparators != >= > == < <=
+
+	&escaped_char = "quotation \" mark";
+	&var_in_string = "Health: %HEALTH%";
+
+
+	unsafe(<executions>);
+		prompt(&target,"$$[choose [array,of,things]]");
+		if(<condition>);
+			keydown(forward);
+		elseif();
+			echo("%PLAYER% is at %BIOME%!");
+		endif;
+	endunsafe;
+}$$

@@ -1,7 +1,7 @@
 $${
 //You need the Utilities Module for this, for the MOD action;
-MOD(#phase,%DAY%,8);
-&moon = "Full moon,Waning gibbous,Third quarter,Waning crescent,New moon,Waxing crescent,First quarter,Waxing gibbous";
-SPLIT(",",%&moon%,&moonphase[]);
-TITLE("&7&lMoon Phase:","&f&l%&moonphase[%#phase%]% &7&l(&f&l%#phase%&7&l)");
+mod(#phase,%DAY%,8);
+set(&moon,"Full moon,Waning gibbous,Third quarter,Waning crescent,New moon,Waxing crescent,First quarter,Waxing gibbous");
+split(",",%&moon%,&moonphase[]);
+title("&7&lMoon Phase:","&f&l%&moonphase[%#phase%]% &7&l(&f&l%#phase%&7&l)");
 }$$
