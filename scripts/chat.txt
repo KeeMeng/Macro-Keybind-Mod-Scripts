@@ -1,0 +1,61 @@
+$${
+
+
+//§70ctan3§r§e has joined (§r§b2§r§e/§r§b14§r§e)!§r
+//§7Olafscoot§r§e has quit!§r
+
+&regex = "\xA7[0-9a-fl-or](.+?)\xA7r\xA7e has joined \(\xA7r\xA7b\d+\xA7r\xA7e/\xA7r\xA7b\d+\xA7r\xA7e\)!\xA7r"
+ifmatches(%CHAT%,"%&regex%",&player,1)
+endif
+
+&regex = "\xA7[0-9a-fl-or](.+?)\xA7r\xA7e has quit!\xA7r"
+ifmatches(%CHAT%,"%&regex%",&player,1)
+endif
+
+//          �r�e�lin the wall before the wall reaches you!�r
+
+&regex = "          \xA7r\xA7e\xA7lin the wall before the wall reaches you!\xA7r"
+ifmatches(%CHAT%,"%&regex%")
+    log("Start")
+    unset(@&cachednames[])
+    set(@lobby)
+endif
+
+//§6§lYou are §c§lthirteenth§6§l, §c§l0§6§l points behind the twelfth player.§r§r
+&regex = "\xA76\xA7lYou are \xA7c\xA7l.+?\xA76\xA7l, \xA7c\xA7\d+\xA76\xA7l points behind the .+? player\.\xA7r\xA7r"
+ifmatches(%CHAT%,"%&regex%")
+    if(@lobby)
+        log("End")
+        unset(@lobby)
+    endif
+endif
+
+//§6§lYou are §c§lFIRST§r§r
+&regex = "\xA76\xA7lYou are \xA7c\xA7lFIRST\xA7r\xA7r"
+ifmatches(%CHAT%,"%&regex%")
+    if(@lobby)
+        log("End")
+        unset(@lobby)
+    endif
+endif
+
+//§cNot enough players joined so the game did not start. Please try again later.§r
+&regex = "\xA7cNot enough players joined so the game did not start\. Please try again later\.\xA7r"
+ifmatches(%CHAT%,"%&regex%")
+    if(@lobby)
+        log("End")
+        unset(@lobby)
+    endif
+endif
+
+//§a§lTeleporting you to the lobby in 3 seconds... Right-click again to cancel the teleport!§r
+
+&regex = "\xA7a\xA7lTeleporting you to the lobby in 3 seconds\.\.\. Right-click again to cancel the teleport!\xA7r"
+ifmatches(%CHAT%,"%&regex%")
+    if(@lobby)
+        log("End")
+        unset(@lobby)
+    endif
+endif
+
+}$$

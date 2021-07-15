@@ -1,0 +1,7 @@
+$${
+
+do()
+setlabel(PLAYER,&6[As] &e%PLAYER%)
+loop
+
+}$$

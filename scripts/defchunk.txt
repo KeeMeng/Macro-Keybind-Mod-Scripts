@@ -1,0 +1,75 @@
+$${
+
+#xpos1 = 0
+#ypos1 = 0
+#zpos1 = 0
+
+#xpos2 = 0
+#ypos2 = 0
+#zpos2 = 0
+
+#xpos3 = 0
+#ypos3 = 0
+#zpos3 = 0
+
+&blocklist = ""
+
+&pre = "&8[&bChunk&8] &f"
+
+LOG(%&pre% Please set first Point)
+do() 
+WHILE(%@#pos1% = 0)
+LOG(%&pre% Position 1 set to %XPOS% %YPOS% %ZPOS%)
+
+#xpos1 = %XPOS%
+#ypos1 = %YPOS%
+#zpos1 = %ZPOS%
+
+LOG(%&pre% Please set second Point)
+do() 
+WHILE(%@#pos2% = 0)
+LOG(%&pre% Position 2 set to %XPOS% %YPOS% %ZPOS%)
+
+#xpos2 = %XPOS%
+#ypos2 = %YPOS%
+#zpos2 = %ZPOS%
+
+//IF(%#XPOS1%>%#XPOS2%
+
+FOR(#ypos3,%#ypos1%,%#ypos2%)
+
+  LOG(%#ypos3%)
+  
+  FOR(#xpos3,%#xpos1%,%#xpos2%)
+
+    //LOG(%#xpos3%)
+
+    FOR(#zpos3,%#zpos1%,%#zpos2%)
+
+      //LOG(%#zpos3%)
+      GETID(%#xpos3%,%#ypos3%,%#zpos3%,&curblock)
+      #curblock=ITEMID(%&curblock%)
+      IF(%@#stop% = 1)
+        STOP()
+      ENDIF
+
+      IFMATCHES(%#curblock%,20)
+
+         ACHIEVEMENTGET(Found something,%&curblock%)
+         LOGTO(%#xpos4%-%#ypos4%-%#zpos4%.txt,"%#xpos3% %#ypos3% %#zpos3% %&curblock%")        
+
+      ENDIF
+
+    NEXT
+   
+  NEXT
+
+NEXT
+
+LOG(%&blocklist%)
+SET(@#pos1,0)
+SET(@#pos2,0)
+UNSET(&blocklist)
+LOG(%&pre% Finished)
+
+}$$

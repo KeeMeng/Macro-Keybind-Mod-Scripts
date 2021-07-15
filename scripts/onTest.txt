@@ -1,0 +1,12 @@
+log("%CHATTEST4[0]%")
+log("%CHATTEST4[1]%")
+
+arraysize(CHATTEST4,#size)
+log("%#size%")
+
+foreach("env")
+
+        log("%VARNAME%")
+   
+
+next

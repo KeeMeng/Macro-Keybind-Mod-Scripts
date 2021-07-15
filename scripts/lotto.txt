@@ -1,0 +1,146 @@
+
+
+SET(@#einsatz,$$[1])
+SET(@&auszahlungstring,$$[2])
+SET(@#auszahlung,$$[2])
+SET(@&hoster,$$[3])
+
+UNSET(&teilnehmer[])
+UNSET(@&teilnehmer[])
+
+INC(@#lottocount,1)
+
+ECHO(/gamerule sendCommandFeedback false)
+ECHO(/scoreboard players add @a lotto 1)
+WAIT(100ms)
+ECHO(/scoreboard players remove @a lotto 1)
+ECHO(/gamerule sendCommandFeedback true)
+
+&tell="/tellraw @a[score_lotto=0] {color:dark_purple,text:"
+
+@#lotto_running=1
+
+
+ECHO("%&tell%\"\nMach /msg spthiel disable um die Nachrichten\"}")
+ECHO("%&tell%\"nichtmehr zu sehen.\"}")
+ECHO("%&tell%\"Mach /msg spthiel enable um die Nachrichten\"}")
+ECHO("%&tell%\"wieder zu sehen.\n\n\"}")
+
+WAIT(4000ms)
+
+IF((@&hoster=="spthiel")||(@&hoster=="Ich")||(@&hoster==""))
+
+  ECHO("%&tell%\"Ich starte jetzt ein Lotto :)\"}")
+
+ELSE
+
+  ECHO("%&tell%\"%@&hoster% startet jetzt ein Lotto :)\"}") 
+ 
+ENDIF
+
+MOD(#modlottocount,%@#lottocount%,10)
+
+@&lastlotto[%#modlottocount%]="%@&hoster%"
+
+#delay=1000
+
+
+
+
+WAIT(%#delay%ms)
+ECHO("%&tell%\"d.h. jeder der\"}")
+WAIT(%#delay%ms)
+ECHO("%&tell%\"/pay spthiel  %@#einsatz%\"}")
+WAIT(%#delay%ms)
+ECHO("%&tell%\"macht wird als\"}")
+WAIT(%#delay%ms)
+ECHO("%&tell%\"Teilnehmer aufgenommen\"}")
+WAIT(%#delay%ms)
+ECHO("%&tell%\"Am ende bekommt der Gewinner %@&auszahlungstring%G\"}")
+WAIT(%#delay%ms)
+ECHO("%&tell%\"Ihr habt ab jetzt 60 sekunden\"}")
+WAIT(%#delay%ms)
+ECHO("%&tell%\"Zeit euch zu registrieren\"}")
+WAIT(30000ms)
+ECHO("%&tell%\"Noch 30 sekunden\"}")
+WAIT(20000ms)
+
+ECHO("%&tell%\"Noch 10 sekunden\"}")
+
+WAIT(10000ms)
+
+ECHO("%&tell%\"Zeit vorbei bitte nichtsmehr Payen :)\"}")
+
+
+ARRAYSIZE(@&teilnehmer[],#count)
+LOG(%#count%)
+RANDOM(#outvar,%#count%,1)
+LOG(%#outvar%)
+
+DEC(#outvar,1)
+
+LOG(%#outvar%)
+
+IF(@#forcewinspthiel==1)
+
+  ECHO("%&tell%\"Das war ein blödes lotto\"}")
+  ECHO("%&tell%\"alle erhalten ihrn einsatz zurück\"}")
+  @#forcewinspthiel=0
+
+  ECHO(/pay %@&hoster% %@#auszahlung%)
+  ECHO("/tellraw %@&hoster% \"[Lotto] Du darfst nun kein Lotto mehr machen\"")
+  @&msgblacklist[]="%@&hoster%"
+
+  ARRAYSIZE(@&teilnehmer[],#outvar)
+  DEC(#outvar,1)
+  FOR(#forz,0,%#outvar%)
+
+    WAIT(1000ms)
+    ECHO(/pay %@&teilnehmer[%#forz%]% %@#einsatz%)
+
+  NEXT
+  
+ELSE
+
+  IF(#count==0)
+
+    ECHO("%&tell%\"Niemand hat Teilgenommen :(\"}")
+    ECHO(/pay %@&hoster% %@#auszahlung%)
+
+  ELSE
+
+    ECHO("%&tell%\"%@&teilnehmer[%#outvar%]%\"}")
+    ECHO("%&tell%\"hat sich unter %#count% Teilnehmern behauptet\"}")
+    @&lastwinner=%@&teilnehmer[%#outvar%]%
+    ECHO(/pay %@&teilnehmer[%#outvar%]% %@#auszahlung%)
+
+  ENDIF
+
+  IF(!(@&hoster=="spthiel")&&!(@&hoster=="Ich")&&!(@&hoster==""))
+
+   #getback=%@#einsatz%*%#count%
+    WAIT(2)
+    ECHO(/pay %@&hoster% %#getback%)
+
+  ENDIF
+
+ENDIF
+
+@#lotto_running=0
+
+@#msglotto_stop=1
+ECHO("%&tell%\"Ist jetzt auf Cooldown für 2 Minuten\"}")
+@#cooldown=120
+
+DO()
+
+  DEC(@#cooldown,1)
+  WAIT(1000ms)
+
+UNTIL(@#cooldown<0)
+
+@#msglotto_stop=0
+ECHO("%&tell%\"[Lotto] Cooldown ist um\"}")
+
+
+

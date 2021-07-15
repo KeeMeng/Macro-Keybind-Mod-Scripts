@@ -1,0 +1,18 @@
+$${
+
+PROMPT(&cmd,"$$[[pingtest,/g pingtest]]")
+
+echo("%&cmd%:  ZQ234W25AC")
+
+#pings = %TIMESTAMP%
+
+@#pingcon = 0
+
+do()
+until(@#pingcon==1)
+
+#pinge = %TIMESTAMP%-%#pings% 
+
+LOG(%#pinge%)
+
+}$$

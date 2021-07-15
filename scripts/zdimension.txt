@@ -1,0 +1,7 @@
+$${
+
+do()
+setlabel(DIMENSION,&6[DIM] &e%DIMENSION%)
+loop
+
+}$$

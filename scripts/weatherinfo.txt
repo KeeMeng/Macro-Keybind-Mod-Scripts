@@ -1,0 +1,43 @@
+
+&log=$$[1]
+
+IF( (!MODULEJSON) || (!MODULEHTTP) )
+  LOG("&cThis Script needs the JSON & HTTP Module")
+  STOP
+ENDIF
+
+&loc = URLENCODE(%&log%)
+LOG(%&loc%)
+&lang = "en"
+&units = "metric"
+// metric or imperial
+
+&json = HTTPGET("http://api.openweathermap.org/data/2.5/weather?q=%&loc%&lang=%&lang%&units=%&units%&APPID=4b958962a58d43bacd32b4d6992263bc",,)
+LOG(%&json%)
+error = JSONHAS(%&json%,"message")
+
+IF( (#status = 200) && (!error) )
+  &name = JSONGET(%&json%,"name")
+  MATCH(%&name%,"\"(.*)\"",&name,1)
+  &base = JSONGET(%&json%,"base")
+    
+  &main = JSONGET(%&json%,"main")
+  &temp = JSONGET(%&main%,"temp")
+  &temp_max = JSONGET(%&main%,"temp_max")
+  &temp_min = JSONGET(%&main%,"temp_min")
+    
+  &weather = JSONGET(%&json%,"weather")
+  &weather = JSONARRAYGET(%&weather%,0)
+  &desc = JSONGET(%&weather%,"description")
+  MATCH(%&desc%,"\"(.+)\"",&desc,1)
+  &sys = JSONGET(%&json%,"sys")
+  &country = JSONGET(%&sys%,"country")
+  MATCH(%&country%,"\"(.+)\"",&country,1)
+ENDIF
+
+IF( error )
+  LOG("&cI couldn't find the city")
+ELSE
+  LOG("%&name% [%&country%] \| %&temp%°C \| %&desc%")
+ENDIF
+

@@ -1,0 +1,36 @@
+$${
+
+IFMATCHES(%CHAT%,"\[Hilfe\]")
+
+ELSE
+
+  IFMATCHES(%CHAT%,"\§r\§7\[\§r\§a.+?\§r\§7\]")
+    
+    ELSE
+    
+    IFMATCHES(%CHAT%,"Support")
+        
+        ELSE
+
+            IF((!@iwrite)&&(!answering))
+                IFMATCHES(%CHAT%,"Hilfe")
+                    set(answering);
+                    echo(Was gibts?);
+                    wait(5);
+                    unset(answering);    
+                ENDIF;
+
+                IFMATCHES(%CHAT%,"tobi")
+                    set(answering);
+                    echo(ja?);
+                    wait(5);
+                    unset(answering);    
+                ENDIF;
+            ENDIF
+        ENDIF
+    ENDIF
+ENDIF
+
+UNSET(@iwrite)
+
+}$$

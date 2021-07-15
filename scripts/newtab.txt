@@ -1,0 +1,41 @@
+$${
+
+UNSET(&currplayers[])
+
+FOREACH(players)
+
+  UNSET(&thisarray)
+  UNSET(&thiscolor)
+
+  ARRAYSIZE(@&nt[],#size)
+  IF(!(#size==0))
+
+    DEC(#size,1)
+
+  ENDIF
+
+  FOR(#n,0,%#size%)
+
+    &thisarray=%@&nt[%#n%]%
+    INDEXOF(@&nt%&thisarray%[],#isin,%PLAYERNAME%)
+    LOG(%#isin%)
+    IF(#isin>=0)
+
+      &thiscolor=%@&ntcolor[%#n%]%
+
+    ENDIF
+
+
+  NEXT
+
+  IF(&thiscolor=="")
+    &thiscolor="f"
+  ENDIF
+
+  &currplayers[]="&%&thiscolor%%PLAYERNAME%"
+
+  LOG(&%&thiscolor%%PLAYERNAME%)
+
+NEXT
+
+}$$

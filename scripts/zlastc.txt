@@ -1,0 +1,5 @@
+$${
+
+setlabel(LAST,&6[Last] &e%JOINEDPLAYER%)
+
+}$$

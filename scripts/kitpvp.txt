@@ -1,0 +1,6 @@
+$${
+
+SET(@#kitpvp,1)
+ECHO(/system gserverchat kitpvp)
+
+}$$

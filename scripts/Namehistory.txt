@@ -1,0 +1,60 @@
+
+&user = $$[1]
+&prefix = &3[&bUUID Search&3]
+IF(%&user% = "")
+    LOG("%&prefix% &cNo user selected.")
+    STOP()
+ENDIF()
+
+
+&response = HTTPGET("https://api.mojang.com/users/profiles/minecraft/%&user%?at=1453309266","","")
+IF(&response=="")
+
+  &response = HTTPGET("https://api.mojang.com/users/profiles/minecraft/%&user%","","")
+
+  IF(&response=="")
+
+    &response = HTTPGET("https://api.mojang.com/users/profiles/minecraft/%&user%?at=0","","")
+
+  ENDIF
+
+ENDIF
+
+
+&user=""
+&rawarray[] = SPLIT(",",%&response%)
+MATCH(%&rawarray[0]%,\"id\":\"([a-z|0-9]+)\",{&uuid})
+&responsenames = HTTPGET("https://api.mojang.com/user/profiles/%&uuid%/names","","")
+&namesarray[] = SPLIT("},{",%&responsenames%)
+ARRAYSIZE(&namesarray,#size)
+#sizeabsolute = ((%#size%) - 1)
+MATCH(%&namesarray[0]%,^\[?\{\"name\":\"(.*)\",{&originalname})
+LOG("%&prefix% &6Original name: &a%&originalname%")
+LOG("%&prefix% &6Name changed %#sizeabsolute% times.")
+IF(#size > 1)
+    MATCH(%&namesarray[%#sizeabsolute%]%,^\[?\{?\"name\":\"(.*)\"\,\"changedToAt\":\d+\}\]$,{&currentname})
+    LOG("%&prefix% &6Current name: &a%&currentname%")
+    LOG("%&prefix% &8------------------------")
+    &previousname = %&originalname%
+    FOR(#for,1,%#sizeabsolute%)
+        MATCH(%&namesarray[%#for%]%,^\[?\{?\"name\":\"(.*)\"\,\"changedToAt\":\d+\}?\]?$,{&changedname})
+        LOG("%&prefix% &a%&previousname% &6to &a%&changedname%")
+        &previousname = %&changedname%
+    NEXT
+    LOG("%&prefix% &8------------------------")
+ENDIF
+
+UNSET(#sizeabsolute)
+UNSET(#size)
+UNSET(#for)
+UNSET(&previousname)
+UNSET(&currentname)
+UNSET(&prefix)
+UNSET(&response)
+UNSET(&originalname)
+UNSET(&changedname)
+UNSET(&responsenames)
+UNSET(&user)
+UNSET(&uuid)
+UNSET(&return)
+UNSET(&namesarray[])

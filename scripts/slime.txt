@@ -1,0 +1,16 @@
+
+#slot = 10
+for(#j,0,3)
+  unsafe()
+  for(#i,0,8)
+
+    inc(#i)
+    slotclick(%#slot%)
+    slotclick(%#i%)
+    inc(#slot)
+
+  next
+  endunsafe()
+  slotclick(0,,true)
+  wait(2t)
+next

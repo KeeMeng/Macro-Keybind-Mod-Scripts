@@ -1,0 +1,11 @@
+$${
+
+IF(@#ashgc>=1)
+  SET(@#ashgc,0);
+  SETPROPERTY(ashgc,text,Disabled)
+ELSE
+  INC(@#ashgc,1);
+  SETPROPERTY(ashgc,text,Enabled)
+ENDIF
+
+}$$

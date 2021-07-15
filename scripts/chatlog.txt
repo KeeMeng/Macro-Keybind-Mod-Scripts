@@ -1,0 +1,81 @@
+
+IF(!@&chatrunning)
+
+SET(@&chatrunning)
+
+SET(&path,"C:/Users/redacted/AppData/Roaming/.minecraft_1.12.1/liteconfig/common/macros/logs/%DATE%-MLog.txt")
+
+READFILE(@&chatlog[],%&path%)
+
+
+UNSAFE(10000)
+
+IF(@#logelement<=11)
+   @#logelement=11
+   SETPROPERTY(logdown,colour,#01000000)
+ELSE
+   SETPROPERTY(logdown,colour,#FF000000)
+ENDIF
+
+UNSET(&searchlog[])
+
+IF(!@&searchregex==0)
+
+  ARRAYSIZE(@&chatlog[],#logsize)
+  DEC(#logsize,1)
+
+  FOR(#i,0,%#logsize%)
+   
+    STRIP(&stripped,%@&chatlog[%#i%]%)
+    IFMATCHES(%&stripped%,"^.*%@&searchregex%.*$")
+
+      &searchlog[] = %@&chatlog[%#i%]%
+
+    ENDIF
+
+  NEXT    
+
+  JOIN("|-|-|",&searchlog[],&out)
+  SPLIT("|-|-|",%&out%,@&chatlog[]) 
+
+ENDIF
+
+
+ARRAYSIZE(@&chatlog[],#logsize)
+
+IF(#logsize>=22)
+
+  DEC(#logsize,11)
+  SETPROPERTY(SLIDER 355,max,%#logsize%)
+  SETPROPERTY(SLIDER 355,min,11)
+
+  IF(@#logelement>=#logsize)
+     @#logelement=#logsize
+  ENDIF
+
+  #sizedown10=%@#logelement%-10
+  #sizeup10=%@#logelement%+10
+
+  &logout=""
+
+  FOR(#logi,%#sizedown10%,%#sizeup10%)
+    &logout="%&logout%\n&f%@&chatlog[%#logi%]%"
+  NEXT
+
+  MATCH(&logout,"^\\n(.+)",{&logout})
+
+  SETLABEL(chatlog,%&logout%)
+
+ELSE
+
+  JOIN("\n",@&chatlog[],&logout)
+  SETLABEL(chatlog,%&logout%)
+
+ENDIF
+
+ENDUNSAFE()
+
+UNSET(@&chatrunning)
+
+ENDIF
+

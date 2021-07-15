@@ -1,0 +1,47 @@
+
+#setpr = 0
+#slot = $$[1]
+&paramstring = $$[2]
+#setpr = $$[3]
+
+IF(#slot>=0)
+
+  PROMPT(&item,"%&paramstring%")
+
+  LOG(%&item%)
+
+  IF(!(&item == ":0")&&!(&item == "air:0"))
+
+    @&recipeslots[%#slot%] = "%&item%"
+    IF(#setpr = 0)
+      SETPROPERTY(RecipesSlot%#slot%,text,"%&item%")
+    ENDIF
+
+  ELSE
+
+    @&recipeslots[%#slot%] = ""
+    IF(#setpr = 0)
+      SETPROPERTY(RecipesSlot%#slot%,text,"")
+    ENDIF
+
+  ENDIF
+
+ELSE
+
+  UNSAFE()
+
+    FOR(#i,0,8)
+
+      @&recipeslots[%#i%] = ""
+      SETPROPERTY(RecipesSlot%#i%,text,"")
+    
+    NEXT
+
+    @&recipeslots[9] = "" 
+
+  ENDUNSAFE()
+
+ENDIF
+
+SHOWGUI(rezepte)
+

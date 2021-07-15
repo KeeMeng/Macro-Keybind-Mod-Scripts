@@ -1,0 +1,7 @@
+$${
+
+do()
+setlabel(SERVER,&6[Server] &e%SERVER%)
+loop
+
+}$$

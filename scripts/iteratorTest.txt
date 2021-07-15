@@ -1,0 +1,53 @@
+$${
+
+//#norm = 0
+//foreach(controls)
+//    log(%CONTROLID%)
+//    inc(#norm)
+//next
+
+unset(&toask[])
+
+&toask[] = "INDEX"
+//&toask[] = "ENTITYTYPE"
+&toask[] = "ENTITYNAME"
+//&toask[] = "ENTITYPITCHFROMPLAYER"
+//&toask[] = "ENTITYYAWFROMPLAYER"
+//&toask[] = "ENTITYDX"
+//&toask[] = "ENTITYDY"
+//&toask[] = "ENTITYDZ"
+//&toask[] = "ENTITYISITEM"
+//&toask[] = "ENTITYNAME"
+//&toask[] = "ENTITYUUID"
+//&toask[] = "ENTITYXPOSF"
+//&toask[] = "ENTITYYPOSF"
+//&toask[] = "ENTITYZPOSF"
+&toask[] = "ENTITYXPOS"
+&toask[] = "ENTITYYPOS"
+&toask[] = "ENTITYZPOS"
+//&toask[] = "ENTITYTAGS"
+//&toask[] = "ENTITYPITCH"
+//&toask[] = "ENTITYYAW"
+//&toask[] = "ENTITYDISTANCE"
+//&toask[] = "ENTITYLEGGINGSID"
+//&toask[] = "ENTITYBOOTSNID"
+//&toask[] = "ENTITYMAINHANDDAMAGE"
+//&toask[] = "ENTITYMAINHANDCOUNT"
+//&toask[] = "ENTITYMAINHANDENCHANTMENTS"
+//&toask[] = "ENTITYMAINHANDTAG"
+
+#yet = 0
+log("start")
+//do()
+    foreach("entities(range:5)")
+        arraysize(&toask[],#size)
+        dec(#size)
+        for(#i,0,%#size%)
+            &lcase = LCASE(%&toask[%#i%]%)
+            log("%%&toask[%#i%]%%")
+        next
+    next
+//loop
+
+log("end")
+}$$

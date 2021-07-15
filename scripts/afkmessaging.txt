@@ -1,0 +1,65 @@
+$${
+
+IF(@afk)
+
+   //skypvpchat
+
+  IFMATCHES(%CHAT%,"^\§r\§[0-9a-f](.+?)\§r\§8\| \§r\§[0-9a-f](.+?)\§r\§8» \§r\§[0-9a-f](.*?)\§r$")
+    
+    MATCH(%CHAT%,"^\§r\§[0-9a-f].+?\§r\§8\| \§r\§[0-9a-f](.+?)\§r\§8» \§r\§[0-9a-f](.+?)\§r$",{&player,&chat})
+      
+    IFCONTAINS(%&chat%,"thiel")
+  
+      ECHO(/msg %&player% %@&afknotification%)
+        
+    ENDIF
+  
+  ENDIF
+  
+  //skypvpmsg
+  //^\§r\§7\[\§r\§b(.+?) \§r\§a-\>\§r\§7\] (.+?)\§r$
+  
+  IFMATCHES(%CHAT%,"^\§r\§7\[\§r\§b(.+?) \§r\§a-\>\§r\§7\] (.+?)\§r$")
+    
+    MATCH(%CHAT%,"^\§r\§7\[\§r\§b(.+?) \§r\§a-\>\§r\§7\] (.+?)\§r$",{&player,&chat})
+      
+    IF(!(&player == "spthiel"))
+  
+      ECHO(/msg %&player% %@&afknotification%)
+        
+    ENDIF
+  
+  ENDIF
+  
+  //globalchat
+    
+  IFMATCHES(%CHAT%,"^\§r\§7\[\§r\§a.+?\§r\§7\] \§r\§[0-9a-f](?:.+? )?(.+?)\§r\§7\» \§r\§e (.+?)\§r$")
+  
+    MATCH(%CHAT%,"^\§r\§7\[\§r\§a.+?\§r\§7\] \§r\§[0-9a-f](?:.+? )?(.+?)\§r\§7\» \§r\§e (.+?)\§r$",{&player,&chat})
+      
+    IFCONTAINS(%&chat%,"thiel")
+  
+      ECHO(/gmsg %&player% %@&afknotification%)
+    
+    ENDIF
+  
+  ENDIF
+  
+  //globalmsg
+  
+  IFMATCHES(%CHAT%,"^\§r\§9(.+?)\§r\§7 --\>\§r\§b me \§r\§8\: \§r\§7 (.+?)\§r$")
+    
+    MATCH(%CHAT%,"^\§r\§9(.+?)\§r\§7 --\>\§r\§b me \§r\§8\: \§r\§7 (.+?)\§r$",{&player,&chat})
+      
+    IF(!(&player == "spthiel"))
+  
+      ECHO(/gmsg %&player% %@&afknotification%)
+        
+    ENDIF
+  
+  ENDIF
+
+ENDIF
+
+
+}$$

@@ -1,0 +1,51 @@
+$${
+
+&key="RGAPI-0CC6E8DC-C3A4-480C-88F4-E612C31CB802"
+
+&list=HTTPGET("https://global.api.pvp.net/api/lol/static-data/euw/v1.2/rune?runeListData=stats&api_key=%&key%","","")
+
+UNSET(@#runeid[])
+UNSET(@&rune[])
+UNSET(&runes[])
+
+LOG(&fStartet)
+
+DO()
+
+  UNSET(&rune)
+  MATCH(%&list%,"(\{\"id\".+?\})",{&rune})
+
+  &runetoplace="%&rune%}"
+  IF(!(&rune==""))
+    &runes[]=%&runetoplace%
+  ENDIF
+  REPLACE(&list,%&rune%,"")
+
+UNTIL(&rune=="")
+
+LOG(&fSchritt 1/2)
+
+ARRAYSIZE(&runes,#runesize)
+DEC(#runesize,1)
+
+FOR(#runen,0,%#runesize%)
+
+  #runeid=JSONGET(%&runes[%#runen%]%,"id")
+  &runestats=JSONGET(%&runes[%#runen%]%,"stats")
+  MATCH(%&runestats%,"\{\"(.+?)\"\:(.+?)\}",{&stat,&str})
+  LOG(%&stat%)
+  INDEXOF(@&runesnorm,#index,%&stat%)
+  &stat=%@&runeswrite[%#index%]%
+  &runestats="%&str% %&stat%"
+
+  @#runeid[]=%#runeid%
+  @&rune[]="%&runestats%"
+
+NEXT
+
+LOG(&fFertig)
+
+UNSET(&list)
+UNSET(&runes[])
+
+}$$

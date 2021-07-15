@@ -1,0 +1,13 @@
+unsafe
+do()
+
+  if(@#int < 2)
+
+    log("ye")
+
+  endif
+
+  wait(1)
+
+loop
+endunsafe

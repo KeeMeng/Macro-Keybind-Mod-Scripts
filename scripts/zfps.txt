@@ -1,0 +1,7 @@
+$${
+
+do()
+setlabel(FPS,&6[FPS] &e%FPS%)
+loop
+
+}$$

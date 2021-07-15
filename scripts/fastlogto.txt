@@ -1,0 +1,12 @@
+$${
+
+IFCONTAINS(%CHAT%,"§r §r§3")
+
+  IF(@galookup)
+    INC(@#gatester,1)
+    LOGTO(antiglobal.txt,"%CHAT%")
+  ENDIF
+
+ENDIF
+
+}$$

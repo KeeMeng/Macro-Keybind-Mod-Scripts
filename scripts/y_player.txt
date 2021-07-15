@@ -1,0 +1,295 @@
+$${
+
+$$<y_player_load.txt>
+
+@&coloruser=&8
+@&colorhelfer=&d
+@&colorscout=&9
+@&colorsupp=&2
+@&coloradmin=&c
+@&colorowner=&4
+@&colordev=&7
+@&prehated="&4[Hated] "
+@&precity="&6[City] "
+@&precreative="&6[Creative] "
+@&preskyblock="&6[Skyblock] "
+@&prefriend="&a[Friend] "
+
+log(it works)
+
+DO()
+
+
+
+  FOREACH(players)
+
+    &pre=""
+
+    INDEXOF(@&helfer,#ishelfer,%PLAYERNAME%)
+    INDEXOF(@&scouts,#isscout,%PLAYERNAME%)
+    INDEXOF(@&supporter,#issupp,%PLAYERNAME%)
+    INDEXOF(@&admins,#isadmin,%PLAYERNAME%)
+    INDEXOF(@&owner,#isowner,%PLAYERNAME%)
+    INDEXOF(@&hass,#ishated,%PLAYERNAME%)
+    INDEXOF(@&creative,#iscreatived,%PLAYERNAME%)
+    INDEXOF(@&city,#iscitied,%PLAYERNAME%)
+    INDEXOF(@&skyblock,#isskyblocked,%PLAYERNAME%)
+    INDEXOF(@&friends,#isfriend,%PLAYERNAME%)
+    INDEXOF(@&developer,#isdev,%PLAYERNAME%)
+    INDEXOF(@&jrdev,#isjrdev,%PLAYERNAME%)
+
+
+    IF(%#ishated%>-1)
+
+      &pre="%&pre%%@&prehated%"
+
+    ENDIF
+
+    IF(%#iscreatived%>-1)
+
+      &pre="%&pre%%@&precreative%"
+
+    ENDIF
+
+    IF(%#iscitied%>-1)
+
+      &pre="%&pre%%@&precity%"
+
+    ENDIF
+
+    IF(%#isskyblocked%>-1)
+
+      &pre="%&pre%%@&preskyblock%"
+
+    ENDIF
+
+    IF(%#ishelfer%>-1)
+
+      &helfer[]="%&pre%%@&colorhelfer%%PLAYERNAME%"
+
+    ELSE
+
+      IF(%#isscout%>-1)
+
+        &scout[]="%&pre%%@&colorscout%%PLAYERNAME%"
+
+      ELSE
+
+        IF(%#issupp%>-1)
+
+          &supp[]="%&pre%%@&colorsupp%%PLAYERNAME%"
+
+        ELSE
+
+          IF(%#isadmin%>-1)
+
+            &admin[]="%&pre%%@&coloradmin%%PLAYERNAME%"            
+
+          ELSE
+
+            IF(%#isowner%>-1)
+
+              &owner[]="%&pre%%@&colorowner%%PLAYERNAME%"
+
+            ELSE
+
+              IF(%#isdev%>-1)
+
+                &dev[]="%&pre%%@&colordev%%PLAYERNAME%"
+
+              ELSEIF(%#isjrdev%>-1)
+
+                &jrdev[]="%&pre%%@&colordev%%PLAYERNAME%"
+
+              ELSE
+
+                IF(%#isfriend%>-1)
+
+                  &friend[]="%&pre%%@&prefriend%%@&coloruser%%PLAYERNAME%"
+
+                ELSE
+
+                  &user[]="%&pre%%@&coloruser%%PLAYERNAME%"
+
+                ENDIF
+
+              ENDIF
+
+            ENDIF
+
+          ENDIF
+
+        ENDIF
+
+      ENDIF
+
+    ENDIF
+
+  NEXT
+
+
+  ARRAYSIZE(&owner,#size)
+  #ownersize = %#size%
+
+  IF(%#size%>0)
+    #size=%#size%-1
+    FOR(#i,0,%#size%)
+
+      INC(#players,1)
+      &players="%&players%\n%&owner[%#i%]%"
+
+    NEXT
+
+  ENDIF
+
+  ARRAYSIZE(&dev,#size)
+  #devsize = %#size%
+
+  IF(%#size%>0)
+    #size=%#size%-1
+    FOR(#i,0,%#size%)
+
+      INC(#players,1)
+      &players="%&players%\n%&dev[%#i%]%"
+
+    NEXT
+
+  ENDIF
+
+  ARRAYSIZE(&jrdev,#size)
+  INC(#devsize,%#size%)
+
+  IF(%#size%>0)
+    #size=%#size%-1
+    FOR(#i,0,%#size%)
+
+      INC(#players,1)
+      &players="%&players%\n%&jrdev[%#i%]%"
+
+    NEXT
+
+  ENDIF
+
+  ARRAYSIZE(&admin,#size)
+  #adminsize = %#size%
+
+  IF(%#size%>0)
+    #size=%#size%-1
+    FOR(#i,0,%#size%)
+
+      INC(#players,1)
+      &players="%&players%\n%&admin[%#i%]%"
+
+    NEXT
+
+  ENDIF
+
+  ARRAYSIZE(&supp,#size)
+  #supsize = %#size%
+
+  IF(%#size%>0)
+    #size=%#size%-1
+    FOR(#i,0,%#size%)
+
+      INC(#players,1)
+      &players="%&players%\n%&supp[%#i%]%"
+
+    NEXT
+
+  ENDIF
+
+
+  ARRAYSIZE(&scout,#size)
+  #scoutsize = %#size%
+
+  IF(%#size%>0)
+    #size=%#size%-1
+    FOR(#i,0,%#size%)
+
+      INC(#players,1)
+      &players="%&players%\n%&scout[%#i%]%"
+
+    NEXT
+
+  ENDIF
+
+
+  ARRAYSIZE(&helfer,#size)
+  #helfersize = %#size%
+
+  IF(%#size%>0)
+    #size=%#size%-1
+    FOR(#i,0,%#size%)
+
+      INC(#players,1)
+      &players="%&players%\n%&helfer[%#i%]%"
+
+    NEXT
+
+  ENDIF
+
+  ARRAYSIZE(&friend,#size)
+  #friendsize = %#size%
+
+  IF(%#size%>0)
+    #size=%#size%-1
+    FOR(#i,0,%#size%)
+
+      INC(#players,1)
+      &players="%&players%\n%&friend[%#i%]%"
+
+    NEXT
+
+  ENDIF
+
+
+  ARRAYSIZE(&user,#size)
+  #usersize = %#size%
+
+  IF(%#size%>0)
+    #size=%#size%-1
+    FOR(#i,0,%#size%)
+
+      INC(#players,1)
+      IF(%#players%>30)
+
+        INC(#weitere,1)
+
+      ELSE
+
+        &players="%&players%\n%&user[%#i%]%"
+
+      ENDIF
+
+    NEXT
+
+  ENDIF
+
+  IF(%#weitere%>0)
+    &players="%&players%\n%@&coloruser%...and %#weitere% Users more."
+  ENDIF
+    
+
+
+    @&tabplayers=%&players%
+    SETLABEL(groups,"\n%@&colorowner%Owner: %#ownersize%\n%@&colordev%Devs: %#devsize%\n%@&coloradmin%Admins: %#adminsize%\n%@&colorsupp%Sups: %#supsize%\n%@&colorscout%Scouts: %#scoutsize%\n%@&colorhelfer%Helfer: %#helfersize%\n%@&coloruser%Friends: %#friendsize%\n%@&coloruser%Users: %#usersize%")
+
+    UNSET(&owner[])
+    UNSET(&admin[])
+    UNSET(&supp[])
+    UNSET(&scout[])
+    UNSET(&helfer[])
+    UNSET(&user[])
+    UNSET(&dev[])
+    UNSET(&jrdev[])
+    UNSET(&friend[])
+    UNSET(&players)
+    UNSET(#size)
+    UNSET(#weitere)
+    UNSET(#players)
+
+  ENDIF
+
+LOOP
+
+}$$

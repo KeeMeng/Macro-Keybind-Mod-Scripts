@@ -1,0 +1,7 @@
+UNSET(@&swrlist[])
+
+@&swrlist[]="Holzhaus"
+@&swrlist[]="Slimeinsel"
+@&swrlist[]="Rush"
+@&swrlist[]="Durcheinander"
+@&swrlist[]="Gleise"

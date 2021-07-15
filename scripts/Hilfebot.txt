@@ -1,0 +1,238 @@
+$${
+
+IF(@#hilfebot=0)
+
+ELSE
+
+$$<hilfebotconfig.txt>
+
+UNSET(&playerarr[])
+
+&delay = "100ms"
+
+
+&pre = "§8[§bHilfebot§8] §f"
+
+
+IFCONTAINS(%CHAT%,"§r§a->§r§7]")
+
+
+ IF(@#overflow=0) 
+
+   #storeup=-1
+   #store=-1  
+
+   SET(@#overflow,1)
+   
+   &player = ""
+
+   STRIP(&chat,%CHAT%)
+   REPLACE(&chat,"[","")
+   SPLIT(" ",%&chat%,&chatarr[])
+   &player = %&chatarr[0]%
+   &cmd   = "/tellraw %&player%"
+   &scmd = "/msg %&player%"
+
+   
+
+
+   INDEXOF(@&blacklist,#isin,%&player%)
+
+   INC(#%&player%,1)
+
+   IF(%#isin%>-1)
+   
+     LOG(%&pre% %&player% tryed to use the Hilfebot)
+     SET(@#overflow,0)
+     STOP()
+
+   ENDIF
+
+   INDEXOF(@&permlist,#isin,%&player%)
+
+   IF(#isin>-1)
+
+
+   ENDIF
+
+   IFCONTAINS(%CHAT%,"disable")
+
+     ECHO(%&cmd% "Du siehst nun den Lottochat nichtmehr")
+     ECHO(/scoreboard players set %&player% lotto 1)
+   
+   ENDIF
+
+   IFCONTAINS(%CHAT%,"enable")
+
+     ECHO(%&cmd% "Du siehst nun den Lottochat wieder")
+     ECHO(/scoreboard players set %&player% lotto 0)
+   
+   ENDIF
+   
+
+    IFCONTAINS(%CHAT%,"time")
+
+      ECHO(%&cmd% "It's %TIME% [Realtime] and %DAYTIME% [Inggametime]")
+
+    ENDIF
+
+    IFCONTAINS(%CHAT%,"date")
+
+      ECHO(%&cmd% "It's the %DATE%")
+
+    ENDIF
+    
+    IFCONTAINS(%CHAT%,"calc")
+     
+      INDEXOF(&chatarr,#n,"calc")
+      #nup = %#n%+1
+      ECHO(//calc %&chatarr[%#nup%]%)
+      WAIT(500ms)
+      ECHO(%&cmd% "Result: %@&hilfebot_calc%")
+
+    ENDIF
+
+    IFCONTAINS(%CHAT%,"random")
+     
+      INDEXOF(&chatarr,#n,"random")
+      #nup = %#n%+1
+      #nupup = %#n%+2
+      SET(#hb_min,%&chatarr[%#nup%]%)
+      SET(#hb_max,%&chatarr[%#nupup%]%)
+
+      RANDOM(#n,%#hb_min%,%#hb_max%)
+      ECHO(%&cmd% "Result: %#n%")
+
+    ENDIF
+
+    IFCONTAINS(%CHAT%,"skinurl")
+     
+      INDEXOF(&chatarr,#n,"skinurl")
+      #nup = %#n%+1
+      SET(&name,%&chatarr[%#nup%]%)
+      EXEC(ingn2skinurl.txt,"convert","%&name%")
+      WAIT(100ms)
+      DO()
+
+      WHILE(@&i2sreturn=="")
+      LOG("%@&i2sreturn%")
+
+    ENDIF
+
+
+
+    IFCONTAINS(%CHAT%,"help")
+
+      ECHO(%&cmd% "-------------------Hilfebot------------------")
+      WAIT(%&delay%)
+      ECHO(%&cmd% "Available Help commands:")
+      WAIT(%&delay%)
+      ECHO(%&cmd% "Regeln")
+      WAIT(%&delay%)
+      ECHO(%&cmd% "Befehle")
+      WAIT(%&delay%)
+      ECHO(%&cmd% "Portale")
+      WAIT(%&delay%)
+      ECHO(%&cmd% "---------------------------------------------")
+ 
+    ENDIF
+
+  IFCONTAINS(%CHAT%,"Regeln")
+
+    ECHO(%&cmd% "-------------------Hilfebot------------------")
+    WAIT(%&delay%)
+    ECHO(%&cmd% "zZ. nicht verfügbar")
+    WAIT(%&delay%)
+    ECHO(%&cmd% "")
+    WAIT(%&delay%)
+    ECHO(%&cmd% "")
+    WAIT(%&delay%)
+    ECHO(%&cmd% "")
+    WAIT(%&delay%)
+    ECHO(%&cmd% "---------------------------------------------")
+ 
+  ENDIF
+
+  IFCONTAINS(%CHAT%,"Befehle")
+
+    ECHO(%&cmd% "-------------------Hilfebot------------------")
+    WAIT(%&delay%)
+    ECHO(%&cmd% "Generell benutze /befehle")
+    WAIT(%&delay%)
+    ECHO(%&cmd% "sonst Benutze den Hilfebot mit folgenden Wörtern")
+    WAIT(%&delay%)
+    ECHO(%&cmd% "Clans")
+    WAIT(%&delay%)
+    ECHO(%&cmd% "Schwämme")
+    WAIT(%&delay%)
+    ECHO(%&cmd% "---------------------------------------------")
+ 
+  ENDIF
+
+  IFCONTAINS(%CHAT%,"Schwämme")
+
+    ECHO(%&cmd% "-------------------Hilfebot------------------")
+    WAIT(%&delay%)
+    ECHO(%&cmd% "Ein schwamm protectet ein 41x256x41 gebiet")
+    WAIT(%&delay%)
+    ECHO(%&cmd% "Mit /ps add [name] kann der Spieler auf deinem Schwamm bauen")
+    WAIT(%&delay%)
+    ECHO(%&cmd% "Mit /ps remove [name] nimmst du ihm die Rechte")
+    WAIT(%&delay%)
+    ECHO(%&cmd% "---------------------------------------------")
+ 
+  ENDIF
+
+  IFCONTAINS(%CHAT%,"Clans")
+
+    ECHO(%&cmd% "-------------------Hilfebot------------------")
+    WAIT(%&delay%)
+    ECHO(%&cmd% "Benutze /c erstellen [clanname] um ein Clan zu erstellen")
+    WAIT(%&delay%)
+    ECHO(%&cmd% "Mit /c list kannst du die Mitgliederliste deines Clanes aufrufen")
+    WAIT(%&delay%)
+    ECHO(%&cmd% "Mit /c CoOwner [name] kannst du den Spieler zum CoOwner befördern")
+    WAIT(%&delay%)
+    ECHO(%&cmd% "---------------------------------------------")
+ 
+  ENDIF
+  
+  IFCONTAINS(%CHAT%,"Portale")
+
+    ECHO(%&cmd% "-------------------Hilfebot------------------")
+    WAIT(%&delay%)
+    ECHO(%&cmd% "Baue ein O aus 10 Wolle dann eine Goldplatte unten Schild mit")
+    WAIT(%&delay%)
+    ECHO(%&cmd% "Erste Zeile: [MDPortals] Zweite Zeile: Name des Portales")
+    WAIT(%&delay%)
+    ECHO(%&cmd% "deine Portal funktioniert nich? Benutze FAQ als befehl")
+    WAIT(%&delay%)
+    ECHO(%&cmd% "---------------------------------------------")
+ 
+  ENDIF
+
+  IFCONTAINS(%CHAT%,"FAQ")
+
+    ECHO(%&cmd% "-------------------Hilfebot------------------")
+    WAIT(%&delay%)
+    ECHO(%&cmd% "Wenn dein Portal nicht funktioniert mache:")
+    WAIT(%&delay%)
+    ECHO(%&cmd% "/portal list")
+    WAIT(%&delay%)
+    ECHO(%&cmd% "dann lösche bitte alle Portale mit /portal delete [portalname]")
+    WAIT(%&delay%)
+    ECHO(%&cmd% "bspw.: /portal delete test")
+    WAIT(%&delay%)
+    ECHO(%&cmd% "---------------------------------------------")
+ 
+  ENDIF
+
+  WAIT(200ms)
+
+  SET(@#overflow,0)
+
+ ENDIF
+ENDIF
+ENDIF
+
+}$$

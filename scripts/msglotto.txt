@@ -1,0 +1,115 @@
+$${
+
+//@&msgblacklist[]="lukas20ku"
+//@&msgblacklist[]="Schlechtiiii"
+
+
+IFMATCHES(%CHAT%,"\§r\§7\[\§r\§b(.+?) \§r\§a\-\>\§r\§7\] lotto ([\d]{1,7}) ([\d]{1,7}) \§r")
+
+  MATCH(%CHAT%,"\§r\§7\[\§r\§b(.+?) \§r\§a\-\>\§r\§7\] lotto ([\d]{1,7}) ([\d]{1,7}) \§r",{&msgplayer,#lotto_einsatz,#lotto_gewinn})
+  
+  
+  &cmd = "/tellraw %&msgplayer%"
+        
+  @#msglotto_paid=-1
+  @&msglotto_player=""
+
+  #calc=%#lotto_gewinn%/%#lotto_einsatz%
+
+  ARRAYSIZE(@&lastlotto[],#lotsize)
+  DEC(#lotsize,1)
+    
+  #count = 0
+
+  FOR(#i,0,%#lotsize%)
+    
+      IF(%&msgplayer% == %@&lastlotto[%#i%]%)
+          
+            INC(#count,1)
+            
+      ENDIF
+            
+  NEXT
+
+  LOG(%#count%)
+        
+        
+  INDEXOF(@&msgblacklist[],#isdingens,%&msgplayer%)
+
+  IF(@#msglotto_stop=1)
+
+    ECHO("%&cmd% \"[Lotto] Zurzeit können keine lottos gemacht werden (ist kein fehler)\"")
+
+    IF(@#cooldown>=0)
+        
+      #dingens=%@#cooldown%+1
+      ECHO("%&cmd% \"[Lotto] Cooldown: %#dingens%\"")
+            
+    ELSE
+        
+      ECHO("%&cmd% \"[Lotto] Der Bot ist ausgeschaltet\"")
+            
+    ENDIF
+
+  ELSEIF(#count>= 3)
+
+    ECHO("%&cmd% \"[Lotto] Du hast innerhalb der Letzten 10 Lotto bereits 3 Lotto gemacht\"")
+        
+  ELSEIF((@#msglotto_running==1)||(@#lotto_running==1))
+
+    ECHO("%&cmd% \"[Lotto] Es ist grad ein Lotto am laufen (%&msglottoplayer%)\"")
+
+  ELSEIF(#isdingens>=0)
+
+    ECHO("%&cmd% \"[Lotto] Du darfst keine lottos mehr erstellen\"")
+          
+  ELSEIF(#calc<%@#lotto_vielfach%)
+
+    ECHO("%&cmd% \"[Lotto] Der Gewinn muss mindestens das %@#lotto_vielfach% fache des Einsatzes betragen\"")
+
+  ELSEIF(#lotto_gewinn > 100000)
+
+    ECHO("%&cmd% \"[Lotto] Der Gewinn darf maximal 100000 betragen\"")
+
+  ELSEIF(#lotto_gewinn < 100)
+
+    ECHO("%&cmd% \"[Lotto] Der Gewinn muss mindestens 100 betragen\"")
+
+  ELSE
+
+    &msglottoplayer = %&msgplayer%
+    #lottoeinsatz = %#lotto_einsatz%
+    #lottogewinn = %#lotto_gewinn%
+
+    @#msglotto_running=1
+
+
+    ECHO("%&cmd% \"[Lotto] Bitte überweise %#lottogewinn%\"")
+    WAIT(300ms)
+    ECHO("%&cmd% \"[Lotto] Oder überweise 0 um das Lotto abzubrechen\"")
+
+    DO()
+
+      IF((@#msglotto_paid==#lottogewinn)&&(@&msglotto_player==&msglottoplayer))
+
+        EXEC(lotto.txt,"lotto",%#lottoeinsatz%,%#lottogewinn%,%&msglottoplayer%)
+        BREAK
+
+      ENDIF
+
+              
+      IF((@#msglotto_paid==0)&&(@&msglotto_player==&msglottoplayer))
+
+        BREAK
+
+      ENDIF
+  
+    LOOP()
+
+    @#msglotto_running=0
+
+  ENDIF
+
+ENDIF
+
+}$$

@@ -1,0 +1,67 @@
+$${
+
+prompt(&action,"$$[[Add,Remove]]")
+prompt(&player,"$$[Player]")
+prompt(&rank,"$$[Rank]")
+
+if(!(&player==""||&rank==""))
+
+  if(&action=="Add")
+
+    echo("/skypvp")
+    wait(5)
+    echo("/zperm player %&player% addgroup %&rank%")
+    wait(1)
+    echo("/lobby")
+    wait(5)
+    echo("/zperm player %&player% addgroup %&rank%")
+    wait(1)
+    echo("/skywars")
+    wait(5)
+    echo("/zperm player %&player% addgroup %&rank%")
+    wait(1)
+    echo("/city")
+    wait(5)
+    echo("/pex user %&player% group set %&rank%")
+    wait(1)
+    echo("/skyblock")
+    wait(5)
+    echo("/pex user %&player% group set %&rank%")
+    wait(1)
+    echo("/creative")
+    wait(5)
+    echo("/pex user %&player% group set %&rank%")
+
+  elseif(&action=="Remove")
+
+    echo("/skypvp")
+    wait(5)
+    echo("/zperm player %&player% removegroup %&rank%")
+    wait(1)
+    echo("/lobby")
+    wait(5)
+    echo("/zperm player %&player% removegroup %&rank%")
+    wait(1)
+    echo("/skywars")
+    wait(5)
+    echo("/zperm player %&player% removegroup %&rank%")
+    wait(1)
+    echo("/city")
+    wait(5)
+    echo("/pex user %&player% group remove %&rank%")
+    wait(1)
+    echo("/skyblock")
+    wait(5)
+    echo("/pex user %&player% group remove %&rank%")
+    wait(1)
+    echo("/creative")
+    wait(5)
+    echo("/pex user %&player% group remove %&rank%")
+
+  endif
+
+endif
+
+    
+
+}$$

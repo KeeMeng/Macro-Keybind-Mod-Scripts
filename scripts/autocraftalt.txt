@@ -1,0 +1,73 @@
+$${
+
+&pre="&8[&bCrafter&8]&f"
+
+#do=0
+
+IF(#do==1)
+
+  $$<recipesalt.txt>
+
+ENDIF
+
+
+JOIN("|",@&recipes[],&elements)
+REPLACE(&elements,",","-")
+REPLACE(&elements,"|",",")
+
+
+PROMPT(&count,$$[count])
+PROMPT(&choosen,$$[[%&elements%]])
+
+SPLIT(",",%&elements%,&choose[])
+INDEXOF(&choose[],#element,%&choosen%)
+
+GETID(%HITX%,%HITY%,%HITZ%,&id)
+
+IF(&id=="crafting_table")
+
+  LOG(%&pre% Ich crafte nun: %&choosen%)
+
+SPLIT(",",%@&recipes[%#element%]%,&recipe[])
+
+//Craftingscript
+
+
+KEY(use)
+WAIT(300ms)
+
+DO(%&count%)
+FOR(#recipe,1,9)
+
+  IF(%&recipe[%#recipe%]%=="")
+
+  ELSE
+
+    GETSLOT(%&recipe[%#recipe%]%,#slot,10)
+
+    IF(%#slot%>=0)
+      SLOTCLICK(%#slot%)
+      SLOTCLICK(%#recipe%)
+    ELSE
+      LOG("%&pre% Du hast zuwenig von: '%&recipe[%#recipe%]%'")
+    ENDIF
+
+  ENDIF
+
+NEXT
+
+SLOTCLICK(0,,true)
+
+//Ende
+
+WAIT(50ms)
+
+LOOP
+
+PRESS(ESCAPE)
+
+ELSE
+  LOG(%&pre% Bitte eine Werkbank angucken)
+ENDIF
+
+}$$

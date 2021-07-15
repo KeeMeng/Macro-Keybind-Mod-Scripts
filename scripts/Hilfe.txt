@@ -1,0 +1,263 @@
+$${
+&a[] = SPLIT(" ","$$?")
+&store=$$?
+
+ IF(&a[0]=="Hilfe")
+  LOG("&a&l&m---------&a&l [Inhaltsverzeichnis] &a&l&m---------")
+  LOG("&e&l- &7Info")
+  LOG("&e&l- &7Formate")
+  LOG("&e&l- &7Farben")
+  LOG("&e&l- &7Shop-Schild")
+  LOG("&e&l- &7Farmen")
+  LOG("&e&l- &7Lager")
+  LOG("&e&l- &7Mobkoepfe")
+  LOG("&e&l- &7Stadt")
+  LOG("&e&l- &7Skin")
+  LOG("&e&l- &7Magnet")
+  LOG("&a&l&m-----------------------------------")
+  STOP()
+ ENDIF
+
+ IF(&a[0]=="Info")
+   LOG("&b&l[&lMACRO&l] &eDetails:")
+   LOG(" ")
+   LOG("&eMinecraft spiele ich seit &c03.04.2012")
+   LOG("&eSeit dem &c05.08.2015, 14:14 Uhr&e auf Infinity")
+   LOG("&e--> &1&lVIP4 &7gekauft am &c06.08.2015 &7um &c21:35 &7Uhr")
+   STOP()
+ ENDIF
+
+
+ IF(&a[0]=="Formate")
+   LOG("&b&l[&lMACRO&l] &eFolgende Formatierungen gibt es:")
+   LOG(" ")
+   LOG("&e&l- &7&l& k -> durcheinander")
+   LOG("&e&l- &7&l& m -> durchgestrichen")
+   LOG("&e&l- &7&l& o -> kursiv")
+   LOG("&e&l- &7&l& l -> fett")
+   LOG("&e&l- &7&l& n -> unterstrichen")
+   STOP()
+ ENDIF
+
+
+ IF(&a[0]=="Farben")
+   LOG("&b&l[&lMACRO&l] &eBitte schreibe eine Farbe!)
+   STOP()
+ ENDIF
+
+
+ IF(&a[0]=="Schwarz")
+   LOG("&7Farbformatierung fuer die Farbe &0&lSchwarz&7:")
+   LOG(" ")
+   LOG("&f&l--> Code: &l& 0 &f&l<--")
+   STOP()
+ ENDIF
+
+
+ IF(&a[0]=="Blau")
+   LOG("&7Farbformatierung fuer die Farbe &1&lDunkelblau&7:")
+   LOG(" ")
+   LOG("&f&l--> Code: &l& 1 &f&l<--")
+   STOP()
+ ENDIF
+
+
+ IF(&a[0]=="Gruen")
+   LOG("&7Farbformatierung fuer die Farbe &a&lHellgruen&7:")
+   LOG("&f&l--> Code: &l& a &f&l<--")
+   LOG(" ")
+   LOG("&7Farbformatierung fuer die Farbe &2&lDunkelgruen&7:")
+   LOG("&f&l--> Code: &l& 2 &f&l<--")
+   STOP()
+ ENDIF
+
+
+ IF(&a[0]=="Tuerkis")
+   LOG("&7Farbformatierung fuer die Farbe &b&lHelltuerkis&7:")
+   LOG("&f&l--> Code: &l& b &f&l<--")
+   LOG(" ")
+   LOG("&7Farbformatierung fuer die Farbe &3&lDunkeltuerkis&7:")
+   LOG("&f&l--> Code: &l& 3 &f&l<--")
+   STOP()
+ ENDIF
+
+
+ IF(&a[0]=="Rot")
+   LOG("&7Farbformatierung fuer die Farbe &c&lHellrot&7:")
+   LOG("&f&l--> Code: &l& c &f&l<--")
+   LOG(" ")
+   LOG("&7Farbformatierung fuer die Farbe &4&lDunkelrot&7:")
+   LOG("&f&l--> Code: &l& 4 &f&l<--")
+   STOP()
+ ENDIF
+
+
+ IF(&a[0]=="Lila")
+   LOG("&7Farbformatierung fuer die Farbe &5&lLila&7:")
+   LOG(" ")
+   LOG("&f&l--> Code: &l& 5 &f&l<--")
+   STOP()
+ ENDIF
+
+
+ IF(&a[0]=="Gold")
+   LOG("&7Farbformatierung fuer die Farbe &6&lGold&7:")
+   LOG(" ")
+   LOG("&f&l--> Code: &l& 6 &f&l<--")
+   STOP()
+ ENDIF
+
+
+ IF(&a[0]=="Grau")
+   LOG("&7Farbformatierung fuer die Farbe &7&lHellgrau&7:")
+   LOG("&f&l--> Code: &l& 7 &f&l<--")
+   LOG(" ")
+   LOG("&7Farbformatierung fuer die Farbe &8&lDunkelgrau&7:")
+   LOG("&f&l--> Code: &l& 8 &f&l<--")
+   STOP()
+ ENDIF
+
+ IF(&a[0]=="Indigo")
+   LOG("&7Farbformatierung fuer die Farbe &9&lIndigo&7:")
+   LOG(" ")
+   LOG("&f&l--> Code: &l& 9 &f&l<--")
+   STOP()
+ ENDIF
+
+
+ IF(&a[0]=="Pink")
+   LOG("&7Farbformatierung fuer die Farbe &d&lPink&7:")
+   LOG(" ")
+   LOG("&f&l--> Code: &l& d &f&l<--")
+   STOP()
+ ENDIF
+
+
+ IF(&a[0]=="Gelb")
+   LOG("&7Farbformatierung fuer die Farbe &e&lGelb&7:")
+   LOG(" ")
+   LOG("&f&l--> Code: &l& e &f&l<--")
+   STOP()
+ ENDIF
+
+
+ IF(&a[0]=="Weiss")
+   LOG("&7Farbformatierung fuer die Farbe &f&lWeiss&7:")
+   LOG(" ")
+   LOG("&f&l--> Code: &l& f &f&l<--")
+   STOP()
+ ENDIF
+
+
+ IF(&a[0]=="Shop-Schild")
+   LOG("&b&l[&lMACRO&l] &eSoll es ein ein Schild fuer den &aVerkauf")
+   LOG("             &eoder den &aAnkauf &esein?")
+   STOP()
+ ENDIF
+
+
+ IF(&a[0]=="Ankauf")
+   LOG("&b&l[&lMACRO&l] &eAnkaufsschild:")
+   LOG(" ")
+   LOG("&7&l1. Zeile: &cbleibt leer!")
+   LOG("&7&l2. Zeile: &cMenge")
+   LOG("&7&l3. Zeile: &cS<Preis>")
+   LOG("&7&l4. Zeile: &c<ID>")
+   STOP()
+ ENDIF
+
+
+ IF(&a[0]=="Verkauf")
+   LOG("&b&l[&lMACRO&l] &eVerkaufsschild:")
+   LOG(" ")
+   LOG("&7&l1. Zeile: &cbleibt leer!")
+   LOG("&7&l2. Zeile: &cMenge")
+   LOG("&7&l3. Zeile: &cB<Preis>")
+   LOG("&7&l4. Zeile: &c<ID>")
+   STOP()
+ ENDIF
+
+
+ IF(&a[0]=="Farmen")
+   LOG("&b&l[&lMACRO&l] &emeine Farmen:")
+   LOG(" ")
+   LOG("&e- &c&lWeizen & Karotten&e: &7/home Farm1")
+   LOG("&e- &c&lKuerbis/Melonen/Kartoffeln&e: &7/home Farm2")
+   LOG("&e- &c&lZuckerrohr&e: &7/home Farm3")
+   LOG(" ")
+   STOP()
+ ENDIF
+
+
+ IF(&a[0]=="Lager")
+   LOG("&b&l[&lMACRO&l] &emeine Lager:")
+   LOG(" ")
+   LOG("&e- &c&lHauptlager&e: &7/home Lager1")
+   LOG("&e- &c&lOfenlager&e: &7/home Lager2")
+   LOG("&e- &c&lNahrungslager&e: &7/home Lager3")
+   STOP()
+ ENDIF
+
+
+ IF(&a[0]=="Mobkoepfe")
+   LOG("&b&l[&lMACRO&l] &eSonntagsdrops:")
+   LOG(" ")
+   LOG("&e- &7Huhn - &a&lCHECK &c(16.08.2015)")
+   LOG("&e- &7Tintenfisch - &a&l")
+   LOG("&e- &7Kuh - &a&lCHECK &c(23.08.2015)")
+   LOG("&e- &7Pilzkuh - &a&lCHECK &c(08.11.2015)")
+   LOG("&e- &7Lohe - &a&l")
+   LOG("&e- &7Creeper - &a&lCHECK &c(16.08.2015)")
+   LOG("&e- &7Schaf - &a&lCHECK &c(23.08.2015)")
+   LOG("&e- &7Waechter - &a&l")
+   LOG("&e- &7Schwein - &a&lCHECK &c(25.10.2015) &enochmal machen")
+   LOG("&e- &7Slimes - &a&l")
+   STOP()
+ ENDIF
+
+
+ IF(&a[0]=="Stadt")
+   LOG("&b&l[&lMACRO&l] &eStadtbauwettbewerb:")
+   LOG(" ")
+   LOG("&e- &c&lBrunnen: &7/home Brunnen")
+   LOG("&e- &c&lmein Haus: &7/home Haus1")
+   LOG("&e- &c&lCrissi's Haus: &7/home Haus2")
+   LOG("&e- &c&lVorbauen: &7/home Bewerberwelt")
+   LOG("&e- &c&lSpawn: &7/home Spawnhaus")
+   LOG("&e- &c&lDrache: &7/home Drache")
+   STOP()
+ ENDIF
+
+
+ IF(&a[0]=="Skin")
+   LOG("&b&l[&lMACRO&l] &eHomes fuer mein Skin:")
+   LOG(" ")
+   STOP()
+ ENDIF
+
+
+ IF(&a[0]=="Magnet")
+   LOG("&6&m--------------&4[&7Der&cMAGNET!&4]&6&m---------------")
+   LOG(" ")
+   LOG("&7Aktivieren: &c/Magnetan")
+   LOG("&7Deaktivieren: &c/Magnetaus")
+   LOG(" ")
+   LOG("&7In welche Welten funktioniert er? -> &cMagnetWo&7!")
+   LOG("&6&m----------------------------------------")
+   STOP()
+ ENDIF
+
+
+ IF(&a[0]=="MagnetWo")
+   LOG("&b&l[&lMACRO&l] &eIn folgenden Welten funktioniert Magnet:")
+   LOG(" ")
+   LOG("&e- &7Survival2")
+   LOG("&e- &7Amplified")
+   LOG("&e- &7Farmwelt")
+   STOP()
+ ENDIF
+
+ 
+  LOG("&b&l[&lMACRO&l] &f&4Du hast was falsches eingegeben!")
+ 
+}$$

@@ -1,0 +1,11 @@
+$${
+
+do;
+  if((%DURABILITY% > 0) && (%ITEM% != "potion"));
+      setlabel(DURABILITY,"&6[Dur] &e%DURABILITY%");
+  else;
+      setlabel(DURABILITY,"&6[Dur] &e--");
+  endif;
+loop;
+
+}$$

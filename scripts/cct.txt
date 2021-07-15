@@ -1,0 +1,12 @@
+$${
+
+IF(@#cct==0)
+  SET(@#cct,1)
+  @&cc_active="Aktive"
+  EXEC(ccmain.txt)
+ELSE
+  SET(@#cct,0)
+  @&cc_active="Disabled"
+ENDIF
+
+}$$

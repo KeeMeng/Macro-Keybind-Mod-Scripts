@@ -1,0 +1,34 @@
+$${
+
+PROMPT(&itemname,"$$[name]","Wie soll das Item heißen?",0,%&itemname%)
+
+if(!&itemname == "")
+
+  REPLACE(&itemname,"%ae","ä")
+  REPLACE(&itemname,"%oe","ö")
+  REPLACE(&itemname,"%ue","ü")
+  REPLACE(&itemname,"%ss","ß")
+
+  SLOT(2)
+
+  KEY(attack)
+
+  WAIT(1t)
+
+  PLACESIGN("[MDShop]","","","",true)
+ 
+  WAIT(800ms)
+
+  PRESS(ESCAPE)
+
+  WAIT(5t)
+
+  SLOT(3)
+
+  WAIT(1t)
+
+  ECHO(/adminshop c s %&itemname%)
+
+endif
+
+}$$

@@ -1,0 +1,12 @@
+$${
+
+LOG(&8[&bStartup&8] &fStartup started.)
+EXEC(zdurability.txt,"Durability")
+EXEC(waila.txt,"Waila")
+EXEC(y_effect.txt,"Effects")
+EXEC(y_player.txt,"Playerlist")
+EXEC(vote.txt,"Vote")
+EXEC(ticks.txt,"Ticker")
+EXEC(zchat.txt,"Chat")
+
+}$$

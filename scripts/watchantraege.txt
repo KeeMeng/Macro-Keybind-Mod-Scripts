@@ -1,0 +1,62 @@
+
+&pre="&8[&bMacro&8]&f"
+
+&searchfor=$$[1]
+
+LOG(%&searchfor%)
+
+UNSET(#positions[])
+UNSET(&store[])
+
+DO()
+  INDEXOF(@&antraege[],#pos,%&searchfor%)
+  LOG(%#pos%)
+  IF(!(#pos==-1))
+
+    &store[]=%@&antraege[%#pos%]%
+    @&antraege[%#pos%]=""
+    #positions[]=%#pos%
+    LOG(%#positions[0]%)
+
+  ENDIF
+
+UNTIL(#pos==-1)
+
+
+
+ARRAYSIZE(#positions[],#size)
+DEC(#size,1)
+
+LOG(%#size%)
+
+IF(#size>=0)
+
+  FOR(#n,0,%#size%)
+
+    #pos=%#positions[%#n%]%
+    @&antraege[%#pos%]=%&store[%#n%]%
+
+  NEXT
+
+  FOR(#n,0,%#size%)
+
+    #pos=%#positions[%#n%]%
+    
+    &waname=%@&antraege[%#pos%]%
+    INC(#pos,1)
+    &wateam=%@&antraege[%#pos%]%
+    INC(#pos,1)
+    &wagrund=%@&antraege[%#pos%]%
+    INC(#pos,1)
+    &waentscheidung=%@&antraege[%#pos%]%
+    INC(#pos,1)
+    &watime=%@&antraege[%#pos%]%
+
+    LOG(%&pre% Name:&7 %&waname%)
+    LOG(%&pre% Zeit:&7 %&watime%)
+    LOG(%&pre% Ergebnis:&7 %&waentscheidung%)
+    LOG(%&pre% Grund:&7 %&wagrund%)
+    LOG(%&pre% Teamler:&7 %&wateam%)
+    LOG(" ")
+  NEXT
+ENDIF

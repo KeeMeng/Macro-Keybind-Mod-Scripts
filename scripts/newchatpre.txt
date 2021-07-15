@@ -1,0 +1,17 @@
+$${
+&nchat="%CHAT%"
+&dchat="%CHAT%"
+
+
+replace(&nchat,"%","%escaped")
+replace(&nchat,"\u003B","%semi")
+replace(&nchat,"$","%dollar")
+
+replace(&dchat,"%","%escaped")
+regexreplace(&dchat,"\u003B","%semi")
+replace(&dchat,"$","%dollar")
+
+//EXEC(newchat.txt,"newchat","%&nchat%","%&dchat%")
+
+
+}$$|

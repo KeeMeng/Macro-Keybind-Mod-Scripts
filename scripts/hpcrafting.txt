@@ -1,0 +1,73 @@
+//unsafe(0)
+
+&itemtocraft = "diamond"
+split(" ","10 11 12 19 20 21 28 29 30 23",#slots[])
+#cslot = 9
+
+#itemcount = 0
+#craftings = 0
+
+for(#slot,54,88)
+  getslotitem(%#slot%,&item,#stack)
+  if(&item == &itemtocraft)
+    inc(#itemcount,%#stack%)
+  endif
+next
+
+#craftings = (#itemcount / 64) / 5
+
+log(%#craftings%)
+
+do(%#craftings%)
+
+  do
+
+    getslotitem(%#slots[5]%,&item)
+    if(&item == &itemtocraft)
+    
+      slotclick(%#slots[5]%,,1)
+    
+    else
+    
+      getslot(%&itemtocraft%,#slot,54)
+      if(#slot < 0)
+        break
+      endif
+      slotclick(%#slot%,,1)
+      
+    endif
+    
+    wait(2t)
+    getslotitem(%#slots[9]%,&item)
+
+  while(&itemtocraft != &item)
+  
+  unset(done)
+  
+  do
+  
+    getslotitem(%#slots[5]%,&item)
+    if(&item == &itemtocraft)
+      slotclick(%#slots[5]%,,1)
+    endif
+      
+    do
+      slotclick(%#slots[9]%,,1)
+      wait(2t)
+      getslotitem(%#slots[4]%,&item)
+      if(&item == "air")
+        set(done)
+        break
+      else
+        getslotitem(%#slots[9]%,&item)
+        if(&item == "barrier")
+          break
+        endif
+      endif
+    loop
+  
+  while(!done)
+  
+loop
+
+//endunsafe

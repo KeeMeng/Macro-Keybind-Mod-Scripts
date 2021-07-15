@@ -1,0 +1,21 @@
+$${
+
+IF(running)
+  UNSET(running)
+  LOG(Stopping)
+  STOP()
+ELSE
+  SET(running)
+  LOG(starting)
+  DO()
+    GETSLOT(sponge,#is)
+    IF(%#is%>-1)
+      PRESS(ESCAPE)
+      UNSET(running)
+      LOG(Stopping)
+      STOP()
+    ENDIF
+  LOOP;
+ENDIF
+
+}$$

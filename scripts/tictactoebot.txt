@@ -1,0 +1,117 @@
+$${
+
+do()
+
+  key(use)
+  do()
+  while(GUI == "NONE")
+
+  slotclick(46)
+
+  getslot(emerald,#slot)
+
+  do()
+    getslot(emerald,#slot)
+  while(#slot < 0 || #slot > 53)
+
+  slotclick(3)
+
+  getslot(dispenser,#slot)
+  if(#slot == 17)
+    getslot(dispenser,#slot,18)
+  endif
+
+  do()
+    getslot(dispenser,#slot)
+    if(#slot == 17)
+      getslot(dispenser,#slot,18)
+    endif
+  while((#slot < 0 )|| (#slot > 26))
+  
+  if((#slot == 4) || (#slot == 5))
+  
+    slotclick(21)
+    getslotitem(12,&id)
+    
+    do()
+      getslotitem(12,&id)
+    while(&id != "dispenser")
+    slotclick(23)
+    
+    getslotitem(22,&id)
+    do()
+      getslotitem(22,&id)
+    while(&id != "dispenser")
+    slotclick(13)
+
+  elseif((#slot == 12) || (#slot == 21))
+  
+    slotclick(5)
+    getslotitem(4,&id)
+    
+    do()
+      getslotitem(4,&id)
+    while(&id != "dispenser")
+    slotclick(23)
+    
+    getslotitem(14,&id)
+    do()
+      getslotitem(14,&id)
+    while(&id != "dispenser")
+    slotclick(13)
+
+  elseif(#slot == 13)
+  
+    press(ESCAPE)
+
+  elseif((#slot == 14) || (#slot == 23))
+  
+    slotclick(5)
+    getslotitem(4,&id)
+    
+    do()
+      getslotitem(4,&id)
+    while(&id != "dispenser")
+    slotclick(21)
+    
+    getslotitem(12,&id)
+    do()
+      getslotitem(12,&id)
+    while(&id != "dispenser")
+    slotclick(13)
+  
+  elseif(#slot == 22)
+  
+    slotclick(21)
+    getslotitem(12,&id)
+    
+    do()
+      getslotitem(12,&id)
+    while(&id != "dispenser")
+    slotclick(5)
+    
+    getslotitem(4,&id)
+    do()
+      getslotitem(4,&id)
+    while(&id != "dispenser")
+    slotclick(13)
+
+  endif
+
+  wait(10t)
+  
+  if(SHIFT)
+    stop()
+  endif
+
+  if(GUI != "NONE")
+    stop()
+  endif
+
+loop()
+
+}$$
+
+//  3  4  5
+// 12 13 14
+// 21 22 23

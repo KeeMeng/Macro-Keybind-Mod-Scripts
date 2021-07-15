@@ -1,0 +1,7 @@
+$${
+
+do()
+setlabel(POS,&6[POS] &e%XPOS% %YPOS% %ZPOS%)
+loop
+
+}$$

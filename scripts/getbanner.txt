@@ -1,0 +1,80 @@
+
+LOG(§b[§bGetBanner§b] §fGetbanner Started) 
+// A
+ECHO("/getbanner f-0ts,0rs,0ls,0ms,fbo")    
+WAIT(1)       
+// B
+ECHO("/getbanner f-0ts,0rs,0ls,0ms,0bs,fbo")
+WAIT(1)    
+// C    
+ECHO("/getbanner f-0ls,0bs,0ts,fbo")                
+WAIT(1)
+// D
+ECHO("/getbanner 0-fmr,0ts,0bs,0ls,fbo")            
+WAIT(1)
+// E
+ECHO("/getbanner f-0ms,frs,0bs,0ts,0ls,fbo")        
+WAIT(1)
+// F
+ECHO("/getbanner f-0ms,frs,0ts,0ls,fbo")            
+WAIT(1)
+// G
+ECHO("/getbanner f-0rs,fhh,0bs,0ls,0ts,fbo")        
+WAIT(1)
+// H
+ECHO("/getbanner f-0ms,0ls,0rs,fbo")                
+WAIT(1)
+// I
+ECHO("/getbanner f-0cs,0ts,0bs,fbo")                
+WAIT(1)
+// J
+ECHO("/getbanner f-0ls,0bs,fhh,0rs,fbo")            
+WAIT(1)
+// K
+ECHO("/getbanner f-0ms,frs,0dls,0drs,0ls,fbo")      
+WAIT(1)
+// L
+ECHO("/getbanner f-0ls,0bs,fbo")                    
+WAIT(1)
+// M
+ECHO("/getbanner f-0tt,ftts,0ls,0rs,fbo")           
+WAIT(1)
+// N
+ECHO("/getbanner f-0ls,0rs,0drs,fbo")               
+WAIT(1)
+// O
+ECHO("/getbanner f-0ts,0bs,0ls,0rs,fbo")            
+WAIT(1)
+// P
+ECHO("/getbanner f-0rs,fhhb,0ls,0ms,0ts,fbo")       
+WAIT(1)
+// Q
+ECHO("/getbanner f-0drs,fhh,0ls,0rs,0ts,0bs,fbo")   
+WAIT(1)
+// R
+ECHO("/getbanner f-0drs,0hh,fvh,0ls,0ms,0ts,fbo")   
+WAIT(1)
+// S
+ECHO("/getbanner f-0bs,frud,0ts,fmr,0drs,fbo")      
+WAIT(1)
+// T
+ECHO("/getbanner f-0ts,0cs,fbo")                    
+WAIT(1)
+// U
+ECHO("/getbanner f-0ls,0rs,0bs,fbo")                
+WAIT(1)
+// V
+ECHO("/getbanner f-0ls,fbt,0dls,fbo")               
+WAIT(1)
+// W
+ECHO("/getbanner f-0bt,fbts,0ls,0rs,fbo")           
+WAIT(1)
+// X
+ECHO("/getbanner f-0drs,0dls,fbo")                  
+WAIT(1)
+// Y
+ECHO("/getbanner f-0drs,frd,0dls,fbo")              
+WAIT(1)
+// Z
+ECHO("/getbanner f-0bs,0dls,0ts,fbo")    
+LOG(§b[§bGetBanner§b] §fGetbanner Stopped)          

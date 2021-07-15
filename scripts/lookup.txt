@@ -1,0 +1,58 @@
+
+UNSET(@&namereturnnames[])
+UNSET(@&namereturnwhen[])
+UNSET(@&namereturnlast)
+
+&user = $$[1]
+&pre = "&8[&bMacro&8]"
+IF(&user=="")
+  LOG(%&pre% &cError:1 No User selected)
+  STOP()
+ENDIF
+
+
+&response = HTTPGET("https://api.mojang.com/users/profiles/minecraft/%&user%","","")
+IF(&response=="")
+
+  &response = HTTPGET("https://api.mojang.com/users/profiles/minecraft/%&user%?at=1453309266","","")
+
+  IF(&response=="")
+
+    &response = HTTPGET("https://api.mojang.com/users/profiles/minecraft/%&user%?at=0","","")
+
+  ENDIF
+
+ENDIF
+
+MATCH(%&response%,"\".*\":\"(.*)\"\,\".*\":\"(.+?)\"",{&id,&name})
+
+
+&responseid = HTTPGET("https://api.mojang.com/user/profiles/%&id%/names","",""")
+GetJsonAsArray(%&responseid%,&out[])
+GetJsonKeys(%&responseid%,&outkeys[])
+
+
+ARRAYSIZE(&out[],#size)
+#realsize=%#size%-1
+
+FOR(#for,0,%#realsize%)
+  MATCH(%&out[%#for%]%,"(?:\{\"name\"\:\"(.*)\"\})|(?:\{\"name\"\:\"(.+?)\"\,\"changedToAt\"\:(.+?)\})",{&name,&changed,&when})
+  //LOG(%&name% %&changed% %&when%)
+
+  IF(&name=="")
+
+    @&namereturnnames[]=%&changed%
+    @&namereturnwhen[]=%&when%
+    &namereturnlast=%&changed%
+
+  ELSE
+
+    @&namereturnfirst=%&name%
+    &namereturnlast=%&name%
+
+  ENDIF
+NEXT
+
+
+@&namereturnlast=%&namereturnlast%
+

@@ -1,0 +1,23 @@
+
+UNSET(@&antraege[])
+
+&username="spthiel"
+&password="%244mpl3T3xt"
+
+EXEC(html2string.txt,"convert","http://www.mondopia.de/entbannung/login.php?username=%&username%&passwort=%&password%&submit=Einloggen","true")
+WAIT(1000ms)
+DO()
+
+UNTIL(!(@&h2sreturn==""))
+
+&string=%@&h2sreturn%
+
+REPLACE(&string,"&nbsp","")
+REPLACE(&string,"a href=\"#\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=","")
+REPLACE(&string,"\"","")
+REPLACE(&string,">","|")
+REPLACE(&string,"Output:|","")
+REPLACE(&string,"||","|")
+
+SPLIT("|",%&string%,@&antraege[])
+

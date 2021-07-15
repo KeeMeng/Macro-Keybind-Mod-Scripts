@@ -1,0 +1,54 @@
+// @params #x - xpos of block
+// @params #y - ypos of block
+// @params #z - zpos of block
+// @return &data - variant of the block
+
+#uniquexto = #x
+#uniqueyto = #y-1
+#uniquezto = #z
+
+echo("/tp %#uniquexto% %#uniqueyto%.37 %#uniquezto% 0 90")
+unsafe(20)
+    if((HITX != #x) || (HITY != #y) || (HITZ != #z))
+        do
+            do(4)
+                wait(1t)
+            while((HITX != #x) || (HITY != #y) || (HITZ != #z))
+            if((HITX != #x) || (HITY != #y) || (HITZ != #z))
+                echo("/tp %#uniquexto% %#uniqueyto%.37 %#uniquezto% 0 90")
+            endif
+        while((HITX != #x) || (HITY != #y) || (HITZ != #z))
+    endif
+endunsafe
+
+unset(&uniquedata[])
+
+unsafe(0)
+    foreach(@&elshitvars[],&uniquehitvar)
+
+        &uniquevalue = %%&uniquehitvar%%
+        &uniquevarname = lcase(%&uniquehitvar%)
+        regexreplace(&uniquevarname,"^hit_","")
+        if((&uniquevalue == "") || (&uniquevalue == "False") || (&uniquevalue == "0"))
+        else
+            &uniquelcasevalue = lcase(%&uniquevalue%)
+            if(&uniquelcasevalue != &uniquevalue)
+            
+                split("","%&uniquevalue%",&uniquechars[])
+                foreach(&uniquechars[],&uniquechar,#uniquei)
+                    
+                    &uniquelcasechar = lcase(%&uniquechar%)
+                    if(&uniquelcasechar != &uniquechar)
+                        &uniquechars[%#uniquei%] = "_%&uniquelcasechar%"
+                    endif
+                    
+                next
+                join("",&uniquechars[],&uniquevalue)
+            endif
+            &uniquedata[] = "%&uniquevarname%=%&uniquevalue%"
+        endif
+
+    next
+endunsafe
+
+join(",",&uniquedata[],&data)

@@ -1,0 +1,41 @@
+$${
+
+SPLIT(" ",%CHAT%,&out[])
+
+IF(&out[0]=="/gm")
+  //SET(@macro)
+
+  ECHO("/gamemode %&out[1]%")
+  FILTER()
+
+ENDIF
+
+IF(&out[0]=="/dev")
+//  SET(@macro)
+
+  ECHO("/devserver%&out[1]%")
+  FILTER()
+
+ENDIF
+
+IF((&out[0]=="/bw" )&&(&out[1]=="spawner"))
+//  SET(@macro)
+
+  ECHO(/bw arena removeitemspawner %&out[3]%)
+  WAIT(100ms)
+  ECHO(/bw arena additemspawner %&out[3]% %&out[2]%)
+  FILTER()
+
+ENDIF
+
+IF(!@spbot)
+  IF(&out[0]=="/lookup")
+
+    @&spbotlt=""
+
+  ENDIF
+ENDIF
+
+UNSET(&out[])
+
+}$$

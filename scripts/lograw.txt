@@ -1,0 +1,7 @@
+$${
+
+&msg = "This is a test 123 456 789 123 456 789 123 456 789 123 456 789 123 456 789 123 456 789 123 456 789 123 456 789 123 456 789"
+
+LOGRAW(["",{"text":"Clickevent test ","clickEvent":{"action":"run_command","value":"/svs add <server> /tellraw spthiel \"%&msg%\""}}])
+
+}$$

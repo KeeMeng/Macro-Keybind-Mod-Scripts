@@ -1,0 +1,13 @@
+$${
+
+SET(@#pos1,0)
+SET(@#pos2,0)
+SET(@#stop,1)
+
+WAIT(5000ms)
+
+UNSET(@#pos1)
+UNSET(@#pos2)
+UNSET(@#stop)
+
+}$$

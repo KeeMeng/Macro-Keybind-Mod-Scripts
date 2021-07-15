@@ -1,0 +1,49 @@
+$${
+
+UNSET(@#championid[])
+UNSET(@&champion[])
+
+&key="RGAPI-0CC6E8DC-C3A4-480C-88F4-E612C31CB802"
+
+&clist=HTTPGET("https://global.api.pvp.net/api/lol/static-data/euw/v1.2/champion?dataById=true&champData=info&api_key=%&key%","","")
+
+UNSET(&champs[])
+
+LOG(&fStartet)
+
+DO()
+
+  UNSET(&champ)
+  MATCH(%&clist%,"(\{\"id\".+?\})",{&champ})
+
+  &champtoplace="%&champ%}"
+  IF(!(&champ==""))
+    &champs[]=%&champtoplace%
+  ENDIF
+  REPLACE(&clist,%&champ%,"")
+
+UNTIL(&champ=="")
+
+LOG(&fSchritt 1/2)
+
+ARRAYSIZE(&champs,#champsize)
+DEC(#champsize,1)
+
+FOR(#champn,0,%#champsize%)
+
+  #champid=JSONGET(%&champs[%#champn%]%,"id")
+  &champname=JSONGET(%&champs[%#champn%]%,"name")
+
+  REPLACE(&champname,"\"","")
+
+  @#championid[]=%#champid%
+  @&champion[]="%&champname%"
+
+NEXT
+
+LOG(&fFertig)
+
+UNSET(&clist)
+UNSET(&champs[])
+
+}$$

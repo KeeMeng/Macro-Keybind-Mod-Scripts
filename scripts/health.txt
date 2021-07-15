@@ -1,0 +1,77 @@
+$${
+
+IF(running)
+
+ELSE
+
+  SET(running)
+
+  IF(%HEALTH%<15)
+
+    DO()
+
+      GETSLOT(mushroom_stew,#i)
+      IF(#i==-1)
+    
+          GUI(inventory)
+      WAIT(1ms)
+      GETSLOT(mushroom_stew,#a)
+      IF(#a>=0)
+  
+        DO(8)
+  
+          GETSLOT(mushroom_stew,#a)
+          SLOTCLICK(%#a%,,1)
+          GUI()
+
+        loop
+
+          KEYUP(forward)
+          KEYDOWN(forward)
+          SPRINT()
+
+      ELSE
+
+        GUI(inventory)
+        WAIT(1ms)
+
+        GETSLOT(bowl,#bowl)
+        GETSLOT(red_mushroom,#red)
+        GETSLOT(brown_mushroom,#brown)
+       
+        SLOTCLICK(%#bowl%,r,0)
+        SLOTCLICK(1)
+        SLOTCLICK(%#red%,r,0)
+        SLOTCLICK(2)
+        SLOTCLICK(%#brown%,r,0)
+        SLOTCLICK(3)
+
+        SLOTCLICK(0,,1)
+        SLOTCLICK(1,,1)
+        SLOTCLICK(2,,1)
+        SLOTCLICK(3,,1)
+
+        GUI()
+  
+      ENDIF
+  
+    ENDIF
+
+    PICK(mushroom_stew)
+    WAIT(100ms)
+    KEY(use)
+    WAIT(100ms)
+    PRESS(Q)
+    WAIT(100ms)
+    PICK(diamond_sword)
+    //SLOT(2)
+
+    WHILE(HEALTH<18)
+
+  ENDIF
+
+  UNSET(running)
+
+ENDIF
+
+}$$

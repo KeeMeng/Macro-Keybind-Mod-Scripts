@@ -1,0 +1,10 @@
+$${
+
+&id = "78f0c232-7d83-4987-9e34-e15f421ceef9"
+&value = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzQ3ZjRmNWE3NGM2NjkxMjgwY2Q4MGU3MTQ4YjQ5YjJjZTE3ZGNmNjRmZDU1MzY4NjI3ZjVkOTJhOTc2YTZhOCJ9fX0="
+
+decode(%&value%,&value)
+
+echo(%&value%)
+
+}$$

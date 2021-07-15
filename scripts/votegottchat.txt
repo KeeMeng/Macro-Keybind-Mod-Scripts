@@ -1,0 +1,9 @@
+$${
+
+PROMPT(&input,$$[input]);
+GUI(chat)
+TYPE("/broad &4[&1VoteGott&4] &1")
+WAIT(100ms)
+TYPE(%&input%)
+
+}$$

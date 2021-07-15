@@ -1,0 +1,78 @@
+
+&link=$$[1]
+&getlink=$$[2]
+UNSET(@&h2sreturn)
+
+&test=HTTPGET("%&link%","","")
+SPLIT("<",%&test%,&out[])
+
+ARRAYSIZE(&out[],#size)
+DEC(#size,1)
+
+LOG(%#size%)
+
+UNSET(&newout[])
+
+FOR(@#n,0,%#size%)
+
+  SPLIT(">",%&out[%@#n%]%,&out2[])
+
+  ARRAYSIZE(&out2[],#size2)
+  
+  #match=0
+
+  IFMATCHES(%&out[%@#n%]%,"a href=")
+
+    #match=1
+
+  ENDIF
+
+  IF((#match==1)&&(&getlink=="true"))
+
+    &newout[]=%&out[%@#n%]%  
+
+  ELSEIF(#size2>=2)
+    &newout[]=%&out2[1]%
+  ELSE
+    IFMATCHES(%&out[%@#n%]%,">")
+    
+    ELSE
+
+      UNSET(&tester)
+      MATCH(%&newout[%@#n%]%,"(\w|\d)",{&tester})
+      IF(&tester=="")
+        
+      ELSE
+        &newout[]=%&out[%@#n%]%
+      ENDIF
+    ENDIF
+  ENDIF
+  
+NEXT
+
+LOG(Schritt 1/2)
+
+
+ARRAYSIZE(&newout[],#size)
+DEC(#size,1)
+
+LOG(%#size%)
+UNSET(&end)
+//&end="Output:"
+
+JOIN("|",&newout[],&end)
+
+//FOR(@#n,0,%#size%)
+
+//  UNSET(&tester)
+//  MATCH(%&newout[%@#n%]%,"(\w|\d)",{&tester})
+//  IF(!(&tester==""))
+//    &end="%&end%|%&newout[%@#n%]%"
+//  ENDIF
+//NEXT
+
+
+LOG(Schritt 2/2)
+@&h2sreturn="%&end%"
+
+

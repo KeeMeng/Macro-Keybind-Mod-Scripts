@@ -1,0 +1,170 @@
+$${
+LOG(&fStartet)
+&key="RGAPI-0CC6E8DC-C3A4-480C-88F4-E612C31CB802"
+&myplayerid="63437030"
+
+//&lolresponse={"gameId":2824313048,"mapId":12,"gameMode":"ARAM","gameType":"MATCHED_GAME","gameQueueConfigId":65,"participants":[{"teamId":100,"spell1Id":7,"spell2Id":4,"championId":8,"profileIconId":984,"summonerName":"qwert73401","bot":false,"summonerId":63437030,"runes":[{"count":8,"runeId":5268},{"count":7,"runeId":5298},{"count":7,"runeId":5328},{"count":1,"runeId":5357},{"count":1,"runeId":5368}],"masteries":[{"rank":5,"masteryId":6114},{"rank":1,"masteryId":6122},{"rank":5,"masteryId":6312},{"rank":1,"masteryId":6323},{"rank":5,"masteryId":6332},{"rank":1,"masteryId":6342},{"rank":5,"masteryId":6352},{"rank":1,"masteryId":6362}]},{"teamId":100,"spell1Id":7,"spell2Id":4,"championId":33,"profileIconId":1229,"summonerName":"Mobile2003","bot":false,"summonerId":71157904,"runes":[],"masteries":[{"rank":5,"masteryId":6114},{"rank":1,"masteryId":6121},{"rank":5,"masteryId":6134},{"rank":1,"masteryId":6142},{"rank":5,"masteryId":6154},{"rank":1,"masteryId":6164},{"rank":5,"masteryId":6312},{"rank":1,"masteryId":6322},{"rank":5,"masteryId":6332}]},{"teamId":100,"spell1Id":7,"spell2Id":14,"championId":133,"profileIconId":28,"summonerName":"Mayerismine","bot":false,"summonerId":90077679,"runes":[],"masteries":[]},{"teamId":100,"spell1Id":7,"spell2Id":6,"championId":161,"profileIconId":28,"summonerName":"pigtug","bot":false,"summonerId":90438070,"runes":[],"masteries":[]},{"teamId":100,"spell1Id":4,"spell2Id":21,"championId":240,"profileIconId":28,"summonerName":"proprietors5","bot":false,"summonerId":64173747,"runes":[],"masteries":[]},{"teamId":200,"spell1Id":4,"spell2Id":7,"championId":37,"profileIconId":6,"summonerName":"PuggyPlaysLoL","bot":false,"summonerId":56147685,"runes":[{"count":5,"runeId":5123},{"count":4,"runeId":5125},{"count":6,"runeId":5167},{"count":3,"runeId":5173},{"count":5,"runeId":5195},{"count":4,"runeId":5199},{"count":3,"runeId":5215}],"masteries":[{"rank":5,"masteryId":6111},{"rank":1,"masteryId":6122},{"rank":5,"masteryId":6131},{"rank":1,"masteryId":6142},{"rank":5,"masteryId":6151},{"rank":1,"masteryId":6162},{"rank":3,"masteryId":6211},{"rank":5,"masteryId":6312},{"rank":1,"masteryId":6322},{"rank":3,"masteryId":6331}]},{"teamId":200,"spell1Id":4,"spell2Id":7,"championId":25,"profileIconId":755,"summonerName":"vGzIMrLolman","bot":false,"summonerId":71590389,"runes":[],"masteries":[]},{"teamId":200,"spell1Id":7,"spell2Id":4,"championId":5,"profileIconId":1232,"summonerName":"IMrLankey","bot":false,"summonerId":71520150,"runes":[{"count":3,"runeId":5225},{"count":9,"runeId":5245},{"count":9,"runeId":5289},{"count":9,"runeId":5317}],"masteries":[{"rank":5,"masteryId":6111},{"rank":1,"masteryId":6122},{"rank":5,"masteryId":6131},{"rank":1,"masteryId":6141},{"rank":5,"masteryId":6151},{"rank":1,"masteryId":6161},{"rank":5,"masteryId":6311},{"rank":1,"masteryId":6323},{"rank":5,"masteryId":6331},{"rank":1,"masteryId":6343}]},{"teamId":200,"spell1Id":7,"spell2Id":4,"championId":101,"profileIconId":1226,"summonerName":"Snowx0de","bot":false,"summonerId":86450226,"runes":[{"count":9,"runeId":5245},{"count":9,"runeId":5289},{"count":9,"runeId":5317}],"masteries":[{"rank":5,"masteryId":6111},{"rank":1,"masteryId":6122},{"rank":5,"masteryId":6131},{"rank":1,"masteryId":6142},{"rank":5,"masteryId":6151},{"rank":1,"masteryId":6162},{"rank":5,"masteryId":6312},{"rank":1,"masteryId":6323},{"rank":4,"masteryId":6331}]},{"teamId":200,"spell1Id":7,"spell2Id":4,"championId":22,"profileIconId":7,"summonerName":"Jinxxxyy","bot":false,"summonerId":87768078,"runes":[],"masteries":[{"rank":5,"masteryId":6111},{"rank":1,"masteryId":6121},{"rank":5,"masteryId":6134},{"rank":1,"masteryId":6142},{"rank":1,"masteryId":6151}]}],"observers":{"encryptionKey":"UghPa9fnawpnyNef7iBPX31dsBMjy6YA"},"platformId":"EUW1","bannedChampions":[],"gameStartTime":0,"gameLength":0}
+&lolresponse=HTTPGET(https://euw.api.pvp.net/observer-mode/rest/consumer/getSpectatorGameInfo/EUW1/%&myplayerid%?api_key=%&key%,"","")
+REPLACE(&lolresponse,"[]","\"none\"")
+LOGTO(loltest.txt,%&lolresponse%)
+LOG(%&lolresponse%)
+IF(&lolresponse=="")
+  LOG(&cError: No Json available)
+  STOP()
+ELSE
+IFMATCHES(%&lolresponse%,"\"status_code\"")
+  LOG(&cError: Site not available)
+  STOP()
+ENDIF
+ENDIF
+
+&value=JSONGET(%&lolresponse%,"participants")
+
+
+UNSET(&participants[])
+
+DO()
+
+  UNSET(&teilnehmer)
+  MATCH(%&value%,"(\{\"teamId\".+?\})\,\{\"teamId\"",{&teilnehmer})
+
+  IF(!(&teilnehmer==""))
+    &participants[]=%&teilnehmer%
+  ENDIF
+  REPLACE(&value,%&teilnehmer%,"")
+
+UNTIL(&teilnehmer=="")
+
+
+ARRAYSIZE(&participants[],#size)
+DEC(#size,1)
+LOGTO(lol.txt," ")
+LOGTO(lol.txt,"--------------------[%TIME% %DATE%]------------------------")
+
+
+FOR(#apin,0,%#size%)
+  
+  LOG(%#apin%)
+
+  LOGTO(loltest.txt,"%&participants[%#apin%]%")
+
+  &teamids=JSONGET(%&participants[%#apin%]%,"teamId")
+  &championids=JSONGET(%&participants[%#apin%]%,"championId")
+  &summonername=JSONGET(%&participants[%#apin%]%,"summonerName")
+  &summonerids=JSONGET(%&participants[%#apin%]%,"summonerId")
+  &runes=JSONGET(%&participants[%#apin%]%,"runes")
+  &masteries=JSONGET(%&participants[%#apin%]%,"masteries")
+  REPLACE(&summonername,"\"","")
+  SET(#teamid,%&teamids%)
+  SET(#championid,%&championids%)
+  SET(#summonerid,%&summonerids%)
+  &summonerjson=HTTPGET(https://euw.api.pvp.net/api/lol/euw/v1.4/summoner/by-name/%&summonername%?api_key=%&key%,"","")
+  MATCH(%&summonerjson%,"\"summonerLevel\"\:([0-9]+)\,",{&summonerlvl})
+
+
+  IF(#teamid==100)
+    SET(&team,blue)
+  ELSE
+    SET(&team,purple)
+  ENDIF
+  INDEXOF(@#championid[],#index,%#championid%)
+  &response=HTTPGET(https://euw.api.pvp.net/championmastery/location/EUW1/player/%#summonerid%/champion/%#championid%?api_key=%&key%,"","")
+  &championlvls=JSONGET(%&response%,"championLevel")
+  SET(#championlvl,%&championlvls%)
+  &champ="%@&champion[%#index%]% at %#championlvl%"
+  REPLACE(&champ."\"","")
+  SET(&champion,%&champ%)
+
+  UNSET(&thisrunes[])
+
+  DO()
+
+    UNSET(&thisrune)
+    MATCH(%&runes%,"(\{\"count\".+?\})",{&thisrune})
+
+    IF(!(&thisrune==""))
+
+      &counts=JSONGET(%&thisrune%,"count")
+      &thisids=JSONGET(%&thisrune%,"runeId")
+      SET(#count,%&counts%)
+      SET(#thisid,%&thisids%)
+      INDEXOF(@#runeid[],#index,%#thisid%)
+      IF(#index==-1)
+        LOG(&cError:Couldn't find %#thisid% in @#runeid[])
+        STOP()
+      ENDIF
+
+      &thisrunes[]="%@&rune[%#index%]% x%#count%"
+
+    ENDIF
+    REPLACE(&runes,%&thisrune%,"")
+
+  UNTIL(&thisrune=="")
+
+  LOGTO(lol.txt,"Team:%&team%")
+  LOGTO(lol.txt,"Name:%&summonername% [%&summonerlvl%]")
+  LOGTO(lol.txt,"Champion:%&champion%")
+  LOGTO(lol.txt,"Runen:")
+
+  ARRAYSIZE(&thisrunes[],#thissize)
+  DEC(#thissize,1)
+
+  FOR(#thisn,0,%#thissize%)
+    
+    LOGTO(lol.txt,"  %&thisrunes[%#thisn%]%")
+
+  NEXT
+
+  IFCONTAINS(%&masteries%,"none")
+
+    LOG(it works)
+
+  ELSE
+
+    UNSET(&mass[])
+
+    DO()
+
+      UNSET(&mas)
+      MATCH(%&masteries%,"(\{\"rank\".+?\})",{&mas})
+
+      IF(!(&mas==""))
+        &mass[]=%&mas%
+      ENDIF
+      REPLACE(&masteries,%&mas%,"")
+
+    UNTIL(&mas=="")
+
+    LOGTO(lol.txt," ")
+    LOGTO(lol.txt,"Masteries:")
+
+    ARRAYSIZE(&mass,#massize)
+    DEC(#massize,1)
+
+    FOR(#masn,0,%#massize%)
+
+      &masranks=JSONGET(%&mass[%#masn%]%,"rank")
+      &masids=JSONGET(%&mass[%#masn%]%,"masteryId")
+      SET(#masrank,%&masranks%)
+      SET(#masid,%&masids%)
+      UNSET(@&lolapimastreturn)
+      EXEC(lolapimastery.txt,"get",%#masid%,%#masrank%)
+      DO()
+        LOG(in loop)
+      UNTIL(!(@&lolapimastreturn==""))
+
+      LOGTO(lol.txt,"  %@&lolapimastreturn%)
+
+    NEXT
+
+  ENDIF
+ 
+  LOGTO(lol.txt," ")
+
+
+NEXT
+
+LOG(&fDone)
+
+
+}$$

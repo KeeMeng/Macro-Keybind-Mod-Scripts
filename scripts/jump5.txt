@@ -1,0 +1,127 @@
+$${
+
+unset(pb)
+if(@#pbr > 0)
+    set(pb)
+endif
+    
+do()
+    do()
+    while(ZPOS <= -428)
+
+    title("&fStart",,0,20,0)
+
+    #start = %TIMESTAMP%
+    time(&msstart,"SSSS")
+    set(#msstart,%&msstart%)
+
+        
+    do()
+        
+        
+        #diff = %TIMESTAMP%-%#start%
+        time(&msnow,"SSSS")
+        set(#msnow,%&msnow%)
+        #msdiff = %#msnow%-%msstart%
+        MOD(#s,%#diff%,60) 
+        #m = (%#diff%-%#s%)/60
+        
+        if(#msdiff < 0)
+            inc(#msdiff,1000)
+            dec(#s,1)
+            if(#s < 0)
+                inc(#s,60)
+                dec(#m,1)
+            endif
+        endif
+
+        #ms = %#msdiff%
+        
+        if(pb)
+            #difftopb = %#diff%-%@#pbr%
+            MOD(#ds,%#difftopb%,60)
+            #dm = (%#difftopb%-%#s%)/60
+        endif
+
+        unsafe()
+
+            if(#m < 10)
+                &m = "0%#m%"
+            else
+                &m = "%#m%"
+            endif
+
+            if(#s < 10)
+                &s = "0%#s%"
+            else
+                &s = "%#s%"
+            endif
+            
+            if(#ms < 10)
+                &ms = "00%#ms%"
+            elseif(#ms < 100)
+                &ms = "0%#ms%"
+            else
+                &ms = "%#ms%"
+            endif
+
+            if(pb)
+            
+                if(#difftopb < 0)
+                    &sign = "-"
+                    #dm = -%#dm%
+                    #ds = -%#ds%
+                else
+                    &sign = "+"
+                endif
+                
+                if(#dm < 10)
+                    &dm = "0%#dm%"
+                else
+                    &dm = "%#dm%"
+                endif
+
+                if(#ds < 10)
+                    &ds = "0%#ds%"
+                else
+                    &ds = "%#ds%"
+                endif
+            
+            endif
+
+            &color = "&f"
+
+            if(pb)
+                if(@#pbr < #diff)
+                    &color = "&c"
+                else
+                    &color = "&a"
+                endif
+            endif
+
+            @#crr = %#diff%
+            @&current = "%&m%:%&s%.%&ms%"    
+            @&jarcolor = "%&color%"
+            
+            if(pb)
+                @&relativ = "%&sign%%&dm%:%&ds%"
+            endif
+            
+        endunsafe()
+
+        wait(2t)
+        
+    while((ZPOS < -240) && (ZPOS > -428))
+    if(ZPOS >= -240)
+        break
+    endif
+loop
+
+title("&fTime:","%@&jarcolor%%@&current%",0,60,0)
+
+if(!pb || (@#pbr > @#crr))
+    @#pbr = %@#crr%
+    @&pbf = %@&current%
+endif
+
+}$$

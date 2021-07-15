@@ -1,0 +1,55 @@
+// @params #r - initial red
+// @params #g - initial green
+// @params #b - initial blue
+// @return &colorstring - closest chatcolor
+#uniquer = (1000000*#r)/255
+#uniqueg = (1000000*#g)/255
+#uniqueb = (1000000*#b)/255
+&uniquered = %#uniquer%
+&uniquegreen = %#uniqueg%
+&uniqueblue = %#uniqueb%
+split("",%&uniquered%,&uniquetmp[])
+arraysize(&uniquetmp[],#uniquerlength)
+split("",%&uniquegreen%,&uniquetmp[])
+arraysize(&uniquetmp[],#uniqueglength)
+split("",%&uniqueblue%,&uniquetmp[])
+arraysize(&uniquetmp[],#uniqueblength)
+
+if(#uniquerlength < 6)
+    for(#uniquei,%#uniquerlength%,6)
+        &uniquered = "0%&uniquered%"
+    next
+endif
+if(#uniqueglength < 6)
+    for(#uniquei,%#uniqueglength%,6)
+        &uniquegreen = "0%&uniquegreen%"
+    next
+endif
+if(#uniqueblength < 6)
+    for(#uniquei,%#uniqueblength%,6)
+        &uniqueblue = "0%&uniqueblue%"
+    next
+endif
+if(#uniquer == 1000000)
+    &uniquered = "1"
+elseif(#uniquer == 0)
+    &uniquered = "0.000001"
+else
+    &uniquered = "0.%&uniquered%"
+endif
+if(#uniqueg == 1000000)
+    &uniquegreen = "1"
+elseif(#g == 0)
+    &uniquegreen = "0.000001"
+else
+    &uniquegreen = "0.%&uniquegreen%"
+endif
+if(#uniqueb == 1000000)
+    &uniqueblue = "1"
+elseif(#uniqueb == 0)
+    &uniqueblue = "0.000001"
+else
+    &uniqueblue = "0.%&uniqueblue%"
+endif
+
+&colorstring = "%&uniquered% %&uniquegreen% %&uniqueblue%"

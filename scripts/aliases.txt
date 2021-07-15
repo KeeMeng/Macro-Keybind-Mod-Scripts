@@ -1,0 +1,111 @@
+$${
+
+IFBEGINSWITH(%CHAT%,"/")
+  IFCONTAINS(%CHAT%,"MisterMichi02")
+//    FILTER
+    STOP
+  ENDIF
+ENDIF
+
+&pre="&8[&bMacro&8]&f"
+
+IF(CHAT=="/skygrid")
+//  SET(@macro)
+  FILTER()
+  ECHO(/skypvp)
+ENDIF
+
+IF(CHAT=="/sw start")
+//  SET(@macro)
+  FILTER()
+  ECHO(/swr start)
+ENDIF
+
+IF(CHAT=="/is")
+//  SET(@macro)
+  FILTER()
+  ECHO(/is h)
+ENDIF
+
+IF(CHAT=="/home farm")
+//  SET(@macro)
+  FILTER()
+  ECHO(/home Farm)
+ENDIF
+
+IF(CHAT=="/wb")
+//  SET(@macro)
+  FILTER()
+  ECHO(/workbench)
+ENDIF
+
+IF(CHAT=="/givekey Mystery")
+//  SET(@macro)
+  FILTER()
+  ECHO(/crate givekey spthiel csgokey 1)
+ENDIF
+
+IF(CHAT=="/givekey Vote")
+//  SET(@macro)
+  FILTER()
+  ECHO(/crate givekey spthiel roulettekey 1)
+ENDIF
+
+IF(CHAT=="/glist")
+//  SET(@macro)
+  UNSET(@&gaonline[])
+ENDIF
+
+
+IF(CHAT=="/multi yes")
+//  SET(@macro)
+  FILTER()
+  LOG(%&pre% Accepted)
+  @#multiaccchoose=2
+ENDIF
+
+IF(CHAT=="/multi no")
+//  SET(@macro)
+  FILTER()
+  LOG(%&pre% Declined)
+  @#multiaccchoose=1
+ENDIF
+
+IF(CHAT=="/ms next")
+//  SET(@macro)
+  FILTER()
+  LOG(%&pre% Next sponge)
+  @#mscondition=1
+ENDIF
+
+IF(CHAT=="/ms cancel")
+//  SET(@macro)
+  FILTER()
+  LOG(%&pre% Canceling)
+  @#mscondition=2
+ENDIF
+
+IF(CHAT=="/sw reset")
+//  SET(@macro)
+  FILTER()
+  SET(@#swmap,-1)
+  LOG(%&pre% Swmap reset)
+ENDIF
+
+IF(CHAT=="#unset")
+//  SET(@macro)
+  FILTER()
+  UNSET(@multiacc)
+  LOG(%&pre% Multiacc reset)
+ENDIF
+
+IF(CHAT=="/sw next")
+//  SET(@macro)
+  FILTER()
+  INC(@#swmap,1)
+  LOG("%&pre% Next swmap: %@&skywarsmaps[%@#swmap%]% (%@#swmap%)")
+  ECHO(/sw edit %@&skywarsmaps[%@#swmap%]%)
+ENDIF
+
+
+}$$

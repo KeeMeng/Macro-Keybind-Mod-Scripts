@@ -1,0 +1,52 @@
+$${
+
+LOG(test)
+
+#x = %HITX%
+#y = %HITY%
+#z = %HITZ%
+
+#xpos = %XPOS%
+#ypos = %YPOS%
+#zpos = %ZPOS%
+
+&dir = %HITSIDE%
+
+
+  GETSIGNTEXT(%#x%,%#y%,%#z%,&text[])
+  ARRAYSIZE(&text,#length)
+  LOG(%&text[1]%)
+  IF(#length > 0);
+   
+    ARRAYSIZE(@&signtext[],#size)
+
+    IF(%#size%>300)
+      UNSET(@&signtext[])
+      UNSET(@&signpos[])
+      UNSET(@&signface[])
+    ENDIF
+    LOG(Arraysize: %#size%)
+
+    STRIP(&text[1],%&text[1]%)
+
+    #sizeup=%#size%+1
+
+    @&signtext[]="%&text[1]%"
+    @&signpos[] ="%#x%,%#y%,%#z%"
+    @&signface[]="%&dir%"
+
+  ENDIF;
+
+UNSET(#x)
+UNSET(#y)
+UNSET(#z)
+UNSET(&dir)
+UNSET(#size)
+UNSET(&signtext[])
+UNSET(&text[])
+UNSET(#xpos)
+UNSET(#ypos)
+UNSET(#zpos)
+UNSET(&direction)
+
+}$$

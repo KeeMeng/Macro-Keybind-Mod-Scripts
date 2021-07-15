@@ -1,0 +1,19 @@
+$${
+
+&sserver[0] = "Lobby"
+&sserver[1] = "Server 1"
+&sserver[2] = "Server 2"
+&sserver[3] = "Server 3"
+
+STRIP(&chat,%CHAT%)
+
+IFMATCHES(%&chat%,"\[Chunkli\] You joined \'kadcon(.+?)\.server\'")
+
+  MATCH(%&chat%,"\[Chunkli\] You joined \'kadcon(.+?)\.server\'",{&server})
+
+  //BINDGUI(inchat,%&sserver[%&server%]%)
+  LOG(&6[Screen] &7Du benutzt jetzt den Screen &7"&a&l%&sserver[%&server%]%&7"&7)
+
+ENDIF
+
+}$$

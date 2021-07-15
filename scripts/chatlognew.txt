@@ -1,0 +1,115 @@
+unset(@&currentlog[])
+
+#lastlogelement = 0
+@&chatlogregex = "";
+
+SET(&path,"C:/Users/redacted/AppData/Roaming/.minecraft_1.12.1/liteconfig/common/macros/logs/%DATE%-MLog.txt")
+
+readfile(@&currentlog[],%&path%)
+
+@#chatloglines = 9
+
+start = true
+
+do()
+    
+    work = false;
+    
+    if(((@&clregex != @&chatlogregex) && !((@&clregex == "") && (@&chatlogregex == "."))) || start)
+    
+        work = true
+        start = false
+        do()
+            &waitregex = "%@&clregex%"
+            wait(1)
+        while(&waitregex != @&clregex)
+        
+        if(@&clregex == "")
+            @&chatlogregex = "."
+        else
+            @&chatlogregex = "%@&clregex%"
+        endif
+            
+        unsafe(1000)
+
+            unset(@&currentlog[])
+            readfile(@&currentlog[],%&path%)
+
+            unset(&searchlog[])
+            
+            arraysize(@&currentlog[],#logsize)
+            dec(#logsize,1)
+
+            for(#i,0,%#logsize%)
+               
+                strip(&stripped,%@&currentlog[%#i%]%)
+                ifmatches(%&stripped%,"^.*%@&chatlogregex%.*$")
+
+                    #iup = #i+1
+                    &searchlog[] = "[Line: %#iup%] %@&currentlog[%#i%]%"
+
+                endif
+
+            next
+
+            @#chatloglastline = #i+2
+            
+            join("|-|-|",&searchlog[],&out)
+            split("|-|-|",%&out%,@&currentlog[]) 
+        
+        endunsafe
+        
+    endif
+    
+    
+    arraysize(@&currentlog[],#size)
+
+    @#currentlogsize = #size
+    
+    @#chatlogmax = #size-@#chatloglines+1
+    if(@#logelement > @#chatlogmax)
+        #lognow = @#chatlogmax
+    else
+        #lognow = @#logelement
+    endif
+    
+    if(@#logelement < @#chatloglines)
+        @#logelement = @#chatloglines
+        #lognow = @#logelement
+    endif
+    
+    if(#lognow != #lastlogelement)
+        work = true;
+        #lastlogelement = #lognow
+    endif
+    
+    if(work)
+    
+        unsafe(1000)
+    
+            #fromelement = #lognow-@#chatloglines
+            #toelement = #lognow+@#chatloglines
+            
+            if(#fromelement < 0)
+                #fromelement = 0
+            endif
+            
+            if(#toelement >= #size)
+                #toelement = #size-1
+            endif
+            
+            &sepe = ""
+            &logout = ""
+            
+            for(#logi,%#fromelement%,%#toelement%)
+                &logout="%&logout%%&sepe%&f%@&currentlog[%#logi%]%"
+                &sepe = "\n"
+            next
+
+            @&chatlogtext = "%&logout%"
+            
+        endunsafe
+    
+    endif
+
+loop

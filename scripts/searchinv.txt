@@ -1,0 +1,16 @@
+
+&item=$$[1]
+
+IF(MODE==1)
+
+  GUI()
+  PRESS(E)
+  WAIT(400ms)
+  GETSLOT(%&item%,#slot,100)
+  SLOTCLICK(%#slot%)
+
+ELSE
+
+  LOG(&8[&bMacro&8] &cYou need to be in Creativemode)
+
+ENDIF

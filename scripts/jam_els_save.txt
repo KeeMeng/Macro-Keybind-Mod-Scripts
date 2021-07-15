@@ -1,0 +1,103 @@
+&filename = lcase(%KEYNAME%)
+
+#xstart = @#elspos1[0]
+#xend = @#elspos2[0]
+#ystart = @#elspos1[1]
+#yend = @#elspos2[1]
+#zstart = @#elspos1[2]
+#zend = @#elspos2[2]
+
+set(@elsbuilding)
+unset(@&elsblocks[])
+
+
+#dx = #xend-#xstart
+#dy = #yend-#ystart
+#dz = #zend-#zstart
+@&elsblocks[] = "%#dx%;%#dy%;%#dz%"
+if(#dx < 0)
+    #dx = -#dx
+endif
+if(#dy < 0)
+    #dy = -#dy
+endif
+if(#dz < 0)
+    #dz = -#dz
+endif
+inc(#dx);inc(#dy);inc(#dz)
+#total = #dx*#dy*#dz
+
+
+#percent = #total/100
+#log = #percent
+#progress = 0
+
+#counter = countup()
+unset(#blocksx[])
+unset(#blocksy[])
+unset(#blocksz[])
+unsafe(1000)
+    for(#x,%#xstart%,%#xend%)
+        for(#y,%#ystart%,%#yend%)
+            for(#z,%#zstart%,%#zend%)
+                inc(#progress)
+                getid(%#x%,%#y%,%#z%,&block,#data)
+                if(&block != "air")
+                    #blocksx[] = #x
+                    #blocksy[] = #y
+                    #blocksz[] = #z
+                endif
+                
+                if(#progress >= #log) 
+                    #p = (#progress*100)/#total
+                    log("&aChecking blocks %#p%/100 done")
+                    inc(#log,%#percent%)
+                endif
+            next
+        next
+    next
+endunsafe
+exec("jam_els_lock.txt","interceptor")
+#xprev = XPOS
+#yprev = YPOS
+#zprev = ZPOS
+#yawprev = YAW + 180
+#pitchprev = PITCH
+echo("/gamemode 3")
+log("&aStarting saving")
+foreach(#blocksx[],#x,#i)
+
+    #y = #blocksy[%#i%]
+    #z = #blocksz[%#i%]
+
+    #relx = #x-#xstart
+    #rely = #y-#ystart
+    #relz = #z-#zstart
+    getid(%#x%,%#y%,%#z%,&block,#datavar)
+    $$<jam_els_getdata.txt>
+    if(&data == "")
+        @&elsblocks[] = "%#relx%;%#rely%;%#relz%;%&block%;%#datavar%"
+    else
+        @&elsblocks[] = "%#relx%;%#rely%;%#relz%;%&block%;%&data%"
+    endif
+next
+
+&time = counter(%#counter%)
+
+if(&filename == "clipboard")
+    log("&aFinished saving %#total% blocks in %&time% to clipboard")
+else
+    log("&aFinished saving %#total% blocks in %&time%, writing to file")
+    &response = writefile("%MACROSCONFIGDIR%\\schematics\\%&filename%.csv",@&elsblocks[])
+    ifbeginswith(%&response%,"ERROR")
+        log("&cError while writing the file to disk: %&response%")
+    else
+        log("&aSuccessfully saved the file to %&response%")
+    endif
+endif
+
+wait(5t)
+echo("/gamemode 1")
+echo("/tp %#xprev% %#yprev% %#zprev% %#yawprev% %#pitchprev%")
+stop("interceptor")
+unset(@elsbuilding)

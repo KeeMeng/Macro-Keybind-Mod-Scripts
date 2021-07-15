@@ -1,0 +1,22 @@
+ECHO("/say Restart!")
+WAIT(1)
+ECHO("/say Bitte alle aus dem PvP raus")
+WAIT(2)
+ECHO("/say Restart in 10")
+WAIT(5)
+ECHO("/say Restart in 5")
+WAIT(2)
+ECHO("/say Restart in 3")
+WAIT(1)
+ECHO("/say Restart in 2")
+WAIT(1)
+ECHO("/say Restart in 1")
+WAIT(1)
+ECHO("/say Restart!!")
+echo("/whitelist on")
+foreach(players)
+  if(PLAYERNAME != PLAYER)
+    ECHO("/minecraft:kick %PLAYERNAME%")
+  endif
+next
+

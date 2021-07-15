@@ -1,0 +1,55 @@
+// delay between checks if players left in seconds
+#checkinterval = 2
+
+unset(&lastplayers[])
+unset(&currentplayers[])
+set(firstrun)
+
+do()
+    
+    unsafe()
+    
+        foreach(players)
+        
+            &currentplayers[] = %PLAYERNAME%
+        
+        next
+    
+        join("|",&currentplayers[],&currentplayersstring)
+        join("|",&lastplayers[],&lastplayersstring)
+        
+        if(&currentplayersstring != &lastplayersstring)
+            
+            foreach(&lastplayers[],&player,#i)
+            
+                indexof(&currentplayers[],#isin,%&player%)
+                if(#isin == -1)
+				if(HACK)
+					exec(onDisconnect.txt,"disconnect","%&player%")
+				else
+					ifmatches(%&player%,"^\d+$")
+							exec(onDisconnect.txt,"disconnect","%&player% ")
+						else
+							exec(onDisconnect.txt,"disconnect","%&player%")
+						endif
+					endif
+				endif
+            
+            next
+            
+            
+        endif
+    
+        unset(&lastplayers[])
+        
+        foreach(&currentplayers[],&player,#i)
+            &lastplayers[] = %&player%
+        next
+        
+        unset(&currentplayers[])
+            
+    endunsafe()
+    
+    wait(%#checkinterval%)
+    
+loop

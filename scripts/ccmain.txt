@@ -1,0 +1,33 @@
+$${
+
+LOG(&fNow searching for %@&cc_item%)
+
+DO()
+
+  IF(@#cct==0)
+    STOP()
+  ENDIF
+
+  IF(GUI=="GUICHEST")
+    GETSLOT(%@&cc_item%,#i)
+    IF(#i>=54)
+    
+    ELSE
+      IF(#i==-1)
+      ELSE
+
+        LOG(Found %@&cc_item% at %#i%)
+
+        DO()
+          GETSLOT(%@&cc_item%,#in)   
+        WHILE((GUI=="GUICHEST")&&(#i==#in))
+
+      ENDIF
+    ENDIF
+  ENDIF
+
+LOOP()
+
+}$$
+
+

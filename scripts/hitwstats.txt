@@ -1,0 +1,21 @@
+$${
+
+foreach("players")
+    &stats[] = hitwstats("%PLAYERUUID%")
+    log("&f&m----------&f[&e%PLAYERNAME%&f]&m-------------")
+    foreach(&stats[],&stat2,#i)
+
+        &stat = "%&stat2%"
+        replace(&stat,"::",": &7")
+        replace(&stat,"hitw_record_q","Qualifier Score")
+        replace(&stat,"rounds_hole_in_the_wall","Rounds")
+        replace(&stat,"hitw_record_f","Final Score")
+        replace(&stat,"wins_hole_in_the_wall","Wins")
+        log("&a- &e%&stat%")
+
+    next
+    log("&f&m---------------------------------")
+
+next
+
+}$$

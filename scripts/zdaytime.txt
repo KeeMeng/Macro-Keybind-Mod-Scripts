@@ -1,0 +1,7 @@
+$${
+
+do()
+setlabel(DAYTIME,&6[Time] &e%DAYTIME%)
+loop
+
+}$$

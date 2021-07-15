@@ -1,0 +1,264 @@
+&itemtoselect = "diamond_axe"
+&prefix = "&e- "
+&defaultcolor = "&7"
+&errorcolor = "&a"
+&highlightcolor = "&e"
+
+//--------------------------------------------------------------------------------
+
+getiteminfo(%&itemtoselect%,&itemname)
+
+if(&itemname == "Air")
+	log("%&prefix%%&errrocolor%The item that was set as select tool does not exist (%&itemtoselect%)")
+	stop()
+endif
+
+log("%&prefix%%&defaultcolor%At first you need to set up the are that should be converted")
+log("%&prefix%%&defaultcolor%Please select the 2 opposide corners by rightclicking them with %&highlightcolor%%&itemname%")
+
+do()
+
+	do()
+
+	until((RMOUSE) && (ITEM == &itemtoselect))
+
+	log("%&prefix%%&defaultcolor%Pos 1: (%&highlightcolor%%HITX% %HITY% %HITZ%%&defaultcolor%)")
+	
+	#x1 = %HITX%
+	#y1	= %HITY%
+	#z1 = %HITZ%
+
+	do()
+
+	until(!RMOUSE)
+
+	do()
+
+	until((RMOUSE) && (ITEM == &itemtoselect))
+
+	log("%&prefix%%&defaultcolor%Pos 2: (%&highlightcolor%%HITX% %HITY% %HITZ%%&defaultcolor%)")
+	
+	#x2 = %HITX%
+	#y2	= %HITY%
+	#z2 = %HITZ%
+	
+	do()
+	
+	until(!RMOUSE)
+	
+	log("%&prefix%%&defaultcolor%Is this correct? To approve hit in the air with %&highlightcolor%%&itemname%%&defaultcolor% if not use %&highlightcolor%%&itemname%%&defaultcolor% on the correct blocks. (You may need to click twice)")
+	
+	do()
+	
+	until(((LMOUSE) && (ITEM == &itemtoselect)) || ((RMOUSE) && (ITEM == &itemtoselect)))
+	
+	if(LMOUSE)
+	
+		break;
+	
+	endif
+	
+loop
+
+unsafe()
+
+	if(#x1 > #x2)
+		#store = #x2
+		#x2 = #x1
+		#x1 = #store
+	endif
+
+	if(#y1 > #y2)
+		#store = #y2
+		#y2 = #y1
+		#y1 = #store
+	endif
+	
+	if(#z1 > #z2)
+		#store = #z2
+		#z2 = #z1
+		#z1 = #store
+	endif
+	
+	unset(&itemtoselect)
+	unset(&itemname)
+
+	// Vars:
+	// x1,x2,y1,y2,z1,z2
+	// Corners of area where x1 < x2; y1 < y2; z1 < z2
+
+	#dx = #x2-#x1
+	#dy = #y2-#y1
+	#dz = #z2-#z1
+
+	if(#dx < 0)
+		#dx = -#dx
+	endif
+
+	if(#dy < 0)
+		#dy = -#dy
+	endif
+
+	if(#dz < 0)
+		#dz = -#dz
+	endif
+
+	inc(#dx)
+	inc(#dy)
+	inc(#dz)
+
+	#totalsize = #dx*#dy*#dz
+
+	log("%&prefix%%&defaultcolor%Selected area has a size of %&highlightcolor%%#dx%x%#dy%x%#dz%%&defaultcolor% (%&highlightcolor%%#totalsize% Blocks%&defaultcolor%)")
+
+	#maxlength = #dx
+
+	if(#dy > #maxlength)
+		#maxlength = #dy
+	endif
+
+	if(#dz > #maxlength)
+		#maxlength = #dz
+	endif
+
+	#lengthen = 2
+	
+	#movementperblock = 1600000/(#maxlength*#lengthen)
+
+	#xcenter = (#dx*#lengthen)/2
+	#xcenteraxe = 800000
+	
+	#zcenter = (#dz*#lengthen)/2
+	#zcenteraxe = 800000
+	
+endunsafe()
+
+@#total = #totalsize
+
+// Start of the actual script
+
+unsafe()
+
+	unset(&textures[])
+	&file = "{\"textures\":{$TEXTURE$},\"elements\":[$ELEMENT$]}"
+	&texture = "\"$BLOCK$\": \"blocks/$BLOCK$\"$TSEPERATOR$"
+	&textureseperator = ",$TEXTURE$"
+	
+	&element = "{\"from\": [$X1$,$Y1$,$Z1$],\"to\": [$X2$,$Y2$,$Z2$],\"faces\": {\"up\": {\"uv\": [0,0,16,16],\"texture\": \"#$BLOCK$\"},\"down\": {\"uv\": [0,0,16,16],\"texture\": \"#$BLOCK$\"},\"west\": {\"uv\": [0,0,16,16],\"texture\": \"#$BLOCK$\"},\"east\": {\"uv\": [0,0,16,16],\"texture\": \"#$BLOCK$\"},\"north\": {\"uv\": [0,0,16,16],\"texture\": \"#$BLOCK$\"},\"south\": {\"uv\": [0,0,16,16],\"texture\": \"#$BLOCK$\"}}}$ESEPERATOR$"
+	&elementseperator = ",$ELEMENT$"
+
+	unset(&vars[])
+	&vars[] = "x"
+	&vars[] = "y"
+	&vars[] = "z"
+	
+endunsafe()
+
+log("%#movementperblock%:%#xcenter%:%#zcenter%:%#xcenteraxe%")
+
+@#current = 0
+
+unsafe(0)
+
+	for(#x,%#x1%,%#x2%)
+		for(#y,%#y1%,%#y2%)
+			for(#z,%#z1%,%#z2%)
+			
+				inc(@#current)
+				
+				getid(%#x%,%#y%,%#z%,&id,#data)
+				
+				if(&id != "air")
+				
+					#dx = #x-#x1
+					#dy = #y-#y1
+					#dz = #z-#z1
+					
+					#rx = (#xcenter-(#dx*#lengthen))-1
+					#ry = #dy*#lengthen
+					#rz = (#zcenter-(#dz*#lengthen))-1
+					
+					#px2 = #xcenteraxe-((#rx-1)*#movementperblock)
+					#pz2 = #zcenteraxe-((#rz-1)*#movementperblock)
+					
+					#px1 = #px2-(#movementperblock*#lengthen)
+					#py1 = #ry*#movementperblock
+					#pz1 = #pz2-(#movementperblock*#lengthen)
+					
+					#py2 = #py1+(#movementperblock*#lengthen)
+					
+					&thiselement = "%&element%"
+					
+					foreach(&vars[],&var,#i)
+					
+						for(#j,1,2)
+						
+							&fullname = "p%&var%%#j%"
+							set(#p,%#%&fullname%%)
+							
+							#full = %#p%/100000
+							
+							#small = %#p%-(%#full%*100000)
+							&toleadingzero = "%#small%"
+							split("",%&toleadingzero%,&tocount[])
+							arraysize(&tocount,#size)
+							
+							for(#k,%#size%,5)
+								&toleadingzero = "0%&toleadingzero%"
+							next
+							
+							&number = "%#full%.%&toleadingzero%"
+							
+							&ucase = UCASE(%&var%)
+							
+							replace(&thiselement,"$%&ucase%%#j%$","%&number%")
+							
+						next
+					
+					next
+					
+				
+					if(#data > 0)
+					
+						&block = "%&id%:%#data%"
+						
+					else
+					
+						&block = "%&id%"
+					
+					endif
+				
+					indexof(&textures[],#isin,"%&block%")
+					
+					
+					if(#isin == -1)
+					
+						&thistexture = "%&texture%"
+					
+						&textures[] = "%&block%"
+						
+						replace(&thistexture,"$BLOCK$","%&block%")
+						replace(&file,"$TSEPERATOR$","%&textureseperator%")
+						replace(&file,"$TEXTURE$","%&thistexture%")
+					
+					endif
+					
+					replace(&thiselement,"$BLOCK$","%&block%")
+					replace(&file,"$ESEPERATOR$","%&elementseperator%")
+					replace(&file,"$ELEMENT$","%&thiselement%")
+				
+				endif
+				
+				
+			next
+		next
+	next
+	
+endunsafe
+
+replace(&file,"$ESEPERATOR$","")
+replace(&file,"$TSEPERATOR$","")
+replace(&file,"$ELEMENT$","")
+replace(&file,"$TEXTURE$","")
+
+logto("model-%TIMESTAMP%.txt","%&file%")

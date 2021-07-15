@@ -1,0 +1,58 @@
+$${
+
+UNSET(@#mastid[])
+UNSET(@&mast[])
+
+&key="RGAPI-0CC6E8DC-C3A4-480C-88F4-E612C31CB802"
+
+&mlist=HTTPGET("https://global.api.pvp.net/api/lol/static-data/euw/v1.2/mastery?masteryListData=masteryTree&api_key=%&key%","","")
+
+
+UNSET(&masts[])
+
+LOG(&fStartet)
+
+DO()
+
+  UNSET(&mast)
+  MATCH(%&mlist%,"(\{\"id\".+?\})",{&mast})
+  &masttoplace="%&mast%}"
+  //REPLACE(&masttoplace,"[","")
+  //REPLACE(&masttoplace,"]","")
+
+  IF(!(&mast==""))
+    &masts[]=%&masttoplace%
+  ENDIF
+  REPLACE(&mlist,%&mast%,"")
+
+UNTIL(&mast=="")
+
+LOG(&fSchritt 1/2)
+
+ARRAYSIZE(&masts,#mastsize)
+DEC(#mastsize,1)
+
+FOR(#mastn,0,%#mastsize%)
+
+  UNSET(&mastname)
+  MATCH(%&masts[%#mastn%]%,"(\,\"description\"\:\[.+?\])",{&mastname})
+  &test=%&masts[%#mastn%]%
+  REPLACE(&test,"%&mastname%","")
+  REPLACE(&test,"}}","}")
+  &masts[%#mastn%]="%&test%"
+
+  MATCH(%&mastname%,"\[(.+?)\]",{&mastname})
+
+  #mastid=JSONGET(%&masts[%#mastn%]%,"id")
+
+  @#mastid[]=%#mastid%
+  @&mast[]="%&mastname%"
+
+NEXT
+
+LOG(&fFertig)
+
+UNSET(&mlist)
+UNSET(&masts[])
+
+}$$

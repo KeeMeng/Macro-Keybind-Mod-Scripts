@@ -1,0 +1,43 @@
+if(@elsbuilding)
+    log("&cWait for the builder to finish first")
+    stop
+endif
+
+arraysize(@&elsundo[],#size)
+dec(#size)
+
+if(#size == 0)
+    log("&cNo blocks to undo, place a schematic first")
+    stop
+endif
+
+set(@elsbuilding)
+
+    log("&aStarting to undo %#size% block placements")
+
+    dec(#size)
+
+    for(#i,%#size%,1)
+
+        &block = "%@&elsundo[%#i%]%"
+
+        if(&block != "")
+            split(";",%&block%,&details[])
+            #xrel := %&details[0]%
+            #yrel := %&details[1]%
+            #zrel := %&details[2]%
+            &id = %&details[3]%
+            &data = %&details[4]%
+            #x = #xpos + #xrel
+            #y = #ypos + #yrel
+            #z = #zpos + #zrel
+            getid(%#x%,%#y%,%#z%,&blockid,#blockdata)
+            if((&blockid != &id) || (#data != #blockdata))
+                echo("/setblock %#x% %#y% %#z% %&id% %&data% replace")
+            endif
+            unset(@&elsundo[%#i%])
+        endif
+        
+    next
+
+unset(@elsbuilding)

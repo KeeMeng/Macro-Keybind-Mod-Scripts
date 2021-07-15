@@ -1,0 +1,66 @@
+$${
+
+
+DO()
+
+  ARRAYSIZE(&myteams[],#ysize)
+  DEC(#ysize,1)
+
+  FOR(#i,0,%#ysize%)
+
+    UNSET(&%&myteams[%#i%]%[])
+
+  NEXT
+
+  ARRAYSIZE(@&teams[],#ysize)
+  DEC(#ysize,1)
+
+  FOR(#i,0,%#ysize%)
+      
+    &myteams[]=%@&teams[%#i%]%
+    &myteamscolor[]=%@&teamscolor[%#i%]%
+
+  NEXT
+
+  UNSET(&myteams[])
+
+  FOREACH(players)
+
+    &pre=""
+
+
+    ARRAYSIZE(@&teams[],#ysize)
+    DEC(#ysize,1)
+
+    FOR(#i,0,%#ysize%)
+
+      INDEXOF(@&%@&teams[%#i%]%[],#isin,%PLAYERNAME%)
+      IF(#isin>=0)
+
+        &%@&teams[%#i%]%="%PLAYERNAME%"
+
+        BREAK()
+        
+      ENDIF
+
+    NEXT
+
+  NEXT
+
+
+  ARRAYSIZE(&myteams[],#ysize)
+  DEC(#ysize,1)
+
+  FOR(#i,0,%#ysize%)
+
+    JOIN("||",&%&myteams[%#i%]%[],&out)
+    REPLACE(&out,"||","\n%&myteamscolor[%#i%]%]")
+    &output[]=%&out%
+
+  NEXT
+
+  JOIN("\n",&output[],&players)
+
+LOOP
+
+}$$

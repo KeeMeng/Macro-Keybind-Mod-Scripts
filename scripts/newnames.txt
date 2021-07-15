@@ -1,0 +1,210 @@
+
+&pre="&8[&bMacro&8]&f"
+IF((DATE==@&lastupdate)&&(@#forcereload==0))
+
+  LOG(%&pre% Skipping Loading)
+
+ELSE
+
+@&lastupdate=%DATE%
+
+UNSET(@&newhelfer[])
+UNSET(@&newscout[])
+UNSET(@&newdev[])
+UNSET(@&newsupp[])
+UNSET(@&newadmin[])
+UNSET(@&newowner[])
+UNSET(@&newhass[])
+UNSET(@&newcreative[])
+UNSET(@&newcity[])
+UNSET(@&newfriend[])
+UNSET(@&newskyblock[])
+
+LOG(%&pre% Loading Owner)
+
+ARRAYSIZE(@&owner[],#newsize)
+DEC(#newsize,1)
+FOR(#newfor,0,%#newsize%)
+
+  #newnewfor=%#newfor%+1
+  #newnewsize=%#newsize%+1
+  LOG("%&pre% %#newnewfor%/%#newnewsize%")
+  EXEC(lookup.txt,"lookup",%@&owner[%#newfor%]%)
+  DO()
+  UNTIL(!@&namereturnlast=="")
+  @&newowner[]=%@&namereturnlast%
+  //WAIT(100ms)
+
+NEXT
+
+LOG(%&pre% Loading Admin)
+
+ARRAYSIZE(@&admin[],#newsize)
+DEC(#newsize,1)
+FOR(#newfor,0,%#newsize%)
+
+  #newnewfor=%#newfor%+1
+  #newnewsize=%#newsize%+1
+  LOG("%&pre% %#newnewfor%/%#newnewsize%")
+  EXEC(lookup.txt,"lookup",%@&admin[%#newfor%]%)
+  DO()
+  UNTIL(!@&namereturnlast=="")
+  @&newadmin[]=%@&namereturnlast%
+  //WAIT(100ms)
+
+NEXT
+
+LOG(%&pre% Loading Dev)
+
+ARRAYSIZE(@&dev[],#newsize)
+DEC(#newsize,1)
+FOR(#newfor,0,%#newsize%)
+
+  #newnewfor=%#newfor%+1
+  #newnewsize=%#newsize%+1
+  LOG("%&pre% %#newnewfor%/%#newnewsize%")
+  EXEC(lookup.txt,"lookup",%@&dev[%#newfor%]%)
+  DO()
+  UNTIL(!@&namereturnlast=="")
+  @&newdev[]=%@&namereturnlast%
+  //WAIT(100ms)
+
+NEXT
+
+LOG(%&pre% Loading Supporter)
+
+ARRAYSIZE(@&supp[],#newsize)
+DEC(#newsize,1)
+FOR(#newfor,0,%#newsize%)
+
+  #newnewfor=%#newfor%+1
+  #newnewsize=%#newsize%+1
+  LOG("%&pre% %#newnewfor%/%#newnewsize%")
+  EXEC(lookup.txt,"lookup",%@&supp[%#newfor%]%)
+  DO()
+  UNTIL(!@&namereturnlast=="")
+  @&newsupp[]=%@&namereturnlast%
+  //WAIT(100ms)
+
+NEXT
+
+LOG(%&pre% Loading Scout)
+
+ARRAYSIZE(@&scout[],#newsize)
+DEC(#newsize,1)
+FOR(#newfor,0,%#newsize%)
+  #newnewfor=%#newfor%+1
+  #newnewsize=%#newsize%+1
+  LOG("%&pre% %#newnewfor%/%#newnewsize%")
+  EXEC(lookup.txt,"lookup",%@&scout[%#newfor%]%)
+  DO()
+  UNTIL(!@&namereturnlast=="")
+  @&newscout[]=%@&namereturnlast%
+  //WAIT(100ms)
+
+NEXT
+
+
+LOG(%&pre% Loading Helfer)
+
+ARRAYSIZE(@&helfer[],#newsize)
+DEC(#newsize,1)
+FOR(#newfor,0,%#newsize%)
+
+  #newnewfor=%#newfor%+1
+  #newnewsize=%#newsize%+1
+  LOG("%&pre% %#newnewfor%/%#newnewsize%")
+  EXEC(lookup.txt,"lookup",%@&helfer[%#newfor%]%)
+  DO()
+  UNTIL(!@&namereturnlast=="")
+  @&newhelfer[]=%@&namereturnlast%
+  //WAIT(100ms)
+
+NEXT
+
+LOG(%&pre% Loading Creative)
+
+ARRAYSIZE(@&creative[],#newsize)
+DEC(#newsize,1)
+FOR(#newfor,0,%#newsize%)
+
+  #newnewfor=%#newfor%+1
+  #newnewsize=%#newsize%+1
+  LOG("%&pre% %#newnewfor%/%#newnewsize%")
+  EXEC(lookup.txt,"lookup",%@&creative[%#newfor%]%)
+  DO()
+  UNTIL(!@&namereturnlast=="")
+  @&newcreative[]=%@&namereturnlast%
+  //WAIT(100ms)
+
+NEXT
+
+LOG(%&pre% Loading City)
+
+ARRAYSIZE(@&city[],#newsize)
+DEC(#newsize,1)
+FOR(#newfor,0,%#newsize%)
+
+  #newnewfor=%#newfor%+1
+  #newnewsize=%#newsize%+1
+  LOG("%&pre% %#newnewfor%/%#newnewsize%")
+  EXEC(lookup.txt,"lookup",%@&city[%#newfor%]%)
+  DO()
+  UNTIL(!@&namereturnlast=="")
+  @&newcity[]=%@&namereturnlast%
+  //WAIT(100ms)
+
+NEXT
+
+LOG(%&pre% Loading Skyblock)
+
+ARRAYSIZE(@&skyblock[],#newsize)
+DEC(#newsize,1)
+FOR(#newfor,0,%#newsize%)
+
+  #newnewfor=%#newfor%+1
+  #newnewsize=%#newsize%+1
+  LOG("%&pre% %#newnewfor%/%#newnewsize%")
+  EXEC(lookup.txt,"lookup",%@&skyblock[%#newfor%]%)
+  DO()
+  UNTIL(!@&namereturnlast=="")
+  @&newskyblock[]=%@&namereturnlast%
+  //WAIT(100ms)
+
+NEXT
+
+LOG(%&pre% Loading Friends)
+
+ARRAYSIZE(@&friend[],#newsize)
+DEC(#newsize,1)
+FOR(#newfor,0,%#newsize%)
+
+  #newnewfor=%#newfor%+1
+  #newnewsize=%#newsize%+1
+  LOG("%&pre% %#newnewfor%/%#newnewsize%")
+  EXEC(lookup.txt,"lookup",%@&friend[%#newfor%]%)
+  DO()
+  UNTIL(!@&namereturnlast=="")
+  @&newfriend[]=%@&namereturnlast%
+  //WAIT(100ms)
+
+NEXT
+
+LOG(%&pre% Loading Hass)
+
+ARRAYSIZE(@&hass[],#newsize)
+DEC(#newsize,1)
+FOR(#newfor,0,%#newsize%)
+
+  #newnewfor=%#newfor%+1
+  #newnewsize=%#newsize%+1
+  LOG("%&pre% %#newnewfor%/%#newnewsize%")
+  EXEC(lookup.txt,"lookup",%@&hass[%#newfor%]%)
+  DO()
+  UNTIL(!@&namereturnlast=="")
+  @&newhass[]=%@&namereturnlast%
+  //WAIT(100ms)
+
+NEXT
+
+ENDIF

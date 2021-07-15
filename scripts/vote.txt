@@ -1,0 +1,27 @@
+$${
+
+DO()
+
+IF(%@&date%=%DATE%)
+  @#vote=1
+ELSE
+  @#vote=0
+ENDIF
+
+IF(%@#vote%=0)
+
+  SETLABEL(voted,"Du hast noch\n nicht gevotet")
+
+ELSE
+
+  SETLABEL(voted,"&aDu hast\n &abereits gevotet")
+
+  STOP()
+
+ENDIF
+
+WAIT(150ms)
+
+LOOP
+
+}$$

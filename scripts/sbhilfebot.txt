@@ -1,0 +1,11 @@
+$${
+
+MATCH(%CHAT%,"\§r\§[0-9,a-f](.+?)(?:\§r\§8)?\| (?:\§r\§[0-9,a-f])?(.+?)\§r\§8\» \§r\§[0-9,a-f](.+?)\§r",{&rang,&player,&chat})
+
+IFCONTAINS(%&chat%,"Wie erstelle ich eine Insel")
+
+  LOG("&f%&rang% | %&player% Hat den Hilfebot getriggert")
+  ECHO(/w %&player% Mit /is create erstellst du eine Insel)
+
+ENDIF
+}$$

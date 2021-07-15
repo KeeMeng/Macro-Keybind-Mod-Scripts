@@ -1,0 +1,50 @@
+$${
+
+TRACE(200)
+
+#y = -1
+
+IF(TRACEX==0&&TRACEY==0&&TRACEZ==0)
+
+ELSE
+
+  UNSAFE()
+
+  FOR(#i,%TRACEY%,256)
+
+    #iup = %#i%+1   
+
+    GETID(%TRACEX%,%#i%,%TRACEZ%,&itema)
+    GETID(%TRACEX%,%#iup%,%TRACEZ%,&itemb)
+
+    IF((&itema=="air") && (&itemb=="air"))
+
+      #y = %#i%
+
+      BREAK
+
+    ENDIF
+
+  NEXT
+
+  ENDUNSAFE()
+
+  IF(#y == -1||#i==256)
+
+  ELSE
+
+    IF(SERVER == "SP")
+
+      ECHO("/tp %TRACEX% %#y% %TRACEZ% %YAW% %PITCH%")
+
+    ELSE
+
+      ECHO("/minecraft:tp %TRACEX% %#y% %TRACEZ% %YAW% %PITCH%")
+
+    ENDIF
+
+  ENDIF
+
+ENDIF
+
+}$$

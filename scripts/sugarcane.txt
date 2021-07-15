@@ -1,0 +1,74 @@
+$${
+
+&pre="&8[&bSugar Canes&8]&f"
+
+IF(@sugar)
+
+  UNSET(@sugar)
+  LOG("%&pre% Sugar Canes stopped")
+  STOP()
+
+ELSE
+
+  SET(@sugar)
+
+  LOG("%&pre% Sugar Canes started")
+
+  DO()
+
+    ECHO(/home)
+    WAIT(5)
+    KEY(use)
+    WAIT(1)
+    
+    FOR(#i,0,36)
+      GETSLOT(reeds,#slot)
+      IF(#slot>53)
+        BREAK
+      ENDIF
+      SLOTCLICK(%#slot%,,true)
+      WAIT(200ms)
+    NEXT
+
+    WAIT(1)
+    GUI()
+    ECHO(/back)
+    
+    DO(4)
+
+      DO()
+
+        IF(HITNAME=="Sign")
+          KEY(use)
+        ENDIF
+        GETSLOT(reeds,#slot)
+        WAIT(300ms)
+
+      WHILE(#slot>=0)
+
+      GUI(inventory)
+      
+      DO(9)
+
+        GETSLOT(reeds,#slot,9)
+
+        IF(#slot>35)
+
+          BREAK
+
+        ENDIF
+        WAIT(200ms)
+        SLOTCLICK(%#slot%,,true)
+
+      LOOP
+
+      GUI()
+
+    LOOP
+
+  LOOP
+
+ENDIF
+
+
+}$$

@@ -1,0 +1,76 @@
+$${
+
+SET(@#progress,0)
+
+#spawner52 = 0
+#diamond_ore56 = 0
+#diamond_block57 = 0
+
+&blocklist = ""
+
+&pre = "&8[&bChunk&8] &f"
+
+#xpos1 = %XPOS%+8
+#ypos1 = 0
+#zpos1 = %ZPOS%+8
+
+#xpos2 = %XPOS%-7
+#ypos2 = 15
+#zpos2 = %ZPOS%-7
+
+#xpos4 = %XPOS%
+#ypos4 = %YPOS%
+#zpos4 = %ZPOS%
+
+
+LOGTO(diamonds-%#xpos4%-%#ypos4%-%#zpos4%.txt,"---------------------------------------------------------------------------")  
+
+
+unsafe(0)
+
+	FOR(#ypos3,%#ypos1%,%#ypos2%)
+
+		LOG(%#ypos3%)
+
+		FOR(#xpos3,%#xpos1%,%#xpos2%)
+
+
+			FOR(#zpos3,%#zpos1%,%#zpos2%)
+
+				//LOG(%#zpos3%)
+				GETID(%#xpos3%,%#ypos3%,%#zpos3%,&curblock)
+				#curblock = ITEMID(%&curblock%)
+
+				IFMATCHES(%#curblock%,"52|56|57|12|11")
+
+					LOGTO(diamonds-%#xpos4%-%#ypos4%-%#zpos4%.txt,"[%#xpos3%,%#ypos3%,%#zpos3%] %&curblock%")        
+					INC(#%&curblock%%#curblock%,1)
+
+				ENDIF
+
+				INC(@#progress,1)
+				SETLABEL(progress,%@#progress%)
+
+			NEXT
+		 
+		NEXT
+
+	NEXT
+
+endunsafe
+
+
+#redstone_ore = %#redstone_ore73% + %#lit_redstone_ore74%
+
+LOGTO(diamonds-%#xpos4%-%#ypos4%-%#zpos4%.txt,"---------------------------------------------------------------------------")
+LOG(%&pre% Blocklist:)
+LOG()
+LOG(%&pre% Diamond Ore   : %#diamond_ore56%)
+LOG(%&pre% Diamond Block : %#diamond_block57%)
+LOG(%&pre% Spawner       : %#spawner52%)
+
+SET(@#pos1,0)
+SET(@#pos2,0)
+LOG(%&pre% Finished)
+
+}$$

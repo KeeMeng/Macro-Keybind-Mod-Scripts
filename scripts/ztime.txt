@@ -1,0 +1,7 @@
+$${
+
+do()
+setlabel(TIME,&6[Time] &e%TIME%)
+loop
+
+}$$

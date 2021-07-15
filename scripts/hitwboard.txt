@@ -1,0 +1,116 @@
+
+unset(@lobby)
+
+do
+
+
+    #count = 0
+
+    &names = ""
+    &wins = ""
+    &rounds = ""
+    &qualifiers = ""
+    &finals = ""
+
+    unset(grey)
+
+    foreach(players)
+        
+        if(grey)
+            &color = "&7"
+        else
+            &color = "&f"
+        endif
+        toggle(grey)
+        
+        indexof(@&cachednames[],#isin,"%PLAYERNAME%")
+        if(#isin == -1)
+        
+            indexof(@&storenames[],#isin,"%PLAYERNAME%")
+            if(@lobby)
+            
+                &names = "%&names%%&color%%PLAYERNAME%\n"
+                &player[] = hitwstats("%PLAYERUUID%")
+                #w = 0
+                #r = 0
+                #q = 0
+                #f = 0
+                foreach(&player[],&stat,#isin)
+                    ifmatches(%&stat%,"hitw_record_q::(\d+)",#q,1)
+                    endif
+                    ifmatches(%&stat%,"rounds_hole_in_the_wall::(\d+)",#r,1)
+                    endif
+                    ifmatches(%&stat%,"hitw_record_f::(\d+)",#f,1)
+                    endif
+                    ifmatches(%&stat%,"wins_hole_in_the_wall::(\d+)",#w,1)
+                    endif
+                next
+                @&cachednames[] = %PLAYERNAME%
+                
+                if(#isin == -1)
+                
+                    @&storenames[] = "%PLAYERNAME%"
+                    @&store[] = "%#w%;%#r%;%#q%;%#f%"
+                    
+                else
+                
+                    @&store[%#isin%] = "%#w%;%#r%;%#q%;%#f%"
+                
+                endif
+                
+                &wins = "%&wins%%&color%%#w%\n"
+                &rounds = "%&rounds%%&color%%#r%\n"
+                &qualifiers = "%&qualifiers%%&color%%#q%\n"
+                &finals = "%&finals%%&color%%#f%\n"
+                    
+            else
+            
+                if(#isin == -1)
+            
+                    &names = "%&names%%&color%%PLAYERNAME%\n"
+                    &wins = "%&wins%\n"
+                    &rounds = "%&rounds%\n"
+                    &qualifiers = "%&qualifiers%\n"
+                    &finals = "%&finals%\n"
+                
+                else
+                
+                    &names = "%&names%%&color%%PLAYERNAME%\n"
+                    &cache = "%@&store[%#isin%]%"
+                    split(";",%&cache%,&out[])
+                    &wins = "%&wins%%&color%%&out[0]%\n"
+                    &rounds = "%&rounds%%&color%%&out[1]%\n"
+                    &qualifiers = "%&qualifiers%%&color%%&out[2]%\n"
+                    &finals = "%&finals%%&color%%&out[3]%\n"
+                
+                endif               
+            endif
+        else
+        
+            indexof(@&storenames[],#isin,"%PLAYERNAME%")
+            &names = "%&names%%&color%%PLAYERNAME%\n"
+            &cache = "%@&store[%#isin%]%"
+            split(";",%&cache%,&out[])
+            &wins = "%&wins%%&color%%&out[0]%\n"
+            &rounds = "%&rounds%%&color%%&out[1]%\n"
+            &qualifiers = "%&qualifiers%%&color%%&out[2]%\n"
+            &finals = "%&finals%%&color%%&out[3]%\n"
+        
+        endif       
+        
+        
+        if(#count > 15)
+            break
+        endif
+    next
+    
+    @&hitwnames = "%&names%"
+    @&hitwwins = "%&wins%"
+    @&hitwrounds = "%&rounds%"
+    @&hitwqualifiers = "%&qualifiers%"
+    @&hitwfinals = "%&finals%"
+    
+    
+    wait(3)
+    
+loop

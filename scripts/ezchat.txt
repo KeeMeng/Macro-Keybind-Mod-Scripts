@@ -1,0 +1,10 @@
+$${
+
+IF(@#ezchat>=1)
+    SET(@#ezchat,0);
+    SETPROPERTY(ezchat,text,Disabled)
+ELSE;
+    INC(@#ezchat,1);
+    SETPROPERTY(ezchat,text,Enabled)
+ENDIF
+}$$

@@ -1,0 +1,274 @@
+$${
+
+&commandtopv = "/pv $i"
+&commandtoec = "/enderchest"
+#amountofpv = 4
+#itemmovedelayinms = 200
+
+//-------------------------------------------------
+
+unset(&items[])
+&items[] = "log:0#256#ec"
+&items[] = "cooked_fish#1920#pv"
+
+do()
+// Stage 1: Gathering 256 Wood:0 (ec) and 1920 Cooked fish (pv)
+
+	foreach(&items[],&item,#i)
+		split("#",%&item%,&data[])
+		&itemtoget = %&data[0]%
+		
+		set(#amount,%&data[1]%)
+		&inv = %&data[2]%
+		
+		#iterations = 0
+		
+		if(&inv == "ec")
+			#iterations = 2
+		elseif(&inv == "pv")
+			#iterations = %#amountofpv%
+		endif
+		
+		GUI(inventory)
+
+		for(#slot,9,44)
+		
+			getslotitem(%#slot%,&id,#stack,#datavar)
+			
+			unset(bool)
+			ifcontains(%&itemtoget%,":")
+				&store = "%&id%:%#datavar%"
+				if(&store == &itemtoget)
+					set(bool)
+				endif
+			else
+				if(&id == &itemtoget)
+					set(bool)
+				endif
+			endif
+			
+			if(bool)
+				dec(#amount,%#stack%)
+			endif
+		
+		next
+		
+		log(%#amount%)
+		
+		if(#amount > 0)
+				
+			for(#pv,1,%#iterations%)
+				if(GUI != "NONE")
+					PRESS(ESC)
+				endif
+				if(GUI != "NONE")
+					GUI()
+				endif
+				do()
+				while(GUI != "NONE")
+				wait(1)
+				
+				if(&inv == "ec")
+					&cmd = %&commandtoec%
+				elseif(&inv == "pv")
+					&cmd = %&commandtopv%
+					replace(&cmd,"$i","%#pv%")
+				endif
+				log(%&cmd%)
+				echo("%&cmd%")
+				do()
+				while(GUI == "NONE")
+				
+				#slot = -1
+				#lastslot = -1
+				
+				getslot(%&itemtoget%,#slot)
+				
+				
+				do()
+				
+					if(&inv == "pv")
+						#elastslot = -1
+						getslot("emerald",#eslot,54)
+						do()
+							#elastslot = %#slot%
+							slotclick(%#eslot%,,1)
+							getslot("emerald",#eslot,54)
+						while((#eslot != -1) && (#elastslot != #eslot))
+					endif
+
+					getslotitem(%#slot%,,#stack)
+					
+					if(#stack > #amount)
+					
+						getslot("air",#emptyslot)
+					
+						#lastslot = %#slot%
+						#half = #stack/2
+						
+						ifmatches("%#stack%","\d*[13579]")
+							inc(#half)
+						endif
+						
+						if(#half < #amount)
+							
+							slotclick(%#slot%,RMB)
+							slotclick(%#emptyslot%)
+							#amountofclicks = #amount-#half
+							slotclick(%#slot%)
+							for(#i,1,%#amountofclicks%)
+								slotclick(%#emptyslot%,RMB)
+							next
+							slotclick(%#slot%)
+							if(#emptyslot < 27)
+								slotclick(%#emptyslot%,,1)
+							endif
+							
+						elseif(#half > #amount)
+						
+							slotclick(%#slot%,RMB)
+							#amountofclicks = #half-#amount
+							for(#i,1,%#amountofclicks%)
+								slotclick(%#slot%,RMB)
+							next
+							slotclick(%#emptyslot%)
+							if(#emptyslot < 27)
+								slotclick(%#emptyslot%,,1)
+							endif
+							
+							log(2)
+						
+						elseif(#half == #amount)
+						
+							slotclick(%#slot%,RMB)
+							slotclick(%#emptyslot%)
+							if(#emptyslot < 27)
+								slotclick(%#emptyslot%,,1)
+							endif
+							
+							log(3)
+							
+						endif
+						
+						#amount = 0
+					
+					else 
+					
+						#lastslot = %#slot%
+						slotclick(%#slot%,,1)
+						dec(#amount,%#stack%)
+						
+					endif
+					getslot(%&itemtoget%,#slot)
+					wait(%#itemmovedelayinms%ms)
+				
+				while((#slot < 54) && (#slot > -1) && (#lastslot != #slot) && (#amount > 0))
+				if(#amount == 0)
+					break
+				endif
+				
+			next
+			
+		endif
+		
+	next
+
+//Stage pre1.5: Open Villager
+
+	if(GUI != "NONE")
+		GUI()
+	endif
+	log("Villager")
+	wait(5)
+	key(use)
+	
+// Stage 1.5: Calc amount of trades
+
+	unsafe()
+	
+		#trades = 0
+		
+		#wood = 0
+		#fish = 0
+		
+		for(#slot,3,38)
+		
+			getslotitem(%#slot%,&id,#stack,#data)
+			
+			if((&id == "log") && #data == 0)
+			
+				inc(#wood,%#stack%)
+				
+			elseif(&id == "cooked_fish")
+			
+				inc(#fish,%#stack%)
+			
+			endif
+		
+		next
+		
+		#fishtrades = %#fish%/2
+		
+		#woodtrades = 0
+		
+		do()
+			inc(#woodtrades,1)
+			dec(#wood,16)
+		while(#wood >= 16)
+		
+		if(#woodtrades > #fishtrades)
+			#trades = #fishtrades
+		else
+			#trades = #woodtrades
+		endif
+		
+	endunsafe()
+
+// Stage 2: Exchange Fish and Wood to emeralds
+
+	getslot("log:0",#woodslot,3)
+	getslot("cooked_fish",#fishslot,3)
+		
+	do()
+	
+		if(#woodslot > -1)
+			slotclick(%#woodslot%)
+			wait(100ms)
+			slotclick(1)
+			wait(100ms)
+			slotclick(%#woodslot%)
+			wait(100ms)
+		endif
+		
+		if(#fishslot > -1)
+			slotclick(%#fishslot%)
+			wait(100ms)
+			slotclick(0)
+			wait(100ms)
+			slotclick(%#fishslot%)
+			wait(100ms)
+		endif
+		
+		slotclick(2,,1)
+	
+		getslot("log:0",#woodslot,3)
+		getslot("cooked_fish",#fishslot,3)
+		
+		getslotitem(0,,#fishstacked)
+		getslotitem(1,,#woodstacked)
+		
+		wait(1)
+	
+	while(((#woodslot > -1) || (#woodstacked >= 2)) && ((#fishslot > -1) || (#fishstacked >= 16)))	
+	
+	wait(100ms)
+	slotclick(0,,1)
+	wait(100ms)
+	slotclick(1,,1)
+
+	wait(1)
+// Stage 4: Repeat
+
+while(#trades > 0)
+
+}$$

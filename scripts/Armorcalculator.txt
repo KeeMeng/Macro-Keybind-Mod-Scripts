@@ -1,0 +1,47 @@
+$${
+
+UNSET(#armor)
+UNSET(#armorprot)
+UNSET(#to100)
+UNSET(&protlvl[])
+UNSET(&protection)
+UNSET(#prots)
+
+PROMPT(#armor,"$$[Armor]")
+PROMPT(&protection,"$$[Protectionlvl]")
+
+#armorprot=4*%#armor%
+#to100=100-%#armorprot%
+
+SPLIT(",",%&protection%,&protlvl[])
+
+UNSET(#prots)
+
+FOR(#n,0,3)
+
+  SET(#thisprot,%&protlvl[%#n%]%)
+  IF(#thisprot==4)
+    #thisprot=5
+  ELSEIF(#thisprot>=5)
+    #thisprot=%#thisprot%+1
+  ENDIF
+
+  #prots=%#prots%+%#thisprot%
+
+NEXT
+
+#protsmin=%#prots%*2*%#to100%
+
+IF(#prots>=21)
+
+  #protmax=80*%#to100%
+
+ELSE
+
+  #protmax=%#prots%*4*%#to100%
+
+ENDIF
+
+LOG(%#armorprot% %#protmax% %#protsmin%)
+
+}$$

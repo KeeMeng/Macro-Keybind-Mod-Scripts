@@ -1,0 +1,9 @@
+if(@getmsg=1)
+wait(5t)
+prompt(@&msg,"$$[msg]","lalala",true)
+
+wait(5t)
+log("Stuff 1")
+log("Stuff 2")
+unset(@getmsg)
+endif

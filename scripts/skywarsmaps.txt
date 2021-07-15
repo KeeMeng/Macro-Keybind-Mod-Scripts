@@ -1,0 +1,7 @@
+$${
+
+&string="ballons monstercube icedragon oldtowers vulkan tominia slimeinsel tristes mesa marterpfahl reis whitedark karrasko palast idyll yoshi whitecube inselana grabmal durcheinander osternest starwars ruine frauen pyramide futuristic fantasy gleise chinatown stadt eiswaffel farmland coloseum burger schnecke bauernhof bagger sponge oldworld slime apfelbaum wood town nordlicht antike bankraub nyancat balloon endfight youtuber2 tropical blattbunt deponia totem icedream angel1 nutella roboter piratebay megaslime happymeal netherinsel bundesliga pixelart jump hotdog iglu enderdragon zelt iceclaws muffin universe magicforest propeller qualle luftkrieg dimension red greenmonado steinbucht wonderland luftkriege theend smilie hawana atlantis heliangriff holzhaus evoli deserthouse wildness snowman iceempire capsquad orz baum mukaso valentinstag handwerk christmas mine prismarin sand stoneturtle tropicaldeath pilzland goldrush"
+LOG(%&string%)
+SPLIT(" ",%&string%,@&skywarsmaps[])
+
+}$$

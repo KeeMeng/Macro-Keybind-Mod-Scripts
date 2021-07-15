@@ -1,0 +1,120 @@
+unset(&salvage[])
+unset(&putaway[])
+
+&salvage[] = "iron_helmet"
+&salvage[] = "iron_chestplate"
+&salvage[] = "iron_leggings"
+&salvage[] = "iron_boots"
+&salvage[] = "leather_helmet"
+&salvage[] = "leather_chestplate"
+&salvage[] = "leather_leggings"
+&salvage[] = "leather_boots"
+&salvage[] = "golden_helmet"
+&salvage[] = "golden_chestplate"
+&salvage[] = "golden_leggings"
+&salvage[] = "golden_boots"
+&salvage[] = "diamond_helmet"
+&salvage[] = "diamond_chestplate"
+&salvage[] = "diamond_leggings"
+&salvage[] = "diamond_boots"
+
+&putaway[] = "chainmail_helmet"
+&putaway[] = "chainmail_chestplate"
+&putaway[] = "chainmail_leggings"
+&putaway[] = "chainmail_boots"
+
+#startyaw = %YAW%
+
+look(west)
+key(use)
+do()
+while(GUI != "GUICHEST")
+
+#start = %CONTAINERSLOTS%-35
+#end = %CONTAINERSLOTS%
+
+for(#slot,%#start%,%#end%)
+	getslotitem(%#slot%,&id)
+	indexof(&putaway[],#isin,%&id%)
+	if(#isin >= 0)
+		slotclick(%#slot%,,1)
+	endif
+next
+
+gui()
+
+look(south)
+
+gui(inventory)
+
+do()
+while(GUI != "GUIINVENTORY")
+
+#start = %CONTAINERSLOTS%-37
+#end = %CONTAINERSLOTS%-2
+
+do()
+	unset(#found[])
+
+	for(#slot,%#start%,%#end%)
+
+		getslotitem(%#slot%,&id)
+		indexof(&salvage[],#isin,%&id%)
+
+		if(#isin >= 0)
+			arraysize(#found[],#size)
+			slotclick(%#slot%)
+			#slottoput = #end+#size-8
+			getslotitem(%#slottoput%,&id)
+			if(&id == "air")
+				#found[] = -1
+				slotclick(%#slottoput%)
+			else
+				#found[] = %#slot%
+				slotclick(%#slottoput%)
+				slotclick(%#slot%)
+			endif
+			if(#size == 7)
+				break
+			endif
+		endif
+	next
+	
+	press(escape)
+	
+	do()
+	while(GUI != "NONE")
+	
+	arraysize(#found[],#size)
+	
+	for(#i,1,%#size%)
+	
+		slot(%#i%)
+		wait(1t)
+		key(use)
+		wait(700ms)
+	
+	next
+	
+	gui(inventory)
+
+	do()
+	while(GUI != "GUIINVENTORY")
+	
+	foreach(#found[],#f,#i)
+	
+		#slottotake = #end+#i-8
+		
+		if(#found >= 0)
+		
+			slotclick(%#slottotake%)
+			slotclick(%#f%)
+		
+		endif
+	
+	next
+	
+while(#size > 0)
+
+look(%YAW%,0)
+

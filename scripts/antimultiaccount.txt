@@ -1,0 +1,27 @@
+
+IF(@multiacc)
+
+  &msg=%CHAT%
+
+  &pre="&8[&bMacro&8]&f"
+
+  IFCONTAINS(%&msg%,"§r§3")
+    IFCONTAINS(%&msg%,"§r§f,")
+
+      UNSET(#choosen)
+      UNSET(&names[])
+
+      STRIP(&chat,%&msg%)
+      REPLACE(&chat," ","")
+  
+      JOIN("|",@&multinames[],&zwischen)
+      SPLIT("|",%&zwischen%,@&oldmultinames[])
+
+      SPLIT(",","%&chat%",@&multinames[])
+
+      FILTER()
+
+    ENDIF
+  ENDIF
+ENDIF
+

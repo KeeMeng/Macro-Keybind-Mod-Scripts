@@ -1,0 +1,109 @@
+$${
+
+SET(&path,"C:\\\\Users\\\\redacted\\\\AppData\\\\Roaming\\\\.minecraft_1.11\\\\liteconfig\\\\common\\\\macros\\\\logs\\\\gebannt.txt")
+
+READFILE(&banned[],%&path%)
+
+&pre="&8[&bMacro&8]&f"
+
+
+IFCONTAINS(%CHAT%,"§r§3")
+  IFCONTAINS(%CHAT%,"§r§f,")
+
+    IF(@galookup)
+      INC(@#gatester,1)
+      LOGTO(antiglobal.txt,"%CHAT%")
+    ENDIF
+
+
+    IF(@multiacc)
+
+    ELSE
+
+      SET(@multiacc)
+
+      UNSET(#choosen)
+      UNSET(&names[])
+
+      STRIP(&chat,%CHAT%)
+      REPLACE(&chat," ","")
+      SPLIT(",","%&chat%",@&multinames[])
+
+      ARRAYSIZE(@&multinames[],#size)
+      IF(#size>=3)
+
+        IF(@galookup)
+
+
+        ELSE
+
+          LOG(%&pre% Multiaccount detected)
+          LOG(%&pre% /multi yes/no to akzept/deny)
+ 
+          DO()
+
+          UNTIL(@#multiaccchoose>=1)
+
+          #choosen=%@#multiaccchoose%
+          @#multiaccchoose=0
+          LOG(%#choosen%)
+  
+          IF(#choosen==2)
+          
+            IF(!@spbotshutdown)
+
+              ARRAYSIZE(@&multinames[],#multisize)
+              DEC(#multisize,1)
+              #ammount = 0
+
+              FOR(#multi,0,%#multisize%)
+
+                INDEXOF(&banned[],#isin,"%@&multinames[%#multi%]%")
+
+                IF(#isin==-1)
+
+                  INC(#ammount,1)
+                  LOGTO(gebannt.txt,"%@&multinames[%#multi%]%")
+                  ECHO(/gban %@&multinames[%#multi%]% Multiaccount %@&spbotlt%)
+                  WAIT(300ms)
+
+                ENDIF
+ 
+              NEXT
+
+              IF(!@&spbotlt == "")
+            
+                ECHO("/sp spbot » Task finished (%#ammount% of %#multisize% new Accounts found)")
+            
+              ELSE
+            
+                LOG("%&pre% Task finished (%#ammount% of %#multisize% new Accounts found)")
+             
+              ENDIF
+              
+            ELSE
+            
+              ECHO(/multiban %@&lastlookupip%)
+            
+            ENDIF
+
+          ELSE
+
+            LOG(%&pre% Permission denied)
+    
+          ENDIF
+
+        ENDIF     
+
+      ENDIF
+
+      UNSET(@multiacc)
+
+    ENDIF
+
+    UNSET(@spbot)
+
+  ENDIF
+ENDIF
+
+}$$

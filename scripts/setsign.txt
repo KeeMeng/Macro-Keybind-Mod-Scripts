@@ -1,0 +1,59 @@
+$${
+
+ARRAYSIZE(@&signtext,#size)
+#size=%#size%-1
+ECHO(/gamemode 1)
+PRESS(SPACE)
+PRESS(SPACE)
+
+
+
+FOR(#i,0,%#size%)
+
+  SPLIT(",",%@&signpos[%#i%]%,&pos)
+  SET(#x,%&pos[0]%)
+  SET(#y,%&pos[1]%)
+  #y = %#y%-1
+  SET(#z,%&pos[2]%)
+
+  IF(%@&signface[%#i%]%="W")
+    #dir=90
+  ELSE
+    IF(%@&signface[%#i%]%="N")
+      #dir=180
+    ELSE
+      IF(%@&signface[%#i%]%="E")
+        #dir=270
+      ELSE
+        IF(%@&signface[%#i%]%="S")
+          #dir=0
+        ENDIF
+      ENDIF
+    ENDIF
+  ENDIF
+
+  ECHO(/tppos %#x% %#y% %#z% %#dir%  0)
+
+  WAIT(200ms)
+
+  IF((HITID=="standing_sign")||(HITID=="wall_sign"))
+
+    KEY(attack)  
+
+  ENDIF
+
+  WAIT(200ms)
+ 
+  PICK(sign)
+  PLACESIGN([swr],%@&signtext[%#i%]%,,,1)
+  WAIT(600ms)
+  PRESS(ESCAPE)
+
+
+  WAIT(100ms)
+  
+NEXT
+
+
+
+}$$

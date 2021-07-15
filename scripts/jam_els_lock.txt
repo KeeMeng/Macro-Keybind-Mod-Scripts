@@ -1,0 +1,10 @@
+do
+
+    if(GUI != "GUICHAT")
+    
+        log("&4Please wait until the action has finished before closing the chat")
+        gui(chat)
+    
+    endif
+
+loop

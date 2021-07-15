@@ -1,0 +1,21 @@
+$${
+
+#dist=0
+
+TRACE(20,true)
+
+//IF(!%TRACEUUID%=="")
+
+DO()
+
+  CALCYAWTO(%TRACEX%,%TRACEZ%,#yaw,#dist)
+  INC(#yaw,180)
+  LOOKS(%#yaw%,0)
+  LOG(%TRACEDATA%)
+
+WHILE((#dist<20)||(#dist==0))
+
+//ENDIF
+
+}$$
+

@@ -1,0 +1,72 @@
+
+
+&pre = "&8[&bMacro&8]&f"
+
+if(@#forcereload == 1||!@&playerdate==%DATE%)
+
+  @&playerdate = %DATE%
+
+  SET(&path,"C:\\\\Users\\\\redacted\\\\AppData\\\\Roaming\\\\.minecraft_1.11\\\\liteconfig\\\\common\\\\macros\\\\configs\\\\y_player_config.txt")
+
+  READFILE(&config[],"%&path%")
+
+  ARRAYSIZE(&config[],#size)
+  DEC(#size,1)
+
+  UNSET(&overarray)
+  UNSET(&underarray)
+  UNSET(@&creative[])
+  UNSET(@&city[])
+  UNSET(@&skyblock[])
+  UNSET(@&games[])
+
+  FOR(#i,0,%#size%)
+
+
+    IFMATCHES(%&config[%#i%]%,"^\#\#.+")
+
+      MATCH(%&config[%#i%]%,"^\#\#(.+)",{&overarray})
+      LOG(%&pre% %&overarray%)
+      LCASE(%&overarray%,&overarray)
+      UNSET(@&%&overarray%[])
+
+    ELSE
+
+      IFMATCHES(%&config[%#i%]%,"^\/\/.+")
+        MATCH(%&config[%#i%]%,"^\/\/(.+)",{&underarray})
+        LCASE(%&underarray%,&underarray)
+
+        IF(&underarray == "none")
+          &underarray = ""
+        ENDIF
+
+      ELSEIF(!&config[%#i%]=="")
+
+        OLDNAME(&response[],%&config[%#i%]%)
+        ARRAYSIZE(&response[],#size2)
+        DEC(#size2,1)
+        MATCH(%&response[%#size2%]%,"\"(.+?)\"",{&store})
+ 
+        IF(!&overarray=="")
+ 
+          @&%&overarray%[]= %&store%
+
+        ENDIF
+
+        IF(!&underarray=="")
+
+          @&%&underarray%[]= %&store%
+
+        ENDIF
+
+      ENDIF
+
+    ENDIF
+
+  NEXT
+
+ELSE
+
+  LOG(%&pre% Skiped loading)
+
+ENDIF

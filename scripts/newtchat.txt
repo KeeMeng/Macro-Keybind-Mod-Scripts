@@ -1,0 +1,35 @@
+$${
+
+UNSAFE()
+
+IFMATCHES(%CHAT%,"(?:\§r\§7\(\§r\§b.+?\§r\§7\) )?\§r\§([0-9,a-f])(.+?) (?:\§r\§[0-9,a-f])?\| (?:\§r\§[0-9,a-f])?(.+?)\§r\§8\» \§r\§[0-9,a-f](.+?)\§r",{&color,&rank,&name,&chat})
+MATCH(%CHAT%,"(?:\§r\§7\(\§r\§b.+?\§r\§7\) )?\§r\§([0-9,a-f])(.+?) (?:\§r\§[0-9,a-f])?\| (?:\§r\§[0-9,a-f])?(.+?)\§r\§8\» \§r\§[0-9,a-f](.+?)\§r",{&color,&rank,&name,&chat})
+
+
+LCASE(%&rank%,&rank)
+
+//LOG(%&color% %&rank% %&name%)
+
+INDEXOF(@&nt%&rank%,#isin,%&name%)
+
+IF(#isin>=0)
+
+  ELSE
+
+
+    @&nt%&rank%[]="%&name%"
+
+  ENDIF
+
+
+  INDEXOF(@&nt[],#isin,"%&rank%")
+  IF(#isin<0)
+    @&nt[]="%&rank%"
+    @&ntcolor[]="%&color%"
+  ENDIF
+
+ENDIF
+
+ENDUNSAFE()
+
+}$$

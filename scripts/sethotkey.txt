@@ -1,0 +1,9 @@
+$${
+IF(@#hotkey>=1)
+    SET(@#hotkey,0);
+    SETLABEL(hotkeymode,Fast\nklick\nmode)
+ELSE;
+    INC(@#hotkey,1);
+    SETLABEL(hotkeymode,Ban\nmode)
+ENDIF
+}$$

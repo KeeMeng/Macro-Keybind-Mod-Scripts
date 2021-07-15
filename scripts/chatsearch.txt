@@ -1,0 +1,11 @@
+$${
+
+PROMPT(&search,"$$[RegEx]","Enter the RegEx",true)
+
+@&searchregex = %&search%
+
+EXEC(chatlog.txt)
+
+SHOWGUI(chatlog)
+
+}$$

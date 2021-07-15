@@ -1,0 +1,18 @@
+ifmatches(%CHATCLEAN%,"Playing effect %@&elsparticles% for \d+ times?")
+    filter
+endif
+
+if(@elsbuilding)
+
+    if(CHATCLEAN == "Block placed")
+        filter
+    endif
+    
+    ifmatches(%CHATCLEAN%,"Teleported %PLAYER% to -?\d+\.\d+, -?\d+\.\d+, -?\d+\.\d+")
+        filter
+    endif
+    
+    ifmatches("%CHATCLEAN%","Your game mode has been updated to .+ Mode")
+        filter
+    endif
+endif

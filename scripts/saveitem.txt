@@ -1,0 +1,60 @@
+$${
+IF((HITID=="standing_sign")||(HITID=="wall_sign"))
+  PROMPT(&thisitem,$$i)
+  INDEXOF(@&itemsignpos[],#outvar,"%HITX%,%HITY%,%HITZ%")
+
+  IF(#outvar>=0)
+    PROMPT(&answer,"$$[[Überschreiben,Ja,Nein]]")
+        
+    IF(&answer=="Ja")
+      #tester=ITEMID(%&thisitem%)
+      LOG(%#tester%)
+          
+      IF(#tester==-1)
+              
+        LOG(&cFehlerhaftes Item bitte bescheidgeben)  
+        LOG(&cError: %&thisitem%)   
+                             
+      ELSE
+                  
+        @&itemsignpos[%#outvar%]="%HITX%,%HITY%,%HITZ%"
+        @&itemsign[%#outvar%]="%&thisitem%"
+                
+      ENDIF
+                   
+    ENDIF
+                
+  ELSE
+
+    INDEXOF(@&itemsign[],#outvar,"%&thisitem%")
+    IF(#outvar>=0)
+      PROMPT(&answer,"$$[[Überschreiben,Ja,Nein]]")
+      IF(&answer=="Ja")
+        #tester=ITEMID(%&thisitem%)
+        LOG(%#tester%)
+        IF(#tester==-1)
+          LOG(&cFehlerhaftes Item bitte bescheidgeben)  
+          LOG(&cError: %&thisitem%)                 
+                
+        ELSE
+          @&itemsignpos[%#outvar%]=%HITX%,%HITY%,%HITZ%
+          @&itemsign[%#outvar%]=%&thisitem% 
+              
+        ENDIF
+      ENDIF
+    ELSE
+      #tester=ITEMID(%&thisitem%)
+      IF(#tester==-1)
+        LOG("&cFehlerhaftes Item bitte bescheidgeben")
+        LOG("&cError: %&thisitem%")       
+      ELSE
+        @&itemsignpos[]="%HITX%,%HITY%,%HITZ%"
+        @&itemsign[]="%&thisitem%"
+      ENDIF
+         
+    ENDIF
+            
+  ENDIF
+
+ENDIF
+}$$

@@ -1,0 +1,13 @@
+$${
+
+UNSET(@#ticks)
+
+DO()
+
+  WAIT(1000ms)
+  INC(@#ticks,1)
+
+LOOP()
+
+
+}$$

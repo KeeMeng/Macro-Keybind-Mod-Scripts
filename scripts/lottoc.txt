@@ -1,0 +1,83 @@
+$${
+
+UNSET(@&blacklist[])
+
+//@&blacklist[]="KeschiTV"
+
+IF(@#lotto_running=1)
+
+  IFCONTAINS(%CHAT%," Money §r§7gegeben.§r")
+
+    IFCONTAINS(%CHAT%,"Du hast")
+      STOP()
+    ENDIF
+
+    &lotto_player = ""
+
+    STRIP(&chat,%CHAT%)
+    REPLACE(&chat,"SkyGrid » ","")
+    MATCH(%&chat%,"hat dir (.*) Money gegeben",{&paidammount})
+    MATCH(%&chat%," (.*) hat dir",{&lotto_player})
+
+
+    &cmd   = "/tellraw %&lotto_player%"
+
+    SET(#paidammount,%&paidammount%)
+
+
+//--------------------------------------------------------------------------------
+
+    INDEXOF(@&teilnehmer[],#lotto_isin,%&lotto_player%)
+
+    IF(&lotto_player==@&hoster)
+      ECHO("%&cmd% \"[Lotto] Für diese frechheit behalt ich dein Geld\"")
+    ELSE
+
+      INDEXOF(@&blacklist[],#isfor,%&lotto_player%)
+
+      IF(#isfor>=0)
+
+        ECHO("%&cmd% \"[Lotto] Du bist vom Lotto ausgeschlossen.\"")
+        ECHO(/pay %&lotto_player% %#paidammount%)
+        
+      ELSE
+
+//        IF(@&lastwinner==%&lotto_player%) 
+
+//          ECHO("%&cmd% \"[Lotto] Da du das letzte lotto gewonnen hast kannst du nicht Teilnehmen\"")
+//          ECHO(/pay %&lotto_player% %#paidammount%)
+
+//        ELSE
+
+          IF((#lotto_isin==-1)&&(#paidammount==@#einsatz))
+
+            @&teilnehmer[]="%&lotto_player%"
+            ECHO("%&cmd% \"[Lotto] Du bist nun Teilnehmer\"")
+    
+          ELSE
+
+            IF(#lotto_isin>=0)
+
+              ECHO("%&cmd% \"[Lotto] Du bist bereits Teilnehmer\"")
+              ECHO(/pay %&lotto_player% %#paidammount%)
+ 
+            ELSE
+ 
+              ECHO("%&cmd% \"[Lotto] Du musst mir %@#einsatz% Money geben\"")
+              ECHO(/pay %&lotto_player% %#paidammount%)
+
+            ENDIF
+
+          ENDIF
+
+//        ENDIF
+
+      ENDIF
+
+    ENDIF
+
+  ENDIF
+
+ENDIF
+
+}$$

@@ -1,0 +1,54 @@
+$${
+
+DO()
+
+  FOREACH(effects)
+
+    &effecttime[] ="%EFFECTTIME%"
+    &effect[]     ="%EFFECT%"
+    &effectid[]   ="%EFFECTID%"
+    &effectpower[]="%EFFECTPOWER%"
+
+  NEXT
+
+  ARRAYSIZE(&effect,#size)
+
+  IF(%#size%>0)
+    #size=%#size%-1
+    FOR(#i,0,%#size%)
+
+      &time = "%&time%\n[%&effecttime[%#i%]%]"
+      &name = "%&name%\n%&effect[%#i%]%"
+      &id   = "%&id%\n(#%&effectid[%#i%]%)"
+      &power= "%&power%\n%&effectpower[%#i%]%"
+
+    NEXT
+
+    SETLABEL(effecttime,%&time%)
+    SETLABEL(effectname,%&name%)
+    SETLABEL(effectid,%&id%)
+    SETLABEL(effectpower,%&power%)
+
+    UNSET(&effecttime[])
+    UNSET(&effect[])
+    UNSET(&effectid[])
+    UNSET(&effectpower[])
+    UNSET(&time)
+    UNSET(&name)
+    UNSET(&id)
+    UNSET(&power)
+    UNSET(#size)
+
+  ELSE
+
+    SETLABEL(effecttime,)
+    SETLABEL(effectname,)
+    SETLABEL(effectid,)
+    SETLABEL(effectpower,)
+
+
+  ENDIF
+
+LOOP
+
+}$$

@@ -1,0 +1,231 @@
+$${
+
+&errcolor="&c"
+//Color used to display Errors
+&ncolor="&a"
+//Color used to display the teamnames.
+&tcolor="&f"
+//Color used to display anything else.
+
+&pre="&8[&bConfig&8]"
+ARRAYSIZE(@&teams[])
+IF(@&teams>=0)
+  JOIN(",",@&teams[],&teams)
+ELSE
+
+  &teams=""
+
+ENDIF
+LOG(%&teams%)
+REPLACE(&teams,",,",",")
+
+IFMATCHES(%&teams%,"^\,(.+)")
+	MATCH(%&teams%,"^\,(.+)",{&teams})
+ENDIF
+
+IFMATCHES(%&teams%,"(.+)\,$")
+	MATCH(%&teams%,"(.+)\,$",{&teams})
+ENDIF
+PROMPT(&action,"$$[[Add,%&teams%,,Cancel]]")
+
+IF(&action=="Add")
+
+    PROMPT(&name,"$$[Teamname]")
+    INDEXOF(@&teams[],#isin,%&name%)
+    INDEXOF(@&waypoints,#isin2,%&position%)
+    IF((#isin2==-1)&&(#isin==-1))
+
+        @&teams[]="%&name%"
+        LOG("%&pre%%&tcolor% Created new Team:\"%&ncolor%%&name%%&tcolor%\"")
+
+    ELSE
+
+        LOG("%&pre%%&errcolor% Error: 1 - Team already exist")
+
+    ENDIF
+
+ELSEIF(&action=="Cancel")
+
+ELSEIF(&action=="Removeall")
+
+  UNSET(@&teams[])
+  UNSET(@&teamscolors[])  
+
+ELSE
+
+    INDEXOF(@&teams[],#isin,%&action%)
+
+    IF(#isin>=0)
+
+        DO()
+      
+            PROMPT(&team,"$$[[List,Color: %@&teamscolors[%#isin%]%,Name: %@&teams[%#isin%]%,Delete,,Back]]")
+            IF(&team=="List")
+            
+                JOIN(",",@&%@&teams[%#isin%]%[],&inteam)
+                
+                PROMPT(&name,"$$[[Back,Add,%&inteam%]]")
+				
+				IF(&name=="Add")
+				
+					PROMPT(&newname,"$$[Name]")
+					INDEXOF(@&%@&teams[%#isin%]%[],#isin1,%&newname%)
+				  
+					IF(#isin1>=0)
+				  
+						LOG("%&pre%%&errcolor% Error: 2 - New name is already taken")
+				  
+					ELSEIF(&newname=="")
+					
+						LOG("%&pre%%&errcolor% Error: 3 - Invalid name: \"%&newname%\"")
+				  
+				    ELSE
+				  
+						@&%@&teams[%#isin%]%[]="%&add%"
+						
+					ENDIF
+				
+				ELSEIF(&name=="Back")
+				
+				
+				ELSE
+				
+					INDEXOF(@&%@&teams[%#isin%]%[],#isin2,%&name%)
+					PROMPT(&action,"$$[[Delete,Rename]]")
+					IF(&action=="Delete")
+					    
+						LOG("%&pre%%&tcolor% \"%&ncolor%%@&%@&teams[%#isin%]%[%#isin2%]%%&tcolor%\" deleted")  
+						ARRAYSIZE(@&%@&teams[%#isin%]%[],#size)
+						DEC(#size,2)
+						FOR(#i,%#isin2%,%#size%)
+						
+							#iup=%#i%+1
+							@&%@&teams[%#isin%]%[%#i%]=%@&%@&teams[%#isin%]%[%#iup%]%
+				
+						NEXT
+						
+						UNSET(@&%@&teams[%#isin%]%[%#iup%])
+					ELSEIF(&action=="Rename")
+
+						PROMPT(&newname,"$$[Name]")
+						INDEXOF(@&%@&teams[%#isin%]%[],#isin1,%&newname%)
+						
+						IF(&newname==@&%@&teams[%#isin%]%[%#isin2%])
+						
+							LOG("%&pre%%&errcolor% Error: 4 - Already the name")
+						
+						ELSEIF(#isin1>=0)
+						
+							LOG("%&pre%%&errcolor% Error: 2 - Name is already taken")
+						
+						ELSEIF(&newname=="")
+						
+							LOG("%&pre%%&errcolor% Error: 3 - Invalid name: \"%&newname%\"")
+						
+						ELSE
+						
+							@&%@&teams[%#isin%]%[%#isin2%]=%&newname%
+							LOG("%@&%@&teams[%#isin%]%[%#isin2%]%=%&newname%")
+						
+						ENDIF
+					
+					ENDIF
+						
+				ENDIF
+            
+            ELSEIF(&team=="Delete")
+            
+				ARRAYSIZE(@&teams[],#size)
+				DEC(#size,2)
+				FOR(#i,%#isin%,%#size%)
+				
+				    #iup=%#i%+1
+					@&teams[%#i%]=%@&teams[%#iup%]%
+					@&teamscolors[%#i%]=%@&teamscolors[%#iup%]%
+				
+				NEXT
+				
+				UNSET(@&teams[%#iup%])
+				UNSET(@&teamscolors[%#iup%])
+                BREAK()
+			
+            ELSEIF(&team=="Back")
+            
+                BREAK()
+            
+            ELSE
+            
+                IFCONTAINS(%&team%,"Color:")
+                    
+                    PROMPT(&newcolor,"$$[NewColor]")
+
+                    @&teamscolors[%#isin%]="%&newcolor%"
+                    &action="%&newcolor%"
+                    
+                ELSE
+                
+                    IFCONTAINS(%&team%,"Name:")
+                    
+                        PROMPT(&newname,"$$[NewName]")
+
+                        INDEXOF(@&teams[],#isin1,%&newname%)
+                        
+                        IF(#isin1>=0)
+
+                            LOG("%&pre%%&errcolor% Error: 2 - New name is already taken")       
+                        
+                        ELSE
+
+							JOIN("|",@&%@&teams[%#isin%]%[],&safe)
+							SPLIT("|",%&safe%,@&%&newname%[])
+                            LOG("%&pre%%&tcolor% New Name:\"%&ncolor%%&newname%%&tcolor%\"")
+                            @&teams[%#isin%]=%&newname%
+                            &action=%&newname%
+                        
+                        ENDIF
+                    
+                    ENDIF
+                    
+                ENDIF
+                
+            ENDIF
+                
+        LOOP()
+
+    ELSE
+
+        LOG("%&pre%%&errcolor% Error:3 - Not a valid Team: %&action%")    
+
+    ENDIF
+
+ENDIF
+
+UNSET(&action)
+UNSET(&ccolor)
+UNSET(&ncolor)
+UNSET(&tcolor)
+UNSET(&pre)
+
+UNSET(&name)
+UNSET(&warning)
+
+UNSET(&position)
+UNSET(&oldpos)
+UNSET(&oldname)
+UNSET(&list)
+UNSET(&server)
+UNSET(&wp)
+
+UNSET(#isin)
+UNSET(#isin1)
+UNSET(#isin2)
+UNSET(#size)
+UNSET(#break)
+UNSET(#dist)
+UNSET(#n)
+UNSET(#yaw)
+
+UNSET(&out[])
+UNSET(&lists[])
+
+}$$

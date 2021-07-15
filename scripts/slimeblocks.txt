@@ -1,0 +1,22 @@
+$${
+
+KEY(use)
+
+WAIT(300ms)
+
+DO(4)
+  
+  FOR(#i,1,9)
+
+    GETSLOT(slime_ball,#slot,10)
+    SLOTCLICK(%#slot%)
+    SLOTCLICK(%#i%)
+
+  NEXT
+
+  SLOTCLICK(0,,1)
+
+LOOP
+    
+
+}$$

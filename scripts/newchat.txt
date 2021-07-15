@@ -1,0 +1,219 @@
+$${
+
+
+&nchat = "%CHAT%"
+&displaychat = "%CHAT%"
+
+//replace(&displaychat,"%semi",";")
+//replace(&displaychat,"%dollar","$")
+//replace(&displaychat,"%escaped","%")
+
+//replace(&nchat,"%semi",";")
+//replace(&nchat,"%dollar","$")
+//replace(&nchat,"%escaped","%")
+
+unsafe(0)
+
+    replace(&nchat,"$","\\$")
+
+
+    STRIP(&chat,%&nchat%)
+
+    unset(&ignores[])
+    unset(&ignorecontains[])
+    unset(&ignorematch[])
+    unset(&c[])
+    unset(&m[])
+
+    // m = match
+    // c = contains
+    // s = striped
+    // e = exact
+    // i = ignorecase 
+
+    //@&ignorecontains[] = ""
+    &ignores[] = "/Du befindest dich auf/cs"
+    &ignores[] = "////Rank/cs"
+    &ignores[] = "/5251:0/cs"
+    &ignores[] = "/+4 points/cs"
+    &ignores[] = "/\+\d+ coins/msi"
+    &ignores[] = "/.*?\d+\.\d+s.*/ms"
+
+    //-------------------------------------------------------------------------------------------------------
+
+    set(ignore)
+    arraysize(&ignores[],#size)
+    dec(#size,1)
+
+    &supermodes = "mc"
+    &modes = "se"
+    &modifier = "i"
+    &regex = "^\/(.*)\/([%&supermodes%])([%&modes%])([%&modifier%])?$"
+    for(#i,0,%#size%)
+        &supermode = "c"
+        &mode = "e"
+        &mod = ""
+        &this = %&ignores[%#i%]%
+        ifmatches(%&this%,%&regex%)
+            match(%&this%,%&regex%,{&this,&supermode,&mode,&mod})
+        
+            if(&supermode == "c")
+                
+                &c[] = "%&this% |seperator %&mode% |seperator %&mod%" 
+                
+            elseif(&supermode == "m")
+
+                &m[] = "%&this% |seperator %&mode% |seperator %&mod%" 
+              
+            endif
+        endif
+
+        
+    next
+    
+    arraysize(&c[],#csize)
+    dec(#csize,1)
+    arraysize(&m[],#msize)
+    dec(#msize,1)
+    
+    for(#i,0,%#csize%)
+        split("|",%&c[%#i%]%,&this[])
+        
+        if(&this[1] == "e")
+        
+            if(&this[2] == "i")
+            
+                lcase(%&this[0]%,&lcasethis)
+                lcase(%&nchat%,&lcasechat)
+                
+                ifcontains(%&lcasechat%,%&lcasethis%)
+                    unset(ignore)
+                    break
+                endif
+                    
+            else
+            
+                ifcontains(%&nchat%,%&this[0]%)
+                    unset(ignore)
+                    break
+                endif
+            
+            endif
+            
+        else
+        
+            if(&this[2] == "i")
+            
+                lcase(%&this[0]%,&lcasethis)
+                lcase(%&chat%,&lcasechat)
+                    
+                ifcontains(%&lcasechat%,%&lcasethis%)
+                    unset(ignore)
+                    break
+                endif
+                    
+            else
+            
+                ifcontains(%&chat%,%&this[0]%)
+                    unset(ignore)
+                    break
+                endif
+            
+            endif
+        
+        endif
+    
+    next
+    
+    for(#i,0,%#msize%)
+        split(" |seperator ",%&m[%#i%]%,&this[])
+        &that = %&this[0]%
+        if(&this[1] == "e")
+        
+            if(&this[2] == "i")
+            
+                lcase(%&that%,&lcasethis)
+                lcase(%&nchat%,&lcasechat)
+                
+                ifcontains(%&lcasechat%,%&lcasethis%)
+                    unset(ignore)
+                    break
+                endif
+                    
+            else
+            
+                ifcontains(%&nchat%,%&that%)
+                    unset(ignore)
+                    break
+                endif
+            
+            endif
+            
+        else
+        
+            if(&this[2] == "i")
+            
+                lcase(%&that%,&lcasethis)
+                lcase(%&chat%,&lcasechat)
+                    
+                ifcontains(%&lcasechat%,%&lcasethis%)
+                    unset(ignore)
+                    break
+                endif
+                    
+            else
+            
+                ifcontains(%&chat%,%&that%)
+                    unset(ignore)
+                    break
+                endif
+            
+            endif
+        
+        endif
+    
+    next
+    
+endunsafe()
+
+unsafe(0)
+if(ignore)
+
+    &thischat = %&displaychat%
+    strip(&thischat,%&thischat%)
+    &prechat=""
+
+
+    IFMATCHES(%&thischat%,"\[TeamChat\]")
+
+      MATCH(%&thischat%,"\[TeamChat\](.+)",{&thischat})
+      &prechat="&b[TeamChat]"
+
+    ENDIF
+     
+    IFMATCHES(%&thischat%,"Hilfe|Help(?!er)|Support")
+
+        LOGTO(Chatarea,"&4%&prechat%%&thischat%")
+                       
+    ELSE
+                           
+        IFMATCHES(%&thischat%,"(?:\§r\§7\[\§r(?:(?:\§b.+? \§r\§a->)|(?:\§a-> \§r\§b.+?))\§r\§7\] .+? \§r)|(?:\§r(?:(?:\§9.+?\§r\§7 -->\§r\§b me )|(?:\§bme \§r\§7--> \§r\§9.+? ))\§r\§8: \§r\§7 .+?\§r)")
+          
+            LOGTO(Chatarea,"&e%&prechat%%&thischat%")
+                 
+        ELSE
+          
+            IFMATCHES(%&thischat%,sparky|SparklingSkull)
+                  
+                LOGTO(Chatarea,"&c%&prechat%%&thischat%")
+                   
+            ELSE
+             
+                LOGTO(Chatarea,"&7%&prechat%%&thischat%")
+                  
+            ENDIF
+        ENDIF
+    ENDIF
+ENDIF
+endunsafe
+}$$

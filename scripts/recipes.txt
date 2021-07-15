@@ -1,0 +1,156 @@
+$${
+
+//
+// Bearbeite hier nichts!
+// 
+
+if(@&autocraftprefix=="")
+  @&autocraftprefix = "&8[&bAutocraft&8]"
+endif
+
+if(@&autocraftchatcolor=="")
+  @&autocraftchatcolor = "&f"
+endif
+
+if(@&autocrafthighlightcolor=="")
+  @&autocrafthighlightcolor = "&a"
+endif
+
+if(@&autocrafterrorcolor=="")
+  @&autocrafterrorcolor = "&c"
+endif
+
+if(!hinzufuegen)
+
+  //do()
+  //
+  //  prompt(&action,"$$[[Hinzufügen]]")
+  //
+  //  if((&action=="Hinzufügen")||(&action=="Ohne Metadaten hinzuzufügen"))
+    
+      set(hinzufuegen)
+      log("%@&autocraftprefix%%@&autocraftchatcolor% Bitte crafte nun das Item manuell, um das Rezept hinzuzufügen")
+      do()
+      
+        do()
+        
+        while(!(GUI=="GUICRAFTING"))
+        
+        do()
+        
+          getslotitem(0,&item)
+          
+          if(!(&item=="air"))
+            wait(1)
+            getslotitem(0,&test)
+            if(!(&item==&test))
+              &item="air"
+            endif
+          endif
+         
+          if(!(&item=="air"))
+          
+            unset(&slot[])
+            unset(&recipe)
+            getslotitem(0,&item,,#datavar)
+            set(&recipe,"%&item%:%#datavar%")
+            
+            unsafe()
+            
+              for(#i,1,9)
+              
+                getslotitem(%#i%,&item,,#datavar)
+              
+                
+                if(!(&item=="air"))
+                  set(&recipe,"%&recipe%,%&item%:%#datavar%")
+                else
+                  set(&recipe,"%&recipe%,")
+                endif
+                
+              next
+              
+              arraysize(@&autocraftrecipes[],#size)
+              dec(#size,1)
+              
+              split(",",%&recipe%,&thisrecipe[])
+              
+              unset(broken)
+              
+              for(#i = 0 to %#size%)
+              
+              
+                split(",",%@&autocraftrecipes[%#i%]%,&testrecipe[])
+              
+                
+                if(&thisrecipe[0] == &testrecipe[0])
+                
+                
+                  log("%@&autocraftprefix%%@&autocraftchatcolor% Rezept von %@&autocrafthighlightcolor%%&thisrecipe[0]%%@&autocraftchatcolor% existiert bereits.")
+                  log("%@&autocraftprefix%%@&autocraftchatcolor% Bitte schließe die Werkbank, um fortzufahren.")
+                
+                  do()
+                  
+                  while(GUI=="GUICRAFTING")
+                  
+                  wait(1t)
+                
+                  prompt(&overwrite,"$$[[Existierendes Rezept überschreiben?,Ja,Nein]]")
+                  if(&overwrite=="Ja")
+                  
+                    log("%@&autocraftprefix%%@&autocraftchatcolor% Rezept von %@&autocrafthighlightcolor%%&thisrecipe[0]%%@&autocraftchatcolor% überschrieben")
+                    set(@&autocraftrecipes[%#i%],"%&recipe%")
+                    
+                  endif
+                  
+                  set(broken)
+                  break
+                  
+                endif
+                  
+              next              
+              
+              if(!broken)
+                
+                log("%@&autocraftprefix%%@&autocraftchatcolor% Rezept für %@&autocrafthighlightcolor%%&thisrecipe[0]%%@&autocraftchatcolor% hinzugefügt")
+                @&autocraftrecipes[] = "%&recipe%"
+                
+              endif
+              
+            endunsafe
+            unset(hinzufuegen)
+            stop()
+          
+          endif
+        
+        while(GUI=="GUICRAFTING")
+        
+      loop
+      
+  //  else
+  //  
+  //    break
+  //  
+  //  endif
+  //  
+  //loop
+  
+else
+
+  prompt(&action,"$$[[Fortfahren,Hinzufügen abbrechen]]")
+  
+  if(&action=="Fortfahren")
+  
+    log("%@&autocraftprefix%%@&autocraftchatcolor% Bitte crafte das Item manuell, um das Rezept hinzuzufügen")
+  
+  else
+  
+    log("%@&autocraftprefix%%@&autocraftchatcolor% Der %@&autocrafthighlightcolor%Hinzufügen%@&autocraftchatcolor% Prozess wurde abgebrochen")
+    unset(hinzufuegen)
+    stop()
+  
+  endif
+  
+endif
+
+}$$

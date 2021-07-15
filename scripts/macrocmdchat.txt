@@ -1,0 +1,356 @@
+$${
+
+LOGTO(%DATE%-ELog.txt,[%TIME%] %CHAT%)
+
+&a[] = SPLIT(" ","%CHAT%")
+&store=$$?
+&pre="§8[§bMACRO§8] §f"
+
+IF((&a[0]=="/macro")||(&a[0]=="/mc"))
+
+//SET(@macro)
+
+
+ IF(&a[1]=="ps")
+   LOG(%&pre% Playing %&a[2]%)
+   PLAYSOUND(records.%&a[2]%)
+
+ ELSEIF(&a[1]=="calc")
+ 
+  set(#count,%&a[2]%)
+  #stacks = %#count%/64
+  #single = %#count%-%#stacks%*64
+  log("%&pre% %#count% = %#stacks% Stacks and %#single% items")
+   
+ ELSEIF(&a[1]=="fov")
+
+   FOV(%&a[2]%)
+
+ ELSEIF(&a[1]=="getsign")
+
+  UNSET(@&signtext[])
+  UNSET(@&signpos[])
+  UNSET(@&signface[])
+  LOG(%&pre% Resettet)
+
+ ELSEIF(&a[1]=="get")
+
+   IF(&a[2]=="ip")
+     LOG("%&pre% Currently on: %SERVER%")
+     STOP()
+
+   ELSEIF(&a[2]=="pos")
+
+     LOG("%&pre% x=%XPOS% y=%YPOS% z=%ZPOS% dimension=%DIMENSION%")
+     STOP()
+
+   ELSEIF(&a[2]=="lastafk")
+
+     LOG("%&pre% x=%@#antiafkx% y=%@#antiafky% z=%@#antiafkz%")
+     STOP()
+
+   ELSEIF(&a[2]=="seed")
+
+     LOG("%&pre% Seed = %seed%")
+     STOP()
+ 
+   ELSEIF(&a[2]=="rain")
+
+     LOG("%&pre% Rainstatus = %RAIN%")
+     STOP()
+  
+   ELSEIF(&a[2]=="sign")
+     #x=%FARHITX%
+     #y=%FARHITY%
+     #z=%FARHITZ%
+     IF((FARHITID=="standing_sign")||(FARHITID=="wall_sign"))
+       UNSET(%&signtext%)
+       GETSIGNTEXT(%#x%,%#y%,%#z%,&signtext[])
+       LOG("%&pre% Line 1: '%&signtext[0]%'")
+       LOG("%&pre% Line 2: '%&signtext[1]%'")
+       LOG("%&pre% Line 3: '%&signtext[2]%'")
+       LOG("%&pre% Line 4: '%&signtext[3]%'")
+     ENDIF
+   ELSE
+
+    
+     LOG("&f&l&m-------------------&a&l [GET] &f&l&m--------------------")
+     LOG("&e&l- &aip")
+     LOG("&e&l- &apos")
+     LOG("&e&l- &aseed")
+     LOG("&e&l- &arain")
+     LOG("&e&l- &asign")
+     LOG("&e&l- &aslastafk")
+     LOG("&f&l&m---------------------------------------------") 
+
+   ENDIF
+
+ ELSEIF(&a[1]=="gamma")
+
+   SET(#zwischen,%&a[2]%)
+   GAMMA(%#zwischen%)
+   LOG("%&pre% Gamma: %&a[2]%")
+
+ ELSEIF(&a[1]=="c")
+
+  PROMPT(&b,"$$[[skypvp,jl,rush,skywars,city,creative,devserver]]")
+  IF(&b=="jl")
+
+   PROMPT(&c,"$$[n]")
+   ECHO("/jl%&c%")
+
+  ELSEIF(&b=="rush")
+
+    PROMPT(&c,"$$[n]")
+    ECHO("/rush%&c%")
+
+  ELSEIF(&b=="devserver")
+
+     PROMPT(&c,"$$[n]")
+     ECHO("/devserver%&c%")
+
+  ELSE
+
+    ECHO("/%&b%")
+
+  ENDIF
+ ELSEIF(&a[1]=="restart")
+
+  EXEC(restart.txt)
+
+ ELSEIF(&a[1]=="kickall")
+
+  EXEC(kickall.txt)
+
+ ELSEIF(&a[1]=="rl")
+
+  LOG(%&pre% Reloading gui)
+  $$<startup2.txt>
+
+ ELSEIF(&a[1]=="f")
+
+   IF(&a[2]=="test")
+     &player=%&a[3]%
+     LOG("%&pre% Loading F List&1 from %@&flist[0]% at %@&flist[1]%")
+     INDEXOF(@&flist[],#isin,%&player%)
+
+     
+     IF(%#isin%>-1)
+       LOG("%&pre% Found %&player% at %#isin% place in F List")
+     ELSE
+       LOG("%&pre% Haven't found %&player% in your F List")
+     ENDIF
+    
+   ENDIF
+  
+ ELSEIF(&a[1]=="gcheckchat")
+
+  LOG("%&pre% Unsetting gcheckchat")
+  UNSET(@&gcheckchat[])
+
+ ELSEIF(&a[1]=="sheep")
+
+  ECHO("/pet remove")
+  WAIT(1t)
+  ECHO("/pet sheep")
+  WAIT(1t)
+  ECHO("/pet rider sheep")
+  WAIT(1t)
+  ECHO("/pet name jeb_")
+  WAIT(1t)
+  ECHO("/pet name rider jeb_")
+
+ ELSEIF(&a[1]=="swr")
+
+   EXEC(swr_list.txt)
+   WAIT(200ms)
+   ARRAYSIZE(@&swrlist,#size)
+
+   LOG(%#size%)
+
+   FOR(#i,0,%#size%)
+     WAIT(100ms)
+     ECHO("/swr unregister %@&swrlist[%#i%]%")
+     LOG("%#i%")
+   NEXT
+ 
+  ELSEIF(&a[1]=="cc")
+
+    GUI()
+    WAIT(1000ms)
+    SHOWGUI(chestsearch)
+    LOG("%&pre% Opening GUI")
+
+  ELSEIF(&a[1]=="forcewin")
+
+    LOG("%&pre% Now forcewinning")
+    @#forcewinspthiel=1
+
+  ELSEIF(&a[1]=="lotto")
+
+    LOG("%&pre% Starting lotto")
+    EXEC(lotto.txt,"lotto","%&a[2]%","%&a[3]%","%&a[4]%")
+
+  ELSEIF(&a[1]=="mcss")
+
+    EXEC(mcss.txt)
+    
+  ELSEIF(&a[1]=="lookup")
+
+    OLDNAME(&out[],%&a[2]%)
+
+    LOG("&f&l&m-----------------&a&l [Lookup] &f&l&m------------------")
+
+    ARRAYSIZE(&out[],#size)
+    DEC(#size,1)
+    
+    FOR(#i,0,%#size%)
+      #iup = %#i%+1
+      MATCH(%&out[%#i%]%,"\"(.+?)\"",{&store})
+      LOG("&e&l- &a#%#iup%: &e%&store%")
+    NEXT
+      
+    LOG("&f&l&m---------------------------------------------")
+
+  ELSEIF(&a[1]=="forcereload")
+  
+    SET(@#forcereload,1)
+    LOG("%&pre% Forcereloading everything")
+    $$<startup2.txt>
+    SET(@#forcereload,0)
+    log("test")
+
+  ELSEIF(&a[1]=="antrag")
+
+    IF(&a[2]=="rl")
+
+      EXEC(antraege.txt,"rl")
+
+    ELSEIF(&a[2]=="test")
+
+      EXEC(antraegetest.txt,"antraege",1)
+    
+    ELSE
+
+      EXEC(watchantraege.txt,"watch","%&a[2]%")
+
+    ENDIF
+
+  ELSEIF(&a[1]=="joinmsg")
+  
+    SET(@#joinmsgenable,%&a[2]%)
+    LOG("%&pre% Joinmsgenable set to %&a[2]%")
+
+  ELSEIF(&a[1]=="stopall")
+  
+    LOG("%&pre% Stopped anything")
+    STOP(*)
+
+  ELSEIF(&a[1]=="skinurl")
+  
+    EXEC(ingn2skinurl.txt,"convert","%&a[2]%")
+    WAIT(100ms)
+    DO()
+
+    WHILE(@&i2sreturn=="")
+
+    LOG("%@&i2sreturn%")
+
+  ELSEIF(&a[1]=="weather")
+
+    LOG(%&a[2]%)
+    EXEC(weatherinfo.txt,"weather","%&a[2]%")
+
+  ELSEIF(&a[1]=="inv")
+
+    EXEC(searchinv.txt,"inv","%&a[2]%")
+
+  ELSEIF(&a[1]=="blacklist")
+
+    LOG("%&pre% %&a[2]% Blacklisted")
+    PUT(@&msgblacklist[]="%&a[2]%")
+
+  ELSEIF(&a[1]=="whitelist")
+
+    DO()
+      INDEXOF(@&msgblacklist,#idx,%&a[2]%)
+
+      IF(#idx>=0)
+        UNSET(@&msgblacklist[%#idx%])
+      ENDIF
+      
+    WHILE(#idx<0)
+
+    LOG(%&pre% %&a[2]% whitelist)
+
+ ELSEIF(&a[1]=="reset")
+
+  IF(&a[2]=="death")
+
+     LOG("%&pre% Deaths resetted")
+     @#deaths=0
+     TIME(&time,"hh:mm:ss dd.MM.yyyy")
+     @&deathsreset=%&time%
+    
+  ELSE
+ 
+     LOG("&f&l&m-----------------&a&l [Reset] &f&l&m------------------")
+     LOG("&e&l- &adeath")
+     LOG("&e&l- &a")
+     LOG("&e&l- &a")
+     LOG("&e&l- &a")
+     LOG("&e&l- &a")
+     LOG("&f&l&m---------------------------------------------") 
+    
+   ENDIF
+
+  ELSEIF(((&a[2]=="2")&&(&a[1]=="help"))||(&a[1]=="2"))
+
+    LOG("&f&l&m-------------------&a&l [Help] &f&l&m--------------------")
+    LOG("&e&l- &aforcewin")
+    LOG("&e&l- &alotto &7[einsatz] [gewinn] [name]")
+    LOG("&e&l- &amcss")
+    LOG("&e&l- &alookup &7[name]")
+    LOG("&e&l- &ahardlookup &7[name]")
+    LOG("&e&l- &aforcereload &7[value]")
+    LOG("&e&l- &aantrag")
+    LOG("&e&l- &ajoinmsg &7[value]")
+    LOG("&e&l- &ahelp 3 &7[value]")
+    LOG("&f&l&m---------------------------------------------")
+
+  ELSEIF(((&a[2]=="3")&&(&a[1]=="help"))||(&a[1]=="3"))
+
+    LOG("&f&l&m-------------------&a&l [Help] &f&l&m--------------------")
+    LOG("&e&l- &askinurl &7[name]")
+    LOG("&e&l- &astopall")
+    LOG("&e&l- &aweather &7[location]")
+    LOG("&e&l- &ainv &7[item]")
+    LOG("&e&l- &areset &7[module]")
+    LOG("&e&l- &ablacklist &7[name]")
+    LOG("&e&l- &awhitelist &7[name]")
+    LOG("&e&l- &a")
+    LOG("&e&l- &a")
+    LOG("&f&l&m---------------------------------------------")
+
+  ELSE
+
+    LOG("&f&l&m-------------------&a&l [Help] &f&l&m--------------------")
+    LOG("&e&l- &aps &7[record]")
+    LOG("&e&l- &aget &7[module]")
+    LOG("&e&l- &agamma &7[value]")
+    LOG("&e&l- &afov &7[value]")
+    LOG("&e&l- &ac &7[server]")
+    LOG("&e&l- &arl")
+    LOG("&e&l- &af &7[module]")
+    LOG("&e&l- &acc")
+    LOG("&e&l- &ahelp 2")
+    LOG("&f&l&m---------------------------------------------")
+
+
+  ENDIF
+
+FILTER()
+ 
+ENDIF
+
+}$$

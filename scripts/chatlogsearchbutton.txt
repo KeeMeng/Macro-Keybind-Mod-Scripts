@@ -1,0 +1,28 @@
+$${
+
+unset(bool)
+&return = "%SCREEN%"
+
+if(&return == "")
+
+    &return="%GUI%"
+    set(bool)
+
+endif
+
+gui()
+prompt(@&clregex,"$$[regex]")
+
+if(bool)
+
+    replace(&return,"GUI","")
+	lcase("%&return%",&return)
+    exec("omgplsneverdothis.txt","","gui(%&return%)")
+
+else
+
+    showgui(%&return%)
+
+endif
+
+}$$

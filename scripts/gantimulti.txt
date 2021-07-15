@@ -1,0 +1,19 @@
+
+SET(@galookup)
+
+@#multiaccchoose=0
+
+ARRAYSIZE(@&gaonline[],#gasize3)
+@#gastart=%@#ticks%
+DEC(#gasize3,1)
+FOR(#gai3,0,%#gasize3%)
+ 
+  ECHO(/lookup %@&gaonline[%#gai3%]%)
+  WAIT(1t)
+  DEC(@#gatester,1)
+
+NEXT
+
+WAIT(50)
+
+UNSET(@galookup)

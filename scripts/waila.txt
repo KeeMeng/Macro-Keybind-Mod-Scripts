@@ -1,0 +1,279 @@
+$${
+//do not modify this
+//-----------------------------
+
+SPLIT("#"," # ",&pick)
+SPLIT("#"," # ",&axe)
+SPLIT("#"," # ",&shovel)
+
+//-----------------------------
+
+//set to 1 to enable Waila
+#enablewaila=1
+
+//set to 1 to enable displaying of tool
+#enabletool=0
+
+//set to 1 to enable compare Feature
+#enablecompare = 0 ;//currently disabled
+
+//set to 1 to enable debugger
+#enabledebugger = 0
+
+//set bg color
+&bgcolorred = "00"
+&bgcolorgreen = "00"
+&bgcolorblue = "00"
+&bgopacity = "FF"
+
+//set foregroundcolor
+&colorred = "00"
+&colorgreen = "FF"
+&colorblue = "FF"
+&opacity = "FF"
+
+
+//pickaxe blocklist
+&pick[0] ="1"
+&pick[1] ="4"
+&pick[] ="14"
+&pick[] ="15"
+&pick[] ="16"
+&pick[] ="21"
+&pick[] ="22"
+&pick[] ="23"
+&pick[] ="41"
+&pick[] ="42"
+&pick[] ="43"
+&pick[] ="44"
+&pick[] ="45"
+&pick[] ="48"
+&pick[] ="49"
+&pick[] ="52"
+&pick[] ="56"
+&pick[] ="57"
+&pick[] ="61"
+&pick[] ="62"
+&pick[] ="67"
+&pick[] ="70"
+&pick[] ="73"
+&pick[] ="74"
+&pick[] ="77"
+&pick[] ="79"
+&pick[] ="87"
+&pick[] ="89"
+&pick[] ="95"
+&pick[] ="97"
+&pick[] ="98"
+&pick[] ="102"
+&pick[] ="108"
+&pick[] ="109"
+&pick[] ="112"
+&pick[] ="113"
+&pick[] ="114"
+&pick[] ="116"
+&pick[] ="121"
+&pick[] ="123"
+&pick[] ="124"
+&pick[] ="128"
+&pick[] ="129"
+&pick[] ="130"
+&pick[] ="133"
+&pick[] ="139"
+&pick[] ="152"
+&pick[] ="153"
+&pick[] ="154"
+&pick[] ="155"
+&pick[] ="156"
+&pick[] ="158"
+&pick[] ="159"
+&pick[] ="160"
+&pick[] ="167"
+&pick[] ="168"
+&pick[] ="169"
+&pick[] ="172"
+&pick[] ="173"
+&pick[] ="174"
+&pick[] ="179"
+&pick[] ="180"
+&pick[] ="181"
+&pick[] ="182"
+
+//pickaxe mininglevel
+&picklvl
+
+//axe blocklist
+&axe[0] ="5"
+&axe[1] ="17"
+&axe[] ="25"
+&axe[] ="47"
+&axe[] ="53"
+&axe[] ="54"
+&axe[] ="58"
+&axe[] ="63"
+&axe[] ="64"
+&axe[] ="65"
+&axe[] ="68"
+&axe[] ="72"
+&axe[] ="84"
+&axe[] ="85"
+&axe[] ="96"
+&axe[] ="107"
+&axe[] ="125"
+&axe[] ="126"
+&axe[] ="134"
+&axe[] ="135"
+&axe[] ="136"
+&axe[] ="145"
+&axe[] ="162"
+&axe[] ="163"
+&axe[] ="164"
+&axe[] ="183"
+&axe[] ="184"
+&axe[] ="185"
+&axe[] ="186"
+&axe[] ="187"
+&axe[] ="188"
+&axe[] ="189"
+&axe[] ="190"
+&axe[] ="191"
+&axe[] ="192"
+&axe[] ="193"
+&axe[] ="194"
+&axe[] ="195"
+&axe[] ="196"
+&axe[] ="197"
+
+//shovel blocklist
+&shovel[0] = "2"
+&shovel[1] = "3"
+&shovel[] = "12"
+&shovel[] = "13"
+&shovel[] = "78"
+&shovel[] = "80"
+&shovel[] = "82"
+&shovel[] = "88"
+
+//Change for Custom style
+&color = "&f" ;//if empty it'll use foregroundcolor instead
+&toolcolor = "&e" ;//if empty it'll use foregroundcolor instead
+&nextline = "\n"
+CHAR(&char,10009)
+&no = "&4%&char%"
+CHAR(&char,10005)
+&yes = "&2%&char%"
+&pickaxename = "Pickaxe"
+&shovelname = "Shovel"
+&axename = "Axe"
+
+//Only modify below here if you know what you do.
+//-------------------------------------------------------------------------
+
+
+
+&block = ""
+&brokenwith = ""
+&pick2 = ""
+
+
+IF(%&bgopacity%="00")
+ &bgopacity="01"
+ENDIF
+IF(%&opacity%="00")
+ &opacity="01"
+ENDIF
+
+
+&nextlinebroke = "%&nextline%"
+
+
+DO()
+
+
+&block = "%HITNAME%"
+#block = ITEMID(%HITID%)
+
+
+SETPROPERTY(waila,colour,#%&opacity%%&colorred%%&colorgreen%%&colorblue%)
+SETPROPERTY(waila,background,#%&bgopacity%%&bgcolorred%%&bgcolorgreen%%&bgcolorblue%)
+SETPROPERTY(waila_sign,colour,#%&opacity%%&colorred%%&colorgreen%%&colorblue%)
+SETPROPERTY(waila_sign,background,#%&bgopacity%%&bgcolorred%%&bgcolorgreen%%&bgcolorblue%)
+
+IF(%#enablewaila%=0)
+ SETPROPERTY(waila,colour,#01000000)
+ SETPROPERTY(waila,background,#01000000)
+ SETPROPERTY(waila_sign,colour,#01000000)
+ SETPROPERTY(waila_sign,background,#01000000)
+ STOP()
+ENDIF
+
+IF(%&block%="None")
+ SETLABEL(waila,"")
+ SETPROPERTY(waila,background,#01000000)
+ENDIF
+
+IF(%#enabledebugger%=1)
+  LOG("#%&opacity%%&bgcolorred%%&bgcolorgreen%%&bgcolorblue%")
+ENDIF
+
+
+INDEXOF(&pick,#pickindex,"%#block%")
+INDEXOF(&axe,#axeindex,"%#block%")
+INDEXOF(&shovel,#shovelindex,"%#block%")
+
+IF(%#enabledebugger%=1)
+  LOG("%#pickindex%|%#axeindex%|%#shovelindex%")
+ENDIF
+
+//--------------------------------------------------------------------------
+
+IF(%#enabletool%=1)
+  IF(%#pickindex%>=0)
+
+    &brokenwith = "%&pickaxename%"
+
+  ELSEIF(%#axeindex%>=0)
+
+    &brokenwith = "%&axename%"
+
+  ELSEIF(%#shovelindex%>=0)
+
+        &brokenwith = "%&shovelname%"
+
+  ELSE
+       
+    &brokenwith = ""
+    &nextlinebroke = ""
+             
+  ENDIF
+ELSE
+
+  UNSET(&axe[])
+  UNSET(&shovel[])
+  UNSET(&pick[])
+
+ENDIF
+
+//--------------------------------------------------------------------------
+
+IF(%#enablecompare%=1)
+
+  
+
+ENDIF
+
+SETLABEL(waila,"%&color%%&block%(#%#block%)%&nextline%%&toolcolor%%&brokenwith%%&nextlinebroke%%&canbe%") 
+
+
+IF(%&block%="None")
+ SETLABEL(waila,"")
+ SETPROPERTY(waila,background,#01000000)
+ENDIF
+
+
+LOOP
+
+}$$
+
+
+

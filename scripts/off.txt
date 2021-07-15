@@ -1,0 +1,8 @@
+$${
+
+ECHO(/system gserverchat aus)
+SET(@#skywars,0)
+SET(@#skygrid,0)
+SET(@#kitpvp,0)
+
+}$$

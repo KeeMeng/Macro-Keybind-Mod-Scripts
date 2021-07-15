@@ -1,0 +1,10 @@
+&filename = lcase(%KEYNAME%)
+
+iffileexists("%MACROSCONFIGDIR%\\schematics\\%&filename%.csv",true)
+    readfile("%MACROSCONFIGDIR%\\schematics\\%&filename%.csv",@&elsblocks[])
+    arraysize(@&elsblocks[],#total)
+    dec(#total)
+    log("&aFinished reading %#total% blocks")
+else
+    log("&cFile does not exist: %MACROSCONFIGDIR%\\schematics\\%&filename%.csv")
+endif

@@ -1,0 +1,38 @@
+$${
+
+IF(!@macro)
+
+&eingabe=%CHAT%
+STRIP(&test,%&eingabe%)
+IFMATCHES(%&test%,"^/.+")
+
+  FILTER()
+
+  IFMATCHES(%&test%,"^/#.+")
+
+
+    REPLACE(&eingabe,"/#","/")
+    $$<autokorrekt.txt>
+
+  ENDIF
+
+  REPLACE(&eingabe,"char1",">")
+  REPLACE(&eingabe,"char2","<")
+
+  ECHO(%&eingabe%)
+
+ELSE
+
+  FILTER()
+
+  $$<autokorrekt.txt>
+
+  ECHO(%&eingabe%)
+
+ENDIF
+
+ENDIF
+
+UNSET(@macro)
+
+}$$

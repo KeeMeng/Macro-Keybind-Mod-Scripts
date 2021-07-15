@@ -1,0 +1,153 @@
+#step = 1
+#side[0] = $$[1]
+#side[1] = $$[2]
+#side[2] = $$[3]
+
+for(#i,0,2)
+    if((#side[%#i%] < 1) || (#side[%#i%] > 12))
+        log("&4Critical Error: Invalid side for %KEYNAME%: Path [%#i%] -> %#side[%#i%]%")
+        stop
+    endif
+next
+
+// Setting sides along formular of
+//
+//     |   from    ||    to     ||
+//   n | x | y | z || x | y | z || dir
+// ------------------------------------
+//   1 | 1 | 1 | 1 || 2 | 1 | 1 ||  x
+//   2 | 1 | 1 | 1 || 1 | 2 | 1 ||  y
+//   3 | 1 | 1 | 1 || 1 | 1 | 2 ||  z
+//   4 | 2 | 1 | 1 || 2 | 1 | 2 ||  z
+//   5 | 2 | 1 | 1 || 2 | 2 | 1 ||  y
+//   6 | 1 | 2 | 1 || 2 | 2 | 1 ||  x
+//   7 | 1 | 2 | 1 || 1 | 2 | 2 ||  z
+//   8 | 1 | 1 | 2 || 2 | 1 | 2 ||  x
+//   9 | 1 | 1 | 2 || 1 | 2 | 2 ||  y
+//  10 | 2 | 1 | 2 || 2 | 2 | 2 ||  y
+//  11 | 2 | 2 | 1 || 2 | 2 | 2 ||  z
+//  12 | 1 | 2 | 2 || 2 | 2 | 2 ||  x
+
+for(#i,0,2)
+
+    #currentside = #side[%#i%]
+
+    if((#currentside == 4) || (#currentside == 5) || (#currentside == 10) || (#currentside == 11))
+        &startx[%#i%] = @#elspos2[0]
+    else
+        &startx[%#i%] = @#elspos1[0]
+    endif
+
+    if((#currentside == 6) || (#currentside == 7) || (#currentside == 11) || (#currentside == 12))
+        &starty[%#i%] = @#elspos2[1]
+    else
+        &starty[%#i%] = @#elspos1[1]
+    endif
+     
+    if((#currentside == 8) || (#currentside == 9) || (#currentside == 10) || (#currentside == 12))
+        &startz[%#i%] = @#elspos2[2]
+    else
+        &startz[%#i%] = @#elspos1[2]
+    endif
+
+    if((#currentside == 2) || (#currentside == 3) || (#currentside == 7) || (#currentside == 9))
+        &endx[%#i%] = @#elspos1[0]
+    else
+        &endx[%#i%] = @#elspos2[0]
+    endif
+
+    if((#currentside == 1) || (#currentside == 3) || (#currentside == 4) || (#currentside == 8))
+        &endy[%#i%] = @#elspos1[1]
+    else
+        &endy[%#i%] = @#elspos2[1]
+    endif
+
+    if((#currentside == 1) || (#currentside == 2) || (#currentside == 5) || (#currentside == 6))
+        &endz[%#i%] = @#elspos1[2]
+    else
+        &endz[%#i%] = @#elspos2[2]
+    endif
+    
+    if((#currentside == 1) || (#currentside == 6) || (#currentside == 8) || (#currentside == 12))
+        &dir[%#i%] = "x"
+    elseif((#currentside == 2) || (#currentside == 5) || (#currentside == 9) || (#currentside == 10))
+        &dir[%#i%] = "y"
+    else
+        &dir[%#i%] = "z"
+    endif
+
+next
+
+unset(#lastpos)
+
+do
+    
+    do
+    until((@#elspos1 > 0) && (@#elspos2 > 0))
+    #lastpos = @#elspos1+@#elspos2
+    unset(&particles[])
+    unsafe(40)
+        for(#i,0,2)
+            if(&dir[%#i%] == "x")
+                set(#y,%%&endy[%#i%]%%)
+                set(#z,%%&endz[%#i%]%%)
+                for(#x,%%&startx[%#i%]%%,%%&endx[%#i%]%%)
+                    &color = %@&elsparticleargs%
+                    if(@elsrainbowmode)
+                        #r = (255*(#x-@#elspos1[0]))/(@#elspos2[0]-@#elspos1[0])
+                        #g = (255*(#y-@#elspos1[1]))/(@#elspos2[1]-@#elspos1[1])
+                        #b = (255*(#z-@#elspos1[2]))/(@#elspos2[2]-@#elspos1[2])
+                        $$<jam_els_color.txt>
+                        &color = "%&colorstring% 1"
+                    endif
+                    &particles[] = "%@&elsparticles% %#x% %#y% %#z% %&color% %@#elsparticlecount%"
+                next
+            elseif(&dir[%#i%] == "y")
+                set(#x,%%&endx[%#i%]%%)
+                set(#z,%%&endz[%#i%]%%)
+                for(#y,%%&starty[%#i%]%%,%%&endy[%#i%]%%)
+                    &color = %@&elsparticleargs%
+                    if(@elsrainbowmode)
+                        #r = (255*(#x-@#elspos1[0]))/(@#elspos2[0]-@#elspos1[0])
+                        #g = (255*(#y-@#elspos1[1]))/(@#elspos2[1]-@#elspos1[1])
+                        #b = (255*(#z-@#elspos1[2]))/(@#elspos2[2]-@#elspos1[2])
+                        $$<jam_els_color.txt>
+                        &color = "%&colorstring% 1"
+                    endif
+                    &particles[] = "%@&elsparticles% %#x% %#y% %#z% %&color% %@#elsparticlecount%"
+                next
+            else
+                set(#x,%%&endx[%#i%]%%)
+                set(#y,%%&endy[%#i%]%%)
+                for(#z,%%&startz[%#i%]%%,%%&endz[%#i%]%%)
+                    &color = %@&elsparticleargs%
+                    if(@elsrainbowmode)
+                        #r = (255*(#x-@#elspos1[0]))/(@#elspos2[0]-@#elspos1[0])
+                        #g = (255*(#y-@#elspos1[1]))/(@#elspos2[1]-@#elspos1[1])
+                        #b = (255*(#z-@#elspos1[2]))/(@#elspos2[2]-@#elspos1[2])
+                        $$<jam_els_color.txt>
+                        &color = "%&colorstring% 1"
+                    endif
+                    &particles[] = "%@&elsparticles% %#x% %#y% %#z% %&color% %@#elsparticlecount%"
+                next
+            endif
+        next
+    endunsafe
+    
+    
+    do
+    
+        arraysize(&particles[],#size)
+        dec(#size)
+    
+        for(#i,0,%#size%)
+    
+            echo("/particle %&particles[%#i%]%")
+            #currentpos = @#elspos1 + @#elspos2
+            if(#currentpos != #lastpos)
+                break
+            endif
+    
+        next
+    while(#lastpos == #currentpos)
+loop

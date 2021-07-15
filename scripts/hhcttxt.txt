@@ -1,0 +1,23 @@
+$${
+
+LOG(" ")
+LOG(" ")
+LOG("&fVariabeln werden in Hornbachhelperitems.txt gespeichert...")
+LOG("&fliteconfig\common\macros\logs\")
+
+ARRAYSIZE(@&itemsign[],#size)
+DEC(#size,1)
+
+FOR(#n,0,%#size%)
+
+  LOGTO(hornbachhelperitems.txt,"@&itemsign[]=%@&itemsign[%#n%]%")
+  LOGTO(hornbachhelperitems.txt,"@&itemsignpos[]=%@&itemsignpos[%#n%]%")
+
+NEXT
+
+LOG(" ")
+LOG(" ")
+LOG("&fDokument fertig beschrieben.")
+LOG("&fBitte vor erneuten starten , Dokument löschen")
+
+}$$

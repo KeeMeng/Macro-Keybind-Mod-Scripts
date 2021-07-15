@@ -1,0 +1,51 @@
+
+LOG(it works)
+
+&ip = $$[1]
+&pre="&8[&bMacro&8]&f"
+
+UNSET(@&multinames[])
+
+IF(@multiacc)
+  UNSET(@multiacc)
+  LOG(%&pre% Antimultiacc stopping)
+  STOP(antimulti)
+ELSE
+  SET(@multiacc)
+  LOG(%&pre% Antimultiacc starting)
+
+  DO()
+
+    ECHO(/lookup %&ip%)
+
+    WAIT(1000ms)
+
+    JOIN("|",@&oldmultinames[],&oldnames)
+    JOIN("|",@&multinames[],&newnames)
+
+    IF(&oldnames==&newnames)
+
+    ELSE
+
+      SPLIT("|",%&oldnames%,&old[])
+      SPLIT("|",%&newnames%,&new[])
+
+      ARRAYSIZE(&old[],#size)
+      DEC(#size,1)
+      
+      FOR(#n,0,%#size%)
+
+        IF(&old[%#n%]==&new[%#n%])
+
+        ELSE
+
+          ECHO(/gban %&new[%#n%]% Multiaccount)
+          BREAK()
+
+        ENDIF
+      NEXT
+    ENDIF
+  LOOP()
+ENDIF
+
+

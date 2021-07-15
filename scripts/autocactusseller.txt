@@ -1,0 +1,81 @@
+$${
+
+&pre="&8[&bCactus&8]&f"
+
+IF(@cactusfarmer)
+
+  UNSET(@cactusfarmer)
+  LOG("%&pre% Catusfarmer stopped")
+  STOP()
+
+ELSE
+
+  SET(@cactusfarmer)
+
+  LOG("%&pre% Catusfarmer started")
+
+  DO()
+
+    ECHO(/home)
+    WAIT(5)
+    KEY(use)
+    WAIT(1)
+    
+    FOR(#i,0,36)
+      GETSLOT(cactus,#slot)
+      IF(#slot>53)
+        BREAK
+      ENDIF
+      SLOTCLICK(%#slot%,,true)
+      WAIT(200ms)
+    NEXT
+
+    WAIT(1)
+    GUI()
+    ECHO(/back)
+
+    WAIT(5)
+    
+    DO(4)
+
+      DO()
+
+        IF(HITNAME=="Sign")
+          KEY(use)
+        ENDIF
+        GETSLOT(cactus,#slot)
+        IF((#slot=9) || (#slot=-1))
+          GETSLOTITEM(%#slot%,&item,#stacksize)
+        ELSE
+          #stacksize=3
+        ENDIF
+        WAIT(300ms)
+
+      WHILE((#slot>=0) && (#stacksize>2))
+
+      GUI(inventory)
+      
+      DO(9)
+
+        GETSLOT(cactus,#slot,9)
+
+        IF(#slot>35)
+
+          BREAK
+
+        ENDIF
+        WAIT(200ms)
+        SLOTCLICK(%#slot%,,true)
+
+      LOOP
+
+      GUI()
+
+    LOOP
+
+  LOOP
+
+ENDIF
+
+
+}$$

@@ -1,0 +1,7 @@
+$${
+
+do()
+setlabel(BIOME,&6[Biome] &e%BIOME%)
+loop
+
+}$$

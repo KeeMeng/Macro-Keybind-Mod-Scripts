@@ -1,0 +1,42 @@
+
+
+&tb="2016-10-02 21:00:00"
+
+IF(@nexttbrunning)
+
+  UNSET(@nexttbrunning)
+  LOG(unset)
+  STOP
+
+ENDIF
+
+SET(@nexttbrunning)
+
+DO()
+
+  &time0="2016-01-01 00:00:00"
+  UNSET(&time0)
+
+  EXEC(dt2sec.txt,"","%&tb%","nexttb")
+  WAIT(100ms)
+  DO()
+
+  WHILE(@#nexttbuttreturn=0)
+
+  #utttb=%@#nexttbuttreturn%
+
+  EXEC(dt2sec.txt,"","%DATETIME%","nexttb")
+  WAIT(100ms)
+  DO()
+
+  WHILE(@#nexttbuttreturn=0)
+
+  #uttnow=%@#nexttbuttreturn%
+
+  #difference=%#utttb%-%#uttnow%
+
+  @#nexttb=%#difference%
+
+LOOP()
+
+

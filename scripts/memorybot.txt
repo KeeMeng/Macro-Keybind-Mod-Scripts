@@ -1,0 +1,80 @@
+$${
+
+do()
+
+  key(use)
+  do()
+  while(GUI == "NONE")
+
+	unset(&field[])
+	unset(second)
+	
+	//------------------------------------------------
+	
+	for(#i,0,25)
+	
+		if((#i != 8) && (#i != 17))
+	
+			getslotitem(%#i%,&item)
+			if(&item == "stained_glass_pane")
+			
+				slotclick(%#i%)
+				toggle(second)
+				do()
+					getslotitem(%#i%,&id,,#data)
+					if(&id == "stained_glass_pane")
+						slotclick(%#i%)
+					endif
+				while((&id == "stained_glass_pane") || (&id == "air") || (GUI == "GUINONE"))
+				
+				if(GUI == "GUINONE")
+					break
+				endif
+					
+				indexof(&field[],#isin,"%&id%:%#data%")
+				if(#isin >= 0)
+					do(20)
+						getslotitem(%#isin%,&id,,#data)
+						if(&id == "stained_glass_pane")
+							slotclick(%#isin%)
+						endif
+					while((&id == "stained_glass_pane") || (&id == "air") || (GUI == "GUINONE"))
+					
+					if(GUI == "GUINONE")
+						break
+					endif
+					
+					if(!second)
+						do()
+							getslotitem(%#i%,&id,,#data)
+							if(&id == "stained_glass_pane")
+								slotclick(%#i%)
+							endif
+						while((&id == "stained_glass_pane") || (&id == "air") || (GUI == "GUINONE"))
+					endif
+					unset(second)
+				else
+					&field[%#i%] = "%&id%:%#data%"
+				endif
+			
+			endif
+		
+		endif
+	
+	next
+	
+	//------------------------------------------------
+	
+  wait(10t)
+  
+  if(SHIFT)
+    stop()
+  endif
+
+  if(GUI != "NONE")
+    stop()
+  endif
+
+loop()
+
+}$$

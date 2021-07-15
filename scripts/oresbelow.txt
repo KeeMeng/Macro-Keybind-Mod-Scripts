@@ -1,0 +1,22 @@
+$${
+
+#count = 0
+#start = %TIMESTAMP%
+
+UNSAFE
+
+for(#y,0,256)
+  
+  getid(%XPOS%,#y,%ZPOS%,&id)
+
+next
+
+ENDUNSAFE
+
+#end = %TIMESTAMP%
+
+#diff = %#start%-%#end%
+
+log("done %#diff% - %#count%")
+
+}$$

@@ -1,0 +1,63 @@
+ $${
+GUI()
+&delay="100ms"
+&delaya="400ms"
+
+IF(running)
+  LOG(&fCrafting stopped)
+  UNSET(running)
+  GUI()
+  STOP()
+ELSE
+  SET(running)
+  LOG(&fCrafting started)
+
+  DO();
+    
+    GUI(inventory)
+    WAIT(%&delaya%)
+    FOR(#i,0,4)
+      GETSLOT(snowball,#iup,9)
+      SLOTCLICK(%#iup%)
+      #iplus = %#i%
+
+      SLOTCLICK(%#iplus%)
+
+    NEXT
+
+    WAIT(100ms)
+
+    SLOT(9)
+    WAIT(%&delay%)
+    ECHO(/mdl add spthiel hand)
+    WAIT(%&delaya%)
+    GETSLOT(snow,#zwischen)
+    SLOTCLICK(%#zwischen%,0,1)
+    WAIT(1000ms)
+    GUI()
+    ECHO(/mdl open spthiel)
+    WAIT(%&delaya%)
+    GETSLOT(snowball,#zwischen)
+    SLOTCLICK(%#zwischen%)
+    WAIT(%&delaya%)
+    GETSLOT(snowball,#zwischen)
+    SLOTCLICK(%#zwischen%,0,1)
+    WAIT(%&delaya%)
+    GUI()
+
+    GUI(inventory)
+    GETSLOT(snowball,#zwischen)
+    IF(#zwischen<0)
+      LOG(&fCrafting stopped)
+      UNSET(running)
+      GUI()
+      STOP()
+    ENDIF
+    GUI()
+   
+  LOOP
+
+ENDIF
+
+}$$
+

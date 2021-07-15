@@ -1,0 +1,54 @@
+$${
+
+&pre = "&8[&bMacro&8] &f"
+
+
+
+LOG(%&pre% Press Numpad 4 when Aming at the Startpoint)
+
+DO()
+
+UNTIL(KEY_NUMPAD4)
+
+#xpos1=%HITX%
+#ypos1=%HITY%
+#zpos1=%HITZ%
+
+&dir = %DIRECTION%
+
+IF(&dir=="N")
+  &dir="0"
+ELSEIF(&dir=="E")
+  &dir="1"
+ELSEIF(&dir=="S")
+  &dir="2"
+ELSEIF(&dir=="W")
+  &dir="3"
+ENDIF
+
+KEY(attack)
+
+LOG(%&pre% Press Numpad 5 when Aming at the Startpoint)
+
+DO()
+
+UNTIL(KEY_NUMPAD5)
+
+#xpos2=%HITX%
+#ypos2=%HITY%
+#zpos2=%HITZ%
+
+KEY(attack)
+
+FOR(#y,%#ypos1%,%#ypos2%)
+  FOR(#x,%#xpos1%,%#xpos2%)
+    FOR(#z,%#zpos1%,%#zpos2%)
+
+      ECHO("/summon ItemFrame %#x% %#y% %#z% {Facing:%&dir%}")
+    NEXT
+  NEXT
+NEXT
+
+LOG(%&pre% Done)
+
+}$$

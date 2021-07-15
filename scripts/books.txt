@@ -1,0 +1,18 @@
+$${
+
+PROMPT(&input,"$$[input]")
+
+SPLIT("",%&input%,&out[])
+
+ARRAYSIZE(&out[],#size)
+
+DEC(#size,1)
+
+FOR(#n,0,%#size%)
+
+  ECHO("%&out[%#n%]%")
+  WAIT(100ms)
+
+NEXT
+
+}$$

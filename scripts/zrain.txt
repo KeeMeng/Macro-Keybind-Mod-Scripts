@@ -1,0 +1,7 @@
+$${
+
+do()
+setlabel(RAIN,&6[Rain] &e%RAIN%)
+loop
+
+}$$

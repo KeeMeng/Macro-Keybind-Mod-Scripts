@@ -1,0 +1,32 @@
+$${
+
+UNSET(#ids[])
+UNSET(&ids[])
+UNSET(&sorted[])
+
+LOG(start sorting)
+
+FOR(#slot,0,53)
+  GETSLOTITEM(%#slot%,&name,#stacksize,#datavar)
+  #id=ITEMID(%&name%)
+  IF(!#id==0)
+    &ids[%#slot%]=%#id%,%#stacksize%,%#datavar%
+  ENDIF
+NEXT
+
+FOR(#oldslot,0,53)
+
+  SPLIT(",",%&ids[%#oldslot%]%,&current[])
+
+  #newslot=53
+
+  SET(#current,%&current[0]%)
+
+  
+
+NEXT
+
+LOG(end sorting)
+
+
+}$$

@@ -1,0 +1,16 @@
+$${
+LOG(starts)
+DO()
+UNTIL(TIME=="19:50:00")
+
+ECHO(/say alle /warp event und in die Portale springen)
+WAIT(300ms)
+ECHO(/mvp select event)
+WAIT(300ms)
+ECHO(/mvp modify price 0)
+WAIT(300ms)
+ECHO(/mvp select event3)
+WAIT(300ms)
+ECHO(/mvp modify price 0)
+
+}$$

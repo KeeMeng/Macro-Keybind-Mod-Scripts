@@ -1,0 +1,41 @@
+// @params #ir - initial red
+// @params #ig - initial green
+// @params #ib - initial blue
+// @return &chatcolor - closest chatcolor
+
+unsafe(0)
+
+    #uniquemin = 9999
+    &chatcolor = "0"
+
+    foreach(@&elscolors[],&uniquecolor)
+        
+        split(";",%&uniquecolor%,&uniquecolordata[])
+        
+        #uniquer := %&uniquecolordata[0]%
+        #uniqueg := %&uniquecolordata[1]%
+        #uniqueb := %&uniquecolordata[2]%
+        
+        #uniquedr = #ir-#uniquer
+        #uniquedg = #ig-#uniqueg
+        #uniquedb = #ib-#uniqueb
+        
+        if(#uniquedr < 0)
+            #uniquedr = -#uniquedr
+        endif
+        if(#uniquedg < 0)
+            #uniquedg = -#uniquedg
+        endif
+        if(#uniquedb < 0)
+            #uniquedb = -#uniquedb
+        endif
+        
+        #uniqued = #uniquedr + #uniquedg + #uniquedb
+        
+        if(#uniqued < #uniquemin)
+            #uniquemin = #uniqued
+            &chatcolor = %&uniquecolordata[3]%
+        endif
+        
+    next
+endunsafe()

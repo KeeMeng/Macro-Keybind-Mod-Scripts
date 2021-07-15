@@ -1,0 +1,323 @@
+&chat = lcase(%CHAT%)
+
+ifbeginswith(%&chat%,"@")
+
+    regexreplace(&chat,"^@","")
+    split(" ",%&chat%,&command[])
+    set(validcommand)
+    arraysize(&command[],#size)
+    
+    if(&command[0] == "pos1")
+    
+        @#elspos1[0] = XPOS
+        @#elspos1[1] = YPOS
+        @#elspos1[2] = ZPOS
+        inc(@#elspos1)
+        log("&aPos1 set to (%XPOS%|%YPOS%|%ZPOS%)")
+    
+    elseif(&command[0] == "pos2")
+    
+        @#elspos2[0] = XPOS
+        @#elspos2[1] = YPOS
+        @#elspos2[2] = ZPOS
+        inc(@#elspos2)
+        log("&aPos2 set to (%XPOS%|%YPOS%|%ZPOS%)")
+    
+    elseif(&command[0] == "hpos1")
+    
+        trace(255)
+        if(TRACEID == "air")
+            log("&cPlease look at a block")
+        endif
+        @#elspos1[0] = TRACEX
+        @#elspos1[1] = TRACEY
+        @#elspos1[2] = TRACEZ
+        inc(@#elspos1)
+        log("&aPos1 set to (%TRACEX%|%TRACEY%|%TRACEZ%)")
+
+    elseif(&command[0] == "hpos2")
+    
+        trace(255)
+        if(TRACEID == "air")
+            log("&cPlease look at a block")
+            filter
+        endif
+        @#elspos2[0] = TRACEX
+        @#elspos2[1] = TRACEY
+        @#elspos2[2] = TRACEZ
+        inc(@#elspos2)
+        log("&aPos2 set to (%TRACEX%|%TRACEY%|%TRACEZ%)")
+    
+    elseif(&command[0] == "save")
+        if(#size < 2)
+            &command[1] = "clipboard"
+        endif
+        
+        if(@#elspos1 && @#elspos2)
+            log("&aStarting saving")
+            exec("jam_els_save.txt","%&command[1]%")
+        else
+            log("&cUse @pos1,@pos2,@hpos1 and @hpos2 to setup the corner points")
+        endif
+        
+    elseif(&command[0] == "load")
+        if(#size < 2)
+            log("&cMissing 2nd argument for &7@save <name>")
+            filter
+        endif
+        unset(@elsflips[])
+        unset(@#elsrotate)
+        log("&aStarting load")
+        exec("jam_els_loader.txt","%&command[1]%")
+    
+    elseif(&command[0] == "build")
+    
+        unset(placeair)
+        if(&command[1] == "true")
+            set(placeair)
+        endif
+        exec("jam_els_build.txt","Builder","%placeair%")
+    
+    elseif(&command[0] == "stop")
+    
+        stop("Builder")
+        stop("Undoer")
+        stop("Interceptor")
+        unset(@elsbuilding)
+    
+    elseif(&command[0] == "flip")
+            
+        if((&command[1] == "up") || ((#size == 1) && ((PITCH < 290) && (PITCH > 70))))
+            toggle(@elsflips[0])
+            if(@elsflips[0])
+                log("&aEnabled flipping up/down")
+            else
+                log("&cDisabled flipping up/down")
+            endif
+        elseif((#size == 1) && ((PITCH > 20) && (PITCH < 340)))
+            log("&cYou're facing an ambiguous direction, try to align more with the axis")
+        elseif((&command[1] == "north") || ((#size == 1) && ((YAW > 340) || (YAW < 20) || (CARDINALYAW > 340) || (CARDINALYAW < 20))))
+            toggle(@elsflips[1])
+            if(@elsflips[1])
+                log("&aEnabled flipping north/south")
+            else
+                log("&cDisabled flipping north/south")
+            endif
+        elseif((&command[1] == "east") || ((#size == 1) && (((YAW > 70) && (YAW < 110)) || ((CARDINALYAW > 70) && (CARDINALYAW < 110)))))
+            toggle(@elsflips[2])
+            if(@elsflips[2])
+                log("&aEnabled flipping east/west")
+            else
+                log("&cDisabled flipping east/west")
+            endif
+        elseif(#size == 1)
+            log("&cYou're facing an ambiguous direction, try to align more with the axis")
+        else
+            log("&cInvalid 2nd argument for @flip <up|north|east>")
+        endif
+    
+    elseif(&command[0] == "rotate")
+        if(#size < 2)
+            log("&cMissing 2nd argument for &7@rotate <90|180|270>")
+            filter
+        endif
+   
+        #deg := %&command[1]%
+      
+        if((#deg < 0) || (((#deg/90)*90) != #deg))
+            log("&cInvalid angle for @rotate must be multiple of 90")
+            filter
+        endif
+   
+        inc(@#elsrotate,%#deg%)
+        do
+            if(@#elsrotate >= 360)
+                dec(@#elsrotate,360)
+            endif
+        while(@#elsrotate >= 360)
+        log("rotate by %@#elsrotate%degree")
+        
+    elseif(&command[0] == "sel")
+    
+        unset(@#elspos1[])
+        unset(@#elspos2[])
+        unset(@#elspos1)
+        unset(@#elspos2)
+        
+    elseif(&command[0] == "size")
+    
+        if(@#elspos1 && @#elspos2)
+            log("&7Pos1: %@#elspos1[0]%,%@#elspos1[1]%,%@#elspos1[2]%")
+            log("&7Pos2: %@#elspos2[0]%,%@#elspos2[1]%,%@#elspos2[2]%")
+            #dx = @#elspos1[0]-@#elspos2[0]
+            #dy = @#elspos1[1]-@#elspos2[1]
+            #dz = @#elspos1[2]-@#elspos2[2]
+            if(#dx < 0)
+                #dx = -#dx
+            endif
+            if(#dy < 0)
+                #dy = -#dy
+            endif
+            if(#dz < 0)
+                #dz = -#dz
+            endif
+            inc(#dx);inc(#dy);inc(#dz)
+            #volume = #dx*#dy*#dz
+            log("&7Dimension: %#dx%x%#dy%x%#dz% (%#volume%)")
+        else
+            log("&cUse @pos1,@pos2,@hpos1 and @hpos2 to setup the selection")
+        endif
+    elseif(&command[0] == "undo")
+    
+        exec("jam_els_undo.txt","undoer")
+        
+    elseif(&command[0] == "color")
+    
+        if((#size < 4) && (!((#size == 1) && @elscolor)) && (#size != 2))
+            log("&cMissing required arguments for &7@color [<r|colorcode> [<g> <b>]]")
+            filter
+        endif
+        
+        if(#size == 1)
+            log("&aUnsetting color")
+            unset(@elscolor)
+            @&elsparticleargs = "0 0 0 0"
+            inc(@#elspos1)
+            
+            filter
+        endif
+        
+        if(#size == 2)
+        
+            ifmatches("%&command[1]%","^[&\xA7]?([0-9a-f])$",&color,1)
+                foreach(@&elscolors[],&colorinfo)
+                
+                    split(";",%&colorinfo%,&colordata[])
+                    if(&colordata[3] == &color)
+                    
+                        #r := %&colordata[0]%
+                        #g := %&colordata[1]%
+                        #b := %&colordata[2]%
+                        break
+                    
+                    endif
+                
+                next
+            elseif(&command[1] == "rainbow")
+            
+                toggle(@elsrainbowmode)
+                inc(@#elspos1)
+                if(@elsrainbowmode)
+                    log("&aEnabling &5r&6a&7i&8n&9b&ao&bw&cm&do&ed&fe")
+                else
+                    log("&cDisabling &5r&6a&7i&8n&9b&ao&bw&cm&do&ed&fe")
+                endif
+                filter
+            
+            else
+            
+                log("&c2nd argument has to be a valid chat color code")
+                filter
+            
+            endif
+        
+        else
+    
+            #r := %&command[1]%
+            #g := %&command[2]%
+            #b := %&command[3]%
+        
+        endif
+        
+        unset(invalidcolor)
+        
+        if((#r < 0) || (#r > 255))
+            set(invalidcolor)
+            log("&cInvalid value for &4red &cparameter: %#r%, Value must be between 0 and 255")
+        endif
+        
+        if((#g < 0) || (#g > 255))
+            set(invalidcolor)
+            log("&cInvalid value for &2green &cparameter: %#g%, Value must be between 0 and 255")
+        endif
+        
+        if((#b < 0) || (#b > 255))
+            set(invalidcolor)
+            log("&cInvalid value for &1blue &cparameter: %#b%, Value must be between 0 and 255")
+        endif
+        
+        if(invalidcolor)
+            filter        
+        endif
+    
+        if((@&elsparticles != "reddust") || (@#elsparticlecount != 0))
+            log("&cColor only works for particles reddust with quantity of 0. Temporary setting it properly. Modify the config to keep it permanently")
+            @&elsparticles = "reddust"
+            @#elsparticlecount = 0
+        endif
+        
+        set(@elscolor)
+        
+        #ir = #r
+        #ig = #g
+        #ib = #b
+        
+        $$<jam_els_color.txt>
+        
+        @&elsparticleargs = "%&colorstring% 1"
+        $$<jam_els_closestcolor.txt>
+        inc(@#elspos1)
+        log("&aSuccessfully changed color to &%&chatcolor%r:%#ir% g:%#ig% b:%#ib%")
+    
+    elseif(&command[0] == "help")
+    
+        if(&command[1] == "color")
+        
+            log("&f&l&m-----------------&a&l [Color] &f&l&m-----------------")
+            log("&eSyntax: @color [<r|cc> [<g> <b>]]")
+            log("")
+            log("&aChanges color of the selection box")
+            log("&7Arguments can be empty to reset")
+            log("&7or 3 values for r g b")
+            log("&7or a colorcode like &&0")
+            log("&7or \"rainbow\" to enable rainbowmode")
+            log("&f&l&m---------------------------------------------")     
+            
+        elseif(#size == 2)
+        
+            log("&f&l&m-----------------&a&l [%&command[1]%] &f&l&m-----------------")
+            log("&cNo help found, use @help to see the list of commands")
+            log("&cKeep in mind, only commands written in red on the helppage have extra help")
+            log("&f&l&m---------------------------------------------")
+            
+        else
+    
+            log("&f&l&m-----------------&a&l [Commands] &f&l&m-----------------")
+            log("&e&l- &a@help [command] &7Display this or detailed help on commands. Only commands painted in red here have extra help")
+            log("&e&l- &a@pos1 &7Sets pos1 to your current feet position")
+            log("&e&l- &a@pos2 &7Sets pos2 to your current feet position")
+            log("&e&l- &a@hpos1 &7Sets pos1 to your hit block")
+            log("&e&l- &a@hpos2 &7Sets pos2 to your hit block")
+            log("&e&l- &a@flip <up|north|east> &7Flips the structure")
+            log("&e&l- &a@rotate <90|180|270> &7Rotates the structure")
+            log("&e&l- &a@save [name] &7Saves the structure")
+            log("&e&l- &a@load <name> &7Build the structure at your position")
+            log("&e&l- &a@build [place air] &7Start to build")
+            log("&e&l- &a@stop &7Stop current build progress")
+            log("&e&l- &a@undo &7Undo your last build")
+            log("&e&l- &a@sel &7Clear selection")
+            log("&e&l- &a@size &7Get selection dimension")
+            log("&e&l- &c@color [<r|cc> [<g> <b>]] &7Change color of box")
+            log("&f&l&m---------------------------------------------")     
+        
+        endif
+    
+    else
+        unset(validcommand)
+    endif
+    
+    if(validcommand)
+        filter()
+    endif
+
+endif

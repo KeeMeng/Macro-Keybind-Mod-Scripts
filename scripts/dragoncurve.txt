@@ -1,0 +1,58 @@
+
+#pos[0]=%XPOS%
+#pos[1]=%YPOS%
+#pos[2]=%ZPOS%
+
+arraysize(@#dcpos[],#size)
+dec(#size,1)
+
+&block[0] = "stained_glass 11"
+&block[1] = "stained_glass 11"
+&block[2] = "stained_glass 11"
+&block[3] = "stained_glass 11"
+
+//1 = +x
+//2 = +y
+//3 = -x
+//4 = -y
+
+foreach(@#dcpos[],#direction,#i)
+
+  if(#direction == 0)
+
+    #xup = %#pos[0]%+2
+    echo("/fill %#pos[0]% %#pos[1]% %#pos[2]% %#xup% %#pos[1]% %#pos[2]% %&block[0]%")
+    #xhigh = #pos[1] + 50
+    echo("/tp %#xup% %#xhigh% %#pos[2]%")
+    #pos[0] = %#xup%
+  
+  elseif(#direction == 1)
+  
+    #zup = %#pos[2]%+2
+  
+    echo("/fill %#pos[0]% %#pos[1]% %#pos[2]% %#pos[0]% %#pos[1]% %#zup% %&block[1]%")
+    #xhigh = #pos[1] + 50
+    echo("/tp %#pos[0]% %#xhigh% %#zup%")
+    #pos[2] = %#zup%
+  
+  elseif(#direction == 2)
+  
+    #xdown = %#pos[0]%-2
+  
+    echo("/fill %#pos[0]% %#pos[1]% %#pos[2]% %#xdown% %#pos[1]% %#pos[2]% %&block[2]%")
+    #xhigh = #pos[1] + 50
+    echo("/tp %#xdown% %#xhigh% %#pos[2]%")
+    #pos[0] = %#xdown%
+  
+  else
+  
+    #zdown = %#pos[2]%-2
+  
+    echo("/fill %#pos[0]% %#pos[1]% %#pos[2]% %#pos[0]% %#pos[1]% %#zdown% %&block[3]%")
+    #xhigh = #pos[1] + 50
+    echo("/tp %#pos[0]% %#xhigh% %#zdown%")
+    #pos[2] = %#zdown%
+  
+  endif
+
+next

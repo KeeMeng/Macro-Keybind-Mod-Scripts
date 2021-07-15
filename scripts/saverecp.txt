@@ -1,0 +1,27 @@
+$${
+
+@&pre = "&8[&bMacro&8]&f"
+
+//@&recipeslots[%#slot%]
+//0 1 2
+//3 4 5
+//6 7 8
+//9 = name
+
+IF(!(@&recipeslots[9]==""))
+
+  JOIN(",",@&recipeslots[],&out)
+
+  LOGTO(recipes.txt,"%&out%")
+
+ELSE
+
+  LOG(%@&pre% Not a valid recipename)
+
+ENDIF
+
+SHOWGUI(rezepte)
+    
+}$$
+
+$$<recpreload.txt>

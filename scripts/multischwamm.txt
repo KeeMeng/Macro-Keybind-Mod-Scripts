@@ -1,0 +1,30 @@
+$${
+
+PROMPT(&newname,"$$[Name]")
+
+ARRAYSIZE(@&sponges,#size)
+DEC(#size)
+FOR(#n,0,%#size%)
+
+  MATCH(%@&sponges[%#n%]%,"ps(\d+)x(\d+)y(\d+)z",{&x,&y,&z})
+  ECHO(/tppos %&x% %&y% %&z%)
+  WAIT(300ms)
+  ECHO(/ps addowner %&newname%)
+
+  DO()
+
+  UNTIL(@#mscondition>=1)
+
+  IF(@#mscondition==2)
+
+    @#mscondition=0
+    STOP()
+
+  ENDIF
+
+  @#mscondition=0
+
+NEXT
+
+}$$
+

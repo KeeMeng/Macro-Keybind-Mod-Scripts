@@ -1,0 +1,112 @@
+$${
+
+
+IF(GUI=="GUICRAFTING")
+
+
+#pre=12
+#next=11
+#active=13
+#new=0
+
+#deck=19
+#streifen=20
+#veck=21
+#flaechen=28
+#anderes=29
+
+
+DO()
+
+  GETSLOTITEM(%#active%,&activestick)
+
+  //LOG(%&activestick%)
+
+UNTIL((&activestick=="stick")||!(GUI=="GUICRAFTING"))
+
+
+IF(!GUI=="GUICRAFTING")
+
+  STOP()
+
+ENDIF
+
+
+DO()
+
+  GETSLOTITEM(%#next%,&nextstick)
+  GETSLOTITEM(%#pre%,&prestick)
+  GETSLOTITEM(%#deck%,&deckstick)
+  GETSLOTITEM(%#streifen%,&streifenstick)
+  GETSLOTITEM(%#veck%,&veckstick)
+  GETSLOTITEM(%#flaechen%,&flaechenstick)
+  GETSLOTITEM(%#anderes%,&anderesstick)
+
+  IF((&nextstick=="air")&&(GUI=="GUICRAFTING"))
+
+    WAIT(100ms)
+    SLOTCLICK(%#next%)
+    INC(#new,1)
+    EXEC(bannercraft.txt,"banner","%#new%")
+
+  ENDIF
+
+  IF((&prestick=="air")&&(GUI=="GUICRAFTING"))
+
+    SLOTCLICK(%#pre%)
+    DEC(#new,1)
+    EXEC(bannercraft.txt,"banner","%#new%")
+
+  ENDIF
+
+//---------------------------------
+
+  IF((&deckstick=="air")&&(GUI=="GUICRAFTING"))
+
+    SLOTCLICK(%#deck%)
+    SET(#new,0)
+    EXEC(bannercraft.txt,"banner","%#new%")
+
+  ENDIF
+
+  IF((&streifenstick=="air")&&(GUI=="GUICRAFTING"))
+
+    SLOTCLICK(%#streifen%)
+    SET(#new,6)
+    EXEC(bannercraft.txt,"banner","%#new%")
+
+  ENDIF
+
+  IF((&veckstick=="air")&&(GUI=="GUICRAFTING"))
+
+    SLOTCLICK(%#veck%)
+    SET(#new,15)
+    EXEC(bannercraft.txt,"banner","%#new%")
+
+  ENDIF
+
+  IF((&flaechenstick=="air")&&(GUI=="GUICRAFTING"))
+
+    SLOTCLICK(%#flaechen%)
+    SET(#new,20)
+    EXEC(bannercraft.txt,"banner","%#new%")
+
+  ENDIF
+
+  IF((&anderesstick=="air")&&(GUI=="GUICRAFTING"))
+
+    SLOTCLICK(%#anderes%)
+    SET(#new,26)
+    EXEC(bannercraft.txt,"banner","%#new%")
+
+  ENDIF
+
+  GETSLOTITEM(%#active%,&activeitem)
+
+UNTIL(!(&activeitem=="stick")||!(GUI=="GUICRAFTING"))
+
+
+
+ENDIF
+
+}$$

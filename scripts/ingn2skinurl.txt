@@ -1,0 +1,67 @@
+
+EXEC(dt2sec.txt,"i2s","%DATETIME%","i2s")
+WAIT(100ms)
+DO()
+
+WHILE(@#i2suttreturn=0)
+
+#jetzt=%@#i2suttreturn%
+
+#i2s=%#jetzt%-%@#i2sletzteraufruf%
+
+IF(#i2s<=30)
+
+  @&i2sreturn="Cooldown"
+
+ELSE
+
+EXEC(dt2sec.txt,"i2s","%DATETIME%","i2s")
+WAIT(100ms)
+DO()
+
+WHILE(@#i2suttreturn=0)
+
+@#i2sletzteraufruf=%@#i2suttreturn%
+
+
+&user=$$[1]
+
+
+&response = HTTPGET("https://api.mojang.com/users/profiles/minecraft/%&user%","","")
+IF(&response=="")
+
+  &response = HTTPGET("https://api.mojang.com/users/profiles/minecraft/%&user%?at=1453309266","","")
+
+  IF(&response=="")
+
+    &response = HTTPGET("https://api.mojang.com/users/profiles/minecraft/%&user%?at=0","","")
+
+  ENDIF
+
+ENDIF
+
+JSONGET(%&response%,"id",&uuid)
+REPLACE(&uuid,"\"","")
+
+
+&response = HTTPGET(https://sessionserver.mojang.com/session/minecraft/profile/%&uuid%,"","")
+
+
+JSONGET(%&response%,"properties",&properties)
+REPLACE(&properties,"[","")
+REPLACE(&properties,"]","")
+
+JSONGET(%&properties%,"value",&value)
+REPLACE(&value,"\"","")
+
+DECODE(%&value%,&decoded)
+
+JSONGET(%&decoded%,"textures",&textures)
+JSONGET(%&textures%,"SKIN",&skin)
+WAIT(100ms)
+JSONGET(%&skin%,"url",&url)
+REPLACE(&url,"\"","")
+
+@&i2sreturn=%&url%
+
+ENDIF

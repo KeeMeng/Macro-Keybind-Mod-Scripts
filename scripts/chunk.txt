@@ -1,0 +1,184 @@
+$${
+
+SET(@#progress,0)
+
+#xpos1 = 0
+#ypos1 = 0
+#zpos1 = 0
+
+#xpos2 = 0
+#ypos2 = 0
+#zpos2 = 0
+
+#xpos3 = 0
+#ypos3 = 0
+#zpos3 = 0
+
+#gold_ore14 = 0
+#iron_ore15 = 0
+#coal_ore16 = 0
+#lapis_ore21 = 0
+#lapis_block22 = 0
+#gold_block41 = 0
+#iron_block42 = 0
+#obsidian49 = 0
+#spawner52 = 0
+#diamond_ore56 = 0
+#diamond_block57 = 0
+#redstone_ore73 = 0
+#lit_redstone_ore74 = 0
+#emerald_ore129 = 0
+#emerald_block133 = 0
+#redstone_block152 = 0
+#coal_block173 = 0
+
+
+&blocklist = ""
+
+&pre = "&8[&bChunk&8] &f"
+
+#xpos1 = %XPOS%+8
+#ypos1 = 0
+#zpos1 = %ZPOS%+8
+
+#xpos2 = %XPOS%-7
+#ypos2 = 256
+#zpos2 = %ZPOS%-7
+
+#xpos4 = %XPOS%
+#ypos4 = %YPOS%
+#zpos4 = %ZPOS%
+
+
+FOR(#ypos3,%#ypos1%,%#ypos2%)
+
+  LOG(%#ypos3%)
+  
+  FOR(#xpos3,%#xpos1%,%#xpos2%)
+
+
+    FOR(#zpos3,%#zpos1%,%#zpos2%)
+
+      //LOG(%#zpos3%)
+      GETID(%#xpos3%,%#ypos3%,%#zpos3%,&curblock)
+      #curblock = ITEMID(%&curblock%)
+
+      IFMATCHES(%#curblock%,14|15|16|21|22|41|42|49|52|56|57|73|74|129|133|152)
+
+         ACHIEVEMENTGET(Found something,%&curblock%)
+         LOGTO(%#xpos4%-%#ypos4%-%#zpos4%.txt,"[%#xpos3%,%#ypos3%,%#zpos3%] %&curblock%")        
+         INC(#%&curblock%%#curblock%,1)
+
+      ENDIF
+
+      IF(@#stop==1)
+        SET(@#stop,0)
+UNSET(#coal_ore16)
+UNSET(#coal_block173)
+UNSET(#iron_ore15)
+UNSET(#iron_block42)
+UNSET(#gold_ore14)
+UNSET(#gold_block41)
+UNSET(#diamond_ore56)
+UNSET(#diamond_block57)
+UNSET(#lapis_ore21)
+UNSET(#lapis_block22)
+UNSET(#redstone_ore)
+UNSET(#redstone_ore73)
+UNSET(#lit_redstone_ore74)
+UNSET(#redstone_block152)
+UNSET(#emerald_ore129)
+UNSET(#emerald_block133)
+UNSET(#obsidian49)
+UNSET(#spawner52)
+UNSET(#xpos1)
+UNSET(#xpos2)
+UNSET(#xpos3)
+UNSET(#ypos1)
+UNSET(#ypos2)
+UNSET(#ypos3)
+UNSET(#zpos1)
+UNSET(#zpos2)
+UNSET(#zpos3)
+UNSET(&blocklist)
+UNSET(#curblock)
+UNSET(&curblock)
+UNSET(#ypos4)
+UNSET(#quartz_ore153)
+UNSET(#xpos4)
+UNSET(#zpos4)
+UNSET(&pre)
+        STOP()
+      ENDIF
+
+      INC(@#progress,1)
+      SETLABEL(progress,%@#progress%)
+
+    NEXT
+   
+  NEXT
+
+NEXT
+
+#redstone_ore = %#redstone_ore73% + %#lit_redstone_ore74%
+
+LOG(%&pre% Blocklist:)
+LOG()
+LOG(%&pre% Coal Ore      : %#coal_ore16%)
+LOG(%&pre% Coal Block    : %#coal_block173%)
+LOG(%&pre% Iron Ore      : %#iron_ore15%)
+LOG(%&pre% Iron Block    : %#iron_block42%)
+LOG(%&pre% Gold Ore      : %#gold_ore14%)
+LOG(%&pre% Gold Block    : %#gold_block41%)
+LOG(%&pre% Diamond Ore   : %#diamond_ore56%)
+LOG(%&pre% Diamond Block : %#diamond_block57%)
+LOG(%&pre% Lapis Ore     : %#lapis_ore21%)
+LOG(%&pre% Lapis Block   : %#lapis_block22%)
+LOG(%&pre% Redstone Ore  : %#redstone_ore%)
+LOG(%&pre% Redstone Block: %#redstone_block152%)
+LOG(%&pre% Emerald Ore   : %#emerald_ore129%)
+LOG(%&pre% Emerald Block : %#emerald_block133%)
+LOG(%&pre% Obsidian      : %#obsidian49%)
+LOG(%&pre% Spawner       : %#spawner52%)
+
+SET(@#pos1,0)
+SET(@#pos2,0)
+LOG(%&pre% Finished)
+
+UNSET(#coal_ore16)
+UNSET(#coal_block173)
+UNSET(#iron_ore15)
+UNSET(#iron_block42)
+UNSET(#gold_ore14)
+UNSET(#gold_block41)
+UNSET(#diamond_ore56)
+UNSET(#diamond_block57)
+UNSET(#lapis_ore21)
+UNSET(#lapis_block22)
+UNSET(#redstone_ore)
+UNSET(#redstone_ore73)
+UNSET(#lit_redstone_ore74)
+UNSET(#redstone_block152)
+UNSET(#emerald_ore129)
+UNSET(#emerald_block133)
+UNSET(#obsidian49)
+UNSET(#spawner52)
+UNSET(#xpos1)
+UNSET(#xpos2)
+UNSET(#xpos3)
+UNSET(#ypos1)
+UNSET(#ypos2)
+UNSET(#ypos3)
+UNSET(#zpos1)
+UNSET(#zpos2)
+UNSET(#zpos3)
+UNSET(&blocklist)
+UNSET(#curblock)
+UNSET(&curblock)
+UNSET(#ypos4)
+UNSET(#quartz_ore153)
+UNSET(#xpos4)
+UNSET(#zpos4)
+UNSET(&pre)
+
+}$$

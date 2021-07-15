@@ -1,0 +1,30 @@
+$${
+
+
+SET(&path,"C:\\\\Users\\\\redacted\\\\AppData\\\\Roaming\\\\.minecraft_1.11\\\\liteconfig\\\\common\\\\macros\\\\logs\\\\recipes.txt")
+
+
+READFILE(&file[],%&path%)
+
+UNSET(&recps[])
+
+UNSAFE()
+
+  ARRAYSIZE(&file[],#size)
+  DEC(#size,1)
+
+  FOR(#i,0,%#size%)
+
+    SPLIT(",",%&file[%#i%]%,&out[])
+    ARRAYSIZE(&out,#test)
+    &recps[] = %&out[9]%
+
+  NEXT
+
+  JOIN("\n",&recps[],@&allrecipes)
+
+ENDUNSAFE()
+
+SHOWGUI(rezepte)
+  
+}$$

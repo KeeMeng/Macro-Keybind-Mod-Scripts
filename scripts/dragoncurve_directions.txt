@@ -1,0 +1,36 @@
+$${
+
+prompt(&ammount,"$$?","Amount",false,"12")
+
+
+  unsafe
+
+    unset(@#dcpos[])
+    @#dcpos[0] = 0
+    #status = 0
+
+    do(%&ammount%)
+
+      log(&fStatus: %#status%)
+      inc(#status,1)
+
+      arraysize(@#dcpos[],#size)
+      dec(#size,1)
+
+      for(#i,%#size%,0)
+
+        #thispos = %@#dcpos[%#i%]%
+        inc(#thispos,1)
+        mod(#thispos,%#thispos%,4)
+        #iup = (%#size%-%#i%)+%#size%+1
+        @#dcpos[%#iup%] = %#thispos%    
+
+      next
+
+    loop
+
+  endunsafe
+
+  $$<dragoncurve.txt>
+
+}$$

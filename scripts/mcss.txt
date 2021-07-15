@@ -1,0 +1,26 @@
+
+
+&response = HTTPGET("https://status.mojang.com/check","","")
+GetJsonAsArray(%&response%,&out[])
+ARRAYSIZE(&out[],#size)
+#realsize=%#size%-1
+LOG(&8[&bMacro&8] &fMinecraftserver Status:)
+FOR(#for,0,%#realsize%)
+  &replace = %&out[%#for%]%
+  REPLACE(&replace,"{","")
+  REPLACE(&replace,"}","")
+  MATCH(%&replace%,"\"(.*)\":\"(.*)\"",{&server,&color})
+  IF(&color=="green")
+    &pre="&a"
+  ELSE
+    IF(&color=="yellow")
+      &pre="&e"
+    ELSE
+      IF(&color=="red")
+        &pre="&c"
+      ELSE
+      ENDIF
+    ENDIF
+  ENDIF
+  LOG(%&pre%%&server%)
+NEXT

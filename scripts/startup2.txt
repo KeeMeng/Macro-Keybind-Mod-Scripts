@@ -1,0 +1,16 @@
+
+foreach(running)
+	stop(%MACROID%)
+next
+
+LOG(&8[&bStartup&8] &fStartup started.)
+EXEC(ydurability.txt,"Durability II")
+EXEC(zdurability.txt,"Durability")
+EXEC(waila.txt,"Waila")
+EXEC(y_effect.txt,"Effects")
+EXEC(y_player.txt,"Playerlist")
+EXEC(vote.txt,"Vote")
+EXEC(ticks.txt,"Ticker")
+EXEC(zchat.txt,"Chat")
+EXEC(chatlognew.txt,"Chatlog")
+

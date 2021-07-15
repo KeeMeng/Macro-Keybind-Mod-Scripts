@@ -1,0 +1,119 @@
+$${
+
+IF(@#joinmsgenable==1)
+
+    &pre=""
+
+    INDEXOF(@&newhelfer,#ishelfer,%JOINEDPLAYER%)
+    INDEXOF(@&newscout,#isscout,%JOINEDPLAYER%)
+    INDEXOF(@&newsupp,#issupp,%JOINEDPLAYER%)
+    INDEXOF(@&newadmin,#isadmin,%JOINEDPLAYER%)
+    INDEXOF(@&newowner,#isowner,%JOINEDPLAYER%)
+    INDEXOF(@&newhass,#ishated,%JOINEDPLAYER%)
+    INDEXOF(@&newcreative,#iscreatived,%JOINEDPLAYER%)
+    INDEXOF(@&newcity,#iscitied,%JOINEDPLAYER%)
+    INDEXOF(@&newskyblock,#isskyblocked,%JOINEDPLAYER%)
+    INDEXOF(@&newfriend,#isfriend,%JOINEDPLAYER%)
+    INDEXOF(@&newdev,#isdev,%JOINEDPLAYER%)
+
+    IF(%#isfriend%>-1)
+
+      &pre="%&pre%%@&prefriend%"
+
+    ENDIF
+
+    IF(%#ishated%>-1)
+
+      &pre="%&pre%%@&prehated%"
+
+    ENDIF
+
+    IF(%#iscreatived%>-1)
+
+      &pre="%&pre%%@&precreative%"
+
+    ENDIF
+
+    IF(%#iscitied%>-1)
+
+      &pre="%&pre%%@&precity%"
+
+    ENDIF
+
+    IF(%#isskyblocked%>-1)
+
+      &pre="%&pre%%@&preskyblock%"
+
+    ENDIF
+
+    IF(%#ishelfer%>-1)
+
+      &pre="%&pre%%@&colorhelfer%"
+
+    ELSE
+
+      IF(%#isscout%>-1)
+
+        &pre="%&pre%%@&colorscout%"
+
+      ELSE
+
+        IF(%#issupp%>-1)
+
+          &pre="%&pre%%@&colorsupp%"
+
+        ELSE
+
+          IF(%#isadmin%>-1)
+
+            &pre="%&pre%%@&coloradmin%"            
+
+          ELSE
+
+            IF(%#isowner%>-1)
+
+              &pre="%&pre%%@&colorowner%"
+
+            ELSE
+
+              IF(%#isdev%>-1)
+
+                &pre="%&pre%%@&colordev%"
+
+              ENDIF
+
+            ENDIF
+
+          ENDIF
+
+        ENDIF
+
+      ENDIF
+
+    ENDIF
+
+  NEXT
+
+  IF(%&pre%="")
+    STOP()
+  ELSE
+
+    LOG(&8[&bMacro&8] %&pre%%JOINEDPLAYER% joined the Server)
+
+  ENDIF
+
+    UNSET(&owner[])
+    UNSET(&admin[])
+    UNSET(&supp[])
+    UNSET(&scout[])
+    UNSET(&helfer[])
+    UNSET(&user[])
+    UNSET(&players)
+    UNSET(#size)
+    UNSET(#weitere)
+    UNSET(#players)
+
+  ENDIF
+
+ENDIF
+}$$

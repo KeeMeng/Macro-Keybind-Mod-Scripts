@@ -1,0 +1,98 @@
+IF(@#skiploading==0)
+
+UNSET(@&recipes[])
+
+UNSET(&slot[])
+
+&slot[0]="296"//slot oben links
+&slot[1]="296"//slot oben mitte
+&slot[2]="296"//slot oben rechts
+&slot[3]="296"//slot mitte links
+&slot[4]="296"//slot mitte mitte
+&slot[5]="296"//slot mitte rechts
+&slot[6]="296"//slot unten links
+&slot[7]="296"//slot unten mitte
+&slot[8]="296"//slot unden rechts
+
+&recipe="Brot"
+
+FOR(#i,0,8)
+
+  SET(#tester,%&slot[%#i%]%)
+
+  IF(#tester>0)
+    &item = ITEMNAME(%#tester%)
+    SET(&slot[%#i%],%&item%)
+  ELSE
+
+  ENDIF
+
+  &recipe="%&recipe%,%&slot[%#i%]%"
+
+NEXT
+
+@&recipes[]=%&recipe%
+
+UNSET(&slot[])
+
+&slot[0]="264"
+&slot[1]="264"
+&slot[2]="264"
+&slot[3]="264"
+&slot[4]="264"
+&slot[5]="264"
+&slot[6]="264"
+&slot[7]="264"
+&slot[8]="264"
+
+&recipe="Diamantblock"
+
+FOR(#i,0,8)
+
+  SET(#tester,%&slot[%#i%]%)
+
+  IF(#tester>0)
+    &item = ITEMNAME(%#tester%)
+    SET(&slot[%#i%],%&item%)
+  ELSE
+
+  ENDIF
+
+  &recipe="%&recipe%,%&slot[%#i%]%"
+
+NEXT
+
+@&recipes[]=%&recipe%
+
+UNSET(&slot[])
+
+&slot[0]=""
+&slot[1]=""
+&slot[2]=""
+&slot[3]=""
+&slot[4]=""
+&slot[5]=""
+&slot[6]=""
+&slot[7]=""
+&slot[8]=""
+
+&recipe=""
+
+FOR(#i,0,8)
+
+  SET(#tester,%&slot[%#i%]%)
+
+  IF(#tester>0)
+    &item = ITEMNAME(%#tester%)
+    SET(&slot[%#i%],%&item%)
+  ELSE
+
+  ENDIF
+
+  &recipe="%&recipe%,%&slot[%#i%]%"
+
+NEXT
+
+@&recipes[]=%&recipe%
+
+ENDIF

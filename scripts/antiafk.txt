@@ -1,0 +1,39 @@
+
+SET(@#afktimes,600)
+
+log(antiafk gestartet)
+
+do()
+
+  @#afklastmove = %TIMESTAMP%
+
+
+  #x = %XPOS%
+  #y = %YPOS%
+  #z = %ZPOS%
+
+  do()
+
+    #yet = %TIMESTAMP%
+
+
+    @#afkdiff = %#yet%-%@#afklastmove%
+
+    if((@#afkdiff > @#afktimes))
+
+      @#antiafkx = %XPOS%
+      @#antiafky = %XPOS%
+      @#antiafkz = %XPOS%
+
+      echo(/spawn)
+
+      do()
+
+      while((#x == XPOS)&&(#y == YPOS)&&(#z == ZPOS))
+     
+    endif
+
+  while((#x == XPOS)&&(#y == YPOS)&&(#z == ZPOS))
+
+loop()
+

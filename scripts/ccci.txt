@@ -1,0 +1,17 @@
+$${
+
+PROMPT(&item,$$[Item],"Choose Item",false,"0")
+
+SET(#tester,%&item%)
+
+IF(#tester>0)
+  &item = ITEMNAME(%#tester%)
+ELSE
+  
+ENDIF
+
+@&cc_item=%&item%
+
+SHOWGUI(chestsearch)
+
+}$$

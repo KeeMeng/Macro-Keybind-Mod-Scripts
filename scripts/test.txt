@@ -1,0 +1,11 @@
+$${
+
+do
+
+    calcyawto(-312,61,-294,#yaw,#dist,#pitch)
+    inc(#yaw,180)
+    look(%#yaw%,%#pitch%)
+
+loop
+
+}$$

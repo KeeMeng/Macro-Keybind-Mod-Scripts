@@ -1,0 +1,383 @@
+$${
+
+&ccolor="&c" 
+//Color used to display the coordinates.
+&ncolor="&c" 
+//Color used to display the waypointname.
+&tcolor="&f" 
+//Color used to display anything else.
+
+&pre="&8[&bWaypoints&8]"
+
+PROMPT(&action,"$$[Action[Add,List,List for server,,Removeall]]")
+
+IF(&action=="Add")
+
+  PROMPT(&name,"$$[Waypointname]")
+  &position="%XPOS%,%YPOS%,%ZPOS%"
+  INDEXOF(@&waypointnames,#isin1,%&name%)
+  INDEXOF(@&waypoints,#isin2,%&position%)
+  IF((#isin1==-1)&&(#isin2==-1))
+
+    @&waypointnames[]="%&name%"
+    @&waypointserver[]="%SERVER%"
+    @&waypoints[]="%&position%"
+    LOG("%&pre%%&tcolor% Created new Waypoint \"%&ncolor%%&name%%&tcolor%\" at x=%&ccolor%%XPOS%%&tcolor% y=%&ccolor%%YPOS%%&tcolor% z=%&ccolor%%ZPOS%")
+
+  ELSE
+
+    PROMPT(&warning,"$$[Overwrite[Yes,No]]")
+    IF(&warning=="Yes")
+
+      IF(#isin1==-1)
+
+        #isin=%#isin2%
+
+      ELSE
+
+        #isin=%#isin1%
+
+      ENDIF
+
+      &oldname="%@&waypointnames[%#isin%]%"
+      &oldpos ="%@&waypoints[%#isin%]%"
+
+      SPLIT(",",%&oldpos%,&out[])
+
+      @&waypointnames[%#isin%]="%&name%"
+      @&waypoints[%#isin%]="%&position%"
+
+      LOG("%&pre%%&tcolor% Overwrote \"%&ncolor%%&oldname%%&tcolor%\" located at x=%&ccolor%%&out[0]%%&tcolor% y=%&ccolor%%&out[1]%%&tcolor% z=%&ccolor%%&out[2]%")
+      LOG("%&pre%%&tcolor% To \"%&ncolor%%&name%%&tcolor%\" located at x=%&ccolor%%XPOS%%&tcolor% y=%&ccolor%%YPOS%%&tcolor% z=%&ccolor%%ZPOS%")
+
+    ENDIF
+
+  ENDIF
+
+ELSEIF(&action=="List")
+
+
+  DO()
+
+    JOIN(",",@&waypointnames[],&list)  
+    PROMPT(&wp,"$$[[%&list%,Close]]")
+    INDEXOF(@&waypointnames[],#isin,"%&wp%")
+    IF(#isin>=0)
+
+      &name=%@&waypointnames[%#isin%]%
+      &server=%@&waypointserver[%#isin%]%
+      SPLIT(",",%@&waypoints[%#isin%]%,&out[])
+      JOIN(" ",&out[],&position)
+
+      DO()
+
+        PROMPT(&action,"$$[[Name: %&name%,Pos: %&position%,Server: %&server%,,Back]]")
+
+
+        IFCONTAINS(%&action%,"Name:")
+
+          PROMPT(&action,"$$[[Enter new Name,Cancel]]")
+
+          IF(&action=="Enter new Name")
+
+            PROMPT(&action=="$$[Name]")
+            &name=%&action%
+            @&waypointnames[%#isin%]=%&name%
+
+          ELSEIF(&action=="Cancel")
+
+          ELSE
+
+            &name=%&action%
+            @&waypointnames[%#isin%]=%&name%
+
+          ENDIF
+
+        ELSE
+
+          IFCONTAINS(%&action%,"Pos:")
+
+            PROMPT(&action,"$$[[Enter new Pos,Use my Pos,Lookto,Cancel]]")
+
+            IF(&action=="Enter new Pos")
+
+              PROMPT(&action,"$$[Position]")
+              &position=%&action%
+              REPLACE(&action," ",",")
+              @&waypoints[%#isin%]=%&action%
+
+            ELSEIF(&action=="Cancel")
+
+            ELSEIF(&action=="Use my Pos")
+
+              &position="%XPOS% %YPOS% %ZPOS%"
+              
+              @&waypoints[%#isin%]="%XPOS%,%YPOS%,%ZPOS%"
+
+            ELSEIF(&action=="Lookto")
+
+              CALCYAWTO(%&out[0]%,%&out[2]%,#yaw,#dist)
+              INC(#yaw,180)
+              LOOK(%#yaw%,,0.1)
+              LOG("%&pre%%&tcolor% Zu diesem Punkt sind es %&ccolor%%#dist% %&tcolor%Blöcke")
+              #break=1
+              BREAK()           
+
+            ELSE
+
+              &position=%&action%
+              REPLACE(&action," ",",")
+              @&waypoints[%#isin%]=%&position%
+
+            ENDIF
+
+          ELSE
+
+            IFCONTAINS(%&action%,"Server:")
+
+
+              PROMPT(&action,"$$[[Enter new Server,Cancel]]")
+
+              IF(&action=="Enter new Server")
+
+                PROMPT(&action=="$$[Server]")
+                &server=%&action%
+                @&waypointserver[%#isin%]=%&server%
+
+              ELSEIF(&action=="Cancel")
+
+              ELSE
+
+                &server=%&action%
+                @&waypointserver[%#isin%]=%&server%
+
+              ENDIF
+
+            ELSEIF(&action=="Back")
+
+              BREAK()
+
+            ENDIF
+
+          ENDIF
+
+        ENDIF
+
+        &action=""
+
+      LOOP
+
+
+    ELSEIF(&wp=="Close")
+
+      BREAK()
+
+    ELSE
+
+    ENDIF
+
+    IF(#break==1)
+
+      BREAK()
+
+    ENDIF
+
+  LOOP
+
+ELSEIF(&action=="List for server")
+
+  PROMPT(&server,"$$[[My Server,Enter Server,Cancel]]")
+
+  IF(!(&server=="Cancel"))
+
+    IF(&server=="My Server")
+
+      &server=%SERVER%
+
+    ENDIF
+
+    UNSET(&lists[])
+
+    ARRAYSIZE(@&waypointnames[],#size)
+    DEC(#size,1)
+  
+
+    FOR(#n,0,%#size%)
+
+      IF(&server==@&waypointserver[%#n%])
+        
+        &lists[]="%@&waypointnames[%#n%]%"
+
+      ENDIF
+
+    NEXT
+
+    JOIN(",",&lists[],&list) 
+
+    DO()
+ 
+      PROMPT(&wp,"$$[[%&list%,Close]]")
+      INDEXOF(@&waypointnames[],#isin,"%&wp%")
+      IF(#isin>=0)
+
+        &name=%@&waypointnames[%#isin%]%
+        &server=%@&waypointserver[%#isin%]%
+        SPLIT(",",%@&waypoints[%#isin%]%,&out[])
+        JOIN(" ",&out[],&position)
+
+        DO()
+
+          PROMPT(&action,"$$[[Name: %&name%,Pos: %&position%,Server: %&server%,,Back]]")
+
+          IFCONTAINS(%&action%,"Name:")
+
+            PROMPT(&action,"$$[[Enter new Name,Cancel]]")
+
+            IF(&action=="Enter new Name")
+
+              PROMPT(&action=="$$[Name]")
+              &name=%&action%
+              @&waypointnames[%#isin%]=%&name%
+
+            ELSEIF(&action=="Cancel")
+
+            ELSE
+
+              &name=%&action%
+              @&waypointnames[%#isin%]=%&name%
+
+            ENDIF
+
+          ELSE
+
+            IFCONTAINS(%&action%,"Pos:")
+
+              PROMPT(&action,"$$[[Enter new Pos,Use my Pos,Lookto,Cancel]]")
+
+              IF(&action=="Enter new Pos")
+
+                PROMPT(&action,"$$[Position]")
+                &position=%&action%
+                REPLACE(&action," ",",")
+                @&waypoints[%#isin%]=%&action%
+
+              ELSEIF(&action=="Cancel")
+
+              ELSEIF(&action=="Use my Pos")
+
+                &position="%XPOS% %YPOS% %ZPOS%"
+              
+                @&waypoints[%#isin%]="%XPOS%,%YPOS%,%ZPOS%"
+
+              ELSEIF(&action=="Lookto")
+
+                CALCYAWTO(%&out[0]%,%&out[2]%,#yaw,#dist)
+                INC(#yaw,180)
+                LOOK(%#yaw%,,0.1)
+                LOG("%&pre%%&tcolor% Zu diesem Punkt sind es %&ccolor%%#dist% %&tcolor%Blöcke")
+                #break=1
+                BREAK()           
+
+              ELSE
+
+                &position=%&action%
+                REPLACE(&action," ",",")
+                @&waypoints[%#isin%]=%&position%
+
+              ENDIF
+
+            ELSE
+
+              IFCONTAINS(%&action%,"Server:")
+
+
+                PROMPT(&action,"$$[[Enter new Server,Cancel]]")
+
+                IF(&action=="Enter new Server")
+
+                  PROMPT(&action=="$$[Server]")
+                  &server=%&action%
+                  @&waypointserver[%#isin%]=%&server%
+
+                ELSEIF(&action=="Cancel")
+
+                ELSE
+
+                  &server=%&action%
+                  @&waypointserver[%#isin%]=%&server%
+
+                ENDIF
+
+              ELSEIF(&action=="Back")
+
+                BREAK()
+
+              ENDIF
+
+            ENDIF
+
+          ENDIF
+
+          &action=""
+
+        LOOP
+
+
+      ELSEIF(&wp=="Close")
+
+        BREAK()
+
+      ELSE
+
+      ENDIF
+
+      IF(#break==1)
+
+        BREAK()
+
+      ENDIF
+
+    LOOP
+
+  ENDIF
+
+ELSEIF(&action=="Removeall")
+
+  PROMPT(&warning,"$$[Really[Yes,No]]")
+  IF(&warning=="Yes")
+    UNSET(@&waypointnames[])
+    UNSET(@&waypoints[])
+    LOG("%&pre%%&tcolor% All Waypoints were removed")
+  ENDIF
+
+ENDIF
+
+UNSET(&action)
+UNSET(&ccolor)
+UNSET(&ncolor)
+UNSET(&tcolor)
+UNSET(&pre)
+
+UNSET(&name)
+UNSET(&warning)
+
+UNSET(&position)
+UNSET(&oldpos)
+UNSET(&oldname)
+UNSET(&list)
+UNSET(&server)
+UNSET(&wp)
+
+UNSET(#isin)
+UNSET(#isin1)
+UNSET(#isin2)
+UNSET(#size)
+UNSET(#break)
+UNSET(#dist)
+UNSET(#n)
+UNSET(#yaw)
+
+UNSET(&out[])
+UNSET(&lists[])
+
+}$$

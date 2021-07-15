@@ -1,0 +1,23 @@
+
+//do()
+
+unset(&online[])
+
+foreach(players)
+
+  &online[] = "%PLAYERNAME%"
+
+next
+
+playerlist(&online[])
+
+arraysize(&online[],#size)
+dec(#size,1)
+
+for(#i,0,%#size%)
+
+  log(%&online[%#i%]%)
+
+next
+
+//loop

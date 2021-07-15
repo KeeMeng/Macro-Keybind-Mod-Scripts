@@ -1,0 +1,22 @@
+$${
+
+if(quests);
+    log("&b[QUEST]&f Questing Disabled");
+    unset(quests);
+else;
+    log("&b[QUEST]&f Questing Enabled");
+    set(quests);
+    do;
+        ECHO(/quests take Stone Miner);
+        WAIT(50ms);
+        ECHO(Yes);
+        WAIT(1500000ms);
+        LOG("&b[QUEST]&f Noch 5 minuten")
+        WAIT(240000ms)
+        LOG("&b[QUEST]&f Noch 1ne minute")
+        WAIT(90000ms)
+    while(quests);
+endif;
+
+
+}$$

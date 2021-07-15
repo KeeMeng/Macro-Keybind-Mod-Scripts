@@ -1,0 +1,47 @@
+// (x*x)*0.5
+
+&end = "&4----"
+&mid = "&2-"
+&stop = "&4X"
+
+#cd     = 2
+
+#prepre = 0
+#pre    = 0
+#cur    = 0
+#behbeh = 0
+#beh    = 0
+
+#min    = %@#dice_min%
+#max    = %@#dice_max%
+
+RANDOM(#prepre,%#max%,%#min%)
+RANDOM(#pre,%#max%,%#min%)
+RANDOM(#cur,%#max%,%#min%)
+RANDOM(#beh,%#max%,%#min%)
+RANDOM(#behbeh,%#max%,%#min%)
+
+FOR(#i,1,40)
+
+ 
+ #prepre = %#pre%
+ #pre    = %#cur%
+ #cur    = %#beh%
+ #beh    = %#behbeh%
+
+ RANDOM(#behbeh,%#max%,%#min%)
+
+ SETPROPERTY(DICE_OUT,text,%&end%\n%#prepre%\n%#pre%\n%&mid%%#cur%%&mid%\n%#beh%\n%#behbeh%\n%&end%)
+ IF(%#i%>36)
+   SETPROPERTY(DICE_OUT,text,%&end%\n%&stop%\n%#pre%\n%&mid%%#cur%%&mid%\n%#beh%\n%&stop%\n%&end%)
+ ENDIF
+
+ IF(%#i%>38)
+   SETPROPERTY(DICE_OUT,text,%&end%\n%&stop%\n%&stop%\n%&mid%%#cur%%&mid%\n%&stop%\n%&stop%\n%&end%)
+ ENDIF
+   
+ #cd=(%#i%*%#i%)/2
+ WAIT(%#cd%ms)
+ 
+
+NEXT

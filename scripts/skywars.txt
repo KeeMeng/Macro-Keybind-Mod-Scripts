@@ -1,0 +1,6 @@
+$${
+
+SET(@#skywars,1)
+ECHO(/system gserverchat skywars)
+
+}$$

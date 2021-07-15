@@ -1,0 +1,44 @@
+$${
+
+ &player = ""
+ &ground = ""
+ IF(@#hotkey=0)
+
+  DO()
+
+
+    &test = %KEY_MOUSE3%
+    KEY(ATTACK)
+    WAIT(10ms)
+
+   IF(%&test%="True")
+    LOG(True)
+   ENDIF
+
+   IF(%&test%="False")
+          LOG(False)
+   ENDIF
+   
+   IF(@#hotkey=1)
+     STOP();
+   ENDIF
+
+  WHILE(%&test%="True")
+
+ ELSE
+
+  LOG(sth went wrong)
+  PROMPT(&player,$$u)
+  PROMPT(&ground,$$0)
+ 
+  IF(&player=""  &ground!="")
+  ELSE
+   IF(&ground="")
+   ELSE
+   
+    ECHO(/gban %&player% %&ground%)
+   ENDIF
+  ENDIF
+ ENDIF
+
+}$$

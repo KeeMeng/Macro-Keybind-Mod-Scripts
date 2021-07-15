@@ -1,0 +1,22 @@
+$${
+
+STRIP(&chat,%CHAT%)
+
+IFCONTAINS(%&chat%," Money gegeben.")
+
+  IFCONTAINS(%&chat%,"Du hast")
+
+  ELSE
+
+    STRIP(&chat,%CHAT%)
+    MATCH(%&chat%,"SkyGrid » (.+?) hat dir (.+?) Money gegeben.",{&lotto_player,&paidammount})
+    SET(#paidammount,%&paidammount%)
+    @#msglotto_paid=%#paidammount%
+    @&msglotto_player="%&lotto_player%"
+
+
+  ENDIF
+
+ENDIF
+
+}$$

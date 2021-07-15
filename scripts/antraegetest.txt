@@ -1,0 +1,50 @@
+
+&pre=&8[&bMacro&8]&f
+
+#show=$$[1]
+
+INDEXOF(@&antraege,#index,"spthiel")
+
+IF(#index<60)
+  #indexdown=%#index%-1
+  SETLABEL(antraege,"%@&antraege[%#indexdown%]%")
+    
+  &waname=%@&antraege[%#indexdown%]%
+  INC(#indexdown,1)
+  &wateam=%@&antraege[%#indexdown%]%
+  INC(#indexdown,2)
+  &wagrund=%@&antraege[%#indexdown%]%
+
+  SPLIT(" - ",%&wagrund%,&store[])
+
+  IF(#show=1)
+
+    REPLACE(&store[0],"Banbeginn: ","")
+    REPLACE(&store[1],"Banzeit: ","")
+    REPLACE(&store[2],"Bangrund: ","")
+    REPLACE(&store[3],"Stellungnahme: ","")
+    REPLACE(&store[3]," "," &7")
+
+    LOG(" ")
+    LOG(" ")
+    LOG(%&pre% Name:&7 %&waname%)
+    LOG(%&pre% Banbeginn:&7 %&store[0]%)
+    LOG(%&pre% Banzeit:&7 %&store[1]%)
+    LOG(%&pre% Grund:&7 %&store[2]%)
+    LOG(%&pre% Teamler:&7 %&wateam%)
+    LOG(%&pre% Stellungsnahme: &7%&store[3]%)
+    LOG(" ")
+
+  ELSE
+
+    LOG("%&pre% Du hast einen Antrag")
+
+  ENDIF
+
+ELSE
+
+  LOG("%&pre% Kein offener Antrag")
+
+ENDIF
+
+

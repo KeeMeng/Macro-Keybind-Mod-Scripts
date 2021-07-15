@@ -1,0 +1,9 @@
+$${
+IF(@#gamemode=3)
+    SET(@#gamemode,0);
+    LOG(%@#gamemode%)
+ELSE;
+    INC(@#gamemode,1);
+    LOG(%@#gamemode%)
+ENDIF
+}$$

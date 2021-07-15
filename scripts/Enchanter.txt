@@ -1,0 +1,160 @@
+
+if(HITID != "enchanting_table")
+	log("&cPlease look at an enchantment table")
+	stop()
+endif
+
+unset(broken)
+
+do
+
+	join(",",@&enchantments[],&querystring)
+	if(&querystring != "")
+		&querystring = "%&querystring%,"
+	endif
+	prompt(&out,"$$[[%&querystring%,+]]","Enchantment to look for",,"")
+	if(&out == "")
+		prompt(&confirm,"$$[[No,Yes]]","Quit?")
+		if(&confirm == "Yes")
+			stop()
+		endif
+	elseif(&out == "+")
+
+		prompt(&name,"$$?","Enter the name of the enchantment",,"")
+		if(&name != "")
+			indexof(@&enchantments[],#isin,%&name%)
+			if(#isin == -1)
+				lcase("%&name%",&name)
+				@&enchantments[] = %&name%
+			endif
+		endif
+	else
+		indexof(@&enchantments[],#isin,%&out%)
+		if(#isin > -1)
+			do()
+				prompt(&level,"$$[[*,I,II,III,IV,V,,-]]","Pick your option")
+				if(&level == "-")
+					indexof(@&enchantments[],#idx,%&out%)
+					log("%#idx%")
+					#size = arraysize(@&enchantments[])
+					dec(#size)
+					for(#i,%#idx%,%#size%)
+						#iup = #i+1
+						@&enchantments[%#i%] = %@&enchantments[%#iup%]%
+					next
+					unset(@&enchantments[%#size%])
+					break
+				elseif(&level == "")
+				else
+					ifmatches(%&level%,"(?:\*|I|II|III|IV|V)")
+						set(broken)
+						break
+					endif
+				endif
+			loop
+			if(broken)
+				break
+			endif
+		endif
+	endif
+
+loop
+
+unset(#slots[])
+#slots[] = 29
+#slots[] = 31
+#slots[] = 33
+
+log("&7Opening enchantment table, please then continue to select the item you want to enchant")
+
+wait(5t)
+
+key(use)
+do(10)
+	wait(2t)
+while(GUI != "GUICHEST")
+
+if(GUI != "GUICHEST")
+	log("&cCouldn't open enchantment table")
+	stop
+endif
+
+do
+
+	if(GUI != "GUICHEST")
+		log("&cLeft enchantment table, stopping")
+		stop
+	endif
+
+	getslotitem(29,&id)
+	wait(1t)
+while(&id == "dye")
+
+unset(found)
+
+do
+
+	if(GUI != "GUICHEST")
+		log("&cLeft enchantment table, stopping")
+		stop
+	endif
+	
+	do(10)
+		wait(1t)
+		getslotitem(29,&id)
+	while(&id == "dye")
+	
+	if(&id == "dye")
+		log("&cSomething went wrong")
+		stop
+	endif
+		
+	
+	foreach(#slots[],#slot,#i)
+		#s = #slot
+		getslotitemnbt(%#slot%,,,,&tag)
+		match(%&tag%,"\[(.+?)\]",{&lore})
+		split(",",%&lore%,&out[])
+		strip(&out[1],"%&out[1]%")
+		match(%&out[1]%,"\" \* (.+) ([IVX]+)\"",{&enchantment,&elevel})
+		
+		lcase("%&enchantment%",&enchantment)
+		indexof(@&enchantments[],#isin,%&enchantment%)
+		if(#isin == -1)
+			@&enchantments[] = %&enchantment%
+		endif
+		if((&level == "*") || (&elevel == &level))
+			if(&enchantment == &out)
+				set(found)
+				break
+			endif
+			
+		endif
+	next
+	
+	if(found)
+	
+		if(#s == 29)
+			&position = "on the left"
+		elseif(#s == 31)
+			&position = "in the center"
+		else
+			&position = "on the right"
+		endif
+	
+		log("&aFound %&enchantment% level %&elevel% %&position%")
+		stop
+		
+	endif
+	
+	random(#r,3,10)
+	wait(%#r%t)
+	slotclick(13)
+	random(#r,2,4)
+	wait(%#r%t)
+	slotclick(13)
+	random(#r,3,10)
+	wait(%#r%t)
+
+loop
+

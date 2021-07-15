@@ -1,0 +1,147 @@
+
+logto("bavaria/bavariachat-%DATE%.txt","[%TIME%] %CHAT%")
+
+// Console
+
+&regex = "^\§f\[\§r\§cConsole\§r\§f\] Saving world data. Expect lag for a short while.\§r$"
+ifmatches(%CHAT%,"%&regex%")
+    filter()
+endif
+
+&regex = "^\§f\[\§r\§cConsole\§r\§f] Save Complete\§r$"
+ifmatches(%CHAT%,"%&regex%")
+    filter()
+endif
+
+// Overall console
+
+&regex = "^\§f\[\§r\§cConsole\§r\§f\] (.+?)\§r"
+ifmatches(%CHAT%,"%&regex%",&message,1)
+    modify("&cConsole: &f%&message%")
+endif
+
+// Baro console
+
+&regex = "^\§f\[\§r\§cConsole\§r\§f\] ABM: (.+?)\§r$"
+ifmatches(%CHAT%,"%&regex%",&message,1)
+    modify("&6Baro: &f%&message%")
+endif
+
+&regex = "^\§f\[\§r\§cConsole\§r\§f\] BER: (.+?)\§r$"
+ifmatches(%CHAT%,"%&regex%",&message,1)
+    modify("&6Bergtiger: &f%&message%")
+endif
+
+// Chat
+
+&regex = "^\§f\[.+?\]\§r\§([0-9a-flmnor])(.+?):?\§r\§f (.+?)\§r$"
+ifmatches(%CHAT%,"%&regex%")
+    match(%CHAT%,"%&regex%",{&color,&name,&message})
+    modify("&%&color%%&name%: &f%&message%")
+    if(&name != PLAYER)
+        playsound("block.note.pling")
+    endif
+endif
+
+// Vote reminder
+
+&regex = "^\§2Vergiss nicht für den Server abzustimmen! Du hast diesen Monat \§r\§a\d+\§r\§2 Mal für den Server abgestimmt\.\§r$"
+ifmatches(%CHAT%,"%&regex%")
+    filter()
+endif
+
+// News
+
+&regex = "^\§f\[\§r\§6News\§r\§f\]"
+ifmatches(%CHAT%,"%&regex%")
+    filter()
+endif
+
+&regex = "^\§f\[\§r\§3Info\§r\§f]"
+ifmatches(%CHAT%,"%&regex%")
+    filter()
+endif
+
+// slapped by @
+
+&regex = "^\§eYou\'ve been slapped by \@\.\§r"
+ifmatches(%CHAT%,"%&regex%")
+    filter()
+endif
+
+// No longer afk
+
+&regex = "^\§eYou are no longer marked as AFK\.\§r"
+ifmatches(%CHAT%,"%&regex%")
+    modify("&c- &fAFK")
+endif
+
+// Afk
+
+&regex = "^\§eYou are now marked as AFK\.\§r"
+ifmatches(%CHAT%,"%&regex%")
+    modify("&a+ &fAFK")
+    playsound("entity.experience_orb.pickup")
+endif
+
+// Join
+
+&regex = "^\§e(.+?) joined the game\§r$"
+ifmatches(%CHAT%,"%&regex%",&player,1)
+    modify("&8[&a+&8] &7%&player%")
+    TOAST("advancement","dye:10","%&player% joined")
+    playsound("block.note.harp")
+endif
+
+// Leave
+
+&regex = "^\§e(.+?) left the game\§r$"
+ifmatches(%CHAT%,"%&regex%",&player,1)
+    TOAST("advancement","dye:9","%&player% left")
+    modify("&8[&c-&8] &7%&player%")
+endif
+
+// Clearlag
+
+&regex = "\§f\[\§r\§2Bavaria\§r\§f-\§r\§2Info\§r\§f\]\§r\§aAlle Items die auf dem Boden liegen werden in \§r\§2(\d+) \§r\§aSekunden entfernt!\§r"
+
+ifmatches(%CHAT%,"%&regex%",&time,1)
+    modify("&7[&2Clearlag&7] &7%&time%s")
+endif
+
+&regex = "\§f\[\§r\§2Bavaria\§r\§f-\§r\§2Info\§r\§f]\§r\§aBavarias Minions haben (\d+) Items entfernt!\§r"
+ifmatches(%CHAT%,"%&regex%",&amount,1)
+    modify("&7[&2Clearlag&7] &7%&amount% items removed")
+endif
+
+// Outside claim
+
+&regex = "Außerhalb von Grundstücken sind keine Interaktionen mit der Welt möglich\. Zum Bauen sichere dir einen Bauplatz mittels /claim-help\.\§r"
+ifmatches(%CHAT%,"%&regex%")
+    modify("&fThis is outside of your plot.")
+endif
+
+&regex = "^\§7\(To (.+?)\): \§r(.+?)\§r$"
+ifmatches(%CHAT%,"%&regex%")
+    match(%CHAT%,"%&regex%",{&name,&message})
+    modify("&7[&a-> &b%&name%&7] %&message%")
+endif
+
+&regex = "^\§7\(From (.+?)\): \§r(.+?)\§r$"
+ifmatches(%CHAT%,"%&regex%")
+    match(%CHAT%,"%&regex%",{&name,&message})
+    modify("§7[§b%&name% §a->§7] %&message% §r")
+endif
+
+// §7[§r§2Votes§r§7]§r§a Danii_45 hat auf §r§aminecraft-serverliste.com§r§a gevotet.§r
+
+&regex = "\§7\[\§r\§2Votes\§r\§7\]\§r\§a (.+?) hat auf \§r\§aminecraft-serverliste\.com\§r\§a gevotet\.\§r"
+ifmatches(%CHAT%,"%&regex%",&player,1)
+    modify("&7[&2Votes&7] %&player%")
+else
+
+    &regex = "\§7\[\§r\§2Votes\§r\§7\]\§r\§a (.+?) hat auf \§r\§a.+?\§r\§a gevotet\.\§r"
+    ifmatches(%CHAT%,"%&regex%")
+        filter()
+    endif
+endif

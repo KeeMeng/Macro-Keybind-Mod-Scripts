@@ -1,0 +1,23 @@
+$${
+
+if(HITX != 0)
+
+  if((HITID == "wall_sign")||(HITID == "standing_sign"))
+
+    for(#i,0,3)
+
+      STRIP(&text,%SIGNTEXT[%#i%]%)
+      @&last_sign[%#i%] = %&text%
+
+    next
+
+    log("Text kopiert")
+
+  else
+
+    Placesign("%@&last_sign[0]%","%@&last_sign[1]%","%@&last_sign[2]%","%@&last_sign[3]%",true)
+
+  endif
+endif
+
+}$$

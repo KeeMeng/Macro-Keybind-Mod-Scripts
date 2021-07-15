@@ -1,0 +1,10 @@
+$${
+
+IF(@#hilfebot>=1)
+    SET(@#hilfebot,0);
+    SETPROPERTY(hilfebot,text,Disabled)
+ELSE;
+    INC(@#hilfebot,1);
+    SETPROPERTY(hilfebot,text,Enabled)
+ENDIF
+}$$

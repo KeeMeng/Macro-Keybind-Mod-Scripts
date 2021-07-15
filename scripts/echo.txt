@@ -1,0 +1,35 @@
+UNSET(&fragen[])
+
+
+#chars = 178
+char(&sq,%#chars%)
+#chars = 179
+char(&qub,%#chars%)
+#chars = 945
+char(&alpha,%#chars%)
+#chars = 190
+char(&dreivier,%#chars%)
+#chars = 215
+char(&times,%#chars%)
+
+PUSH(&fragen[],"Belohnungen sind von Kohle über Op bis Diarüssi Schutz 4")
+&fragen[]="Wann war der 2. Weltkrieg zuende (Jahreszahl)?"
+&fragen[]="Nenne alle spielmodi\, die zu Games gehöhren."
+&fragen[]="Wodurch wurde der 2. Weltkrieg ausgelöst?"
+&fragen[]="Seit wann existiert Skypvp (Jahreszahl)?"
+&fragen[]="Nenne den \"möchtegern Admin\" von Games?"
+&fragen[]="Wie heißt das Recource Pack von spthiel?"
+&fragen[]="In welcher Einheit wird die Reinheit von Gold angegeben?"
+&fragen[]="Wieviel ist %&dreivier%%&times%12-4%&times%2?"
+&fragen[]="Wie berechnet man den sin(%&alpha%)?"
+&fragen[]="Wann war der Tag der deutschen Einheit?"
+&fragen[]="Berechne x bei 0=x^5-5x%&qub%+4x?"
+&fragen[]="Was ist das unbestimmte Integral von f(x)=x%&sq%?"
+
+
+JOIN(",",&fragen[],&out)
+
+PROMPT(&question,"$$[[%&out%]]","Welche Frage?")
+
+ECHO(/execute zTomt3t4mm3l1or1 ~ ~ ~ /say [Quiz] %&question%)
+

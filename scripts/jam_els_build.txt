@@ -1,0 +1,152 @@
+
+placeair = $$[1]
+
+if(@elsbuilding)
+    log("&cWait for the builder to finish first")
+    stop
+endif
+
+arraysize(@&elsblocks[],#size)
+
+if(#size == 0)
+    log("&cNo blocks to build, use @load <filename> to load the file")
+    stop
+endif
+
+set(@elsbuilding)
+    unset(@&elsundo[])
+
+    split(";",%@&elsblocks[0]%,&dimensions[])
+    #dx := %&dimensions[0]%
+    #dy := %&dimensions[1]%
+    #dz := %&dimensions[2]%
+
+    #xpos = XPOS
+    #ypos = YPOS
+    #zpos = ZPOS
+
+
+    exec("jam_els_lock.txt","interceptor")
+    #xprev = XPOS
+    #yprev = YPOS
+    #zprev = ZPOS
+    #yawprev = YAW
+    #pitchprev = PITCH
+    echo("/gamemode 3")
+
+    @&elsundo[] = %DIMENSION%
+
+    log("Start")
+    if(placeair)
+
+        log("Here")
+        #xend = #xpos + #dx
+        #yend = #ypos + #dy
+        #zend = #zpos + #dz
+        
+        unsafe(1000)
+            for(#x,%#xpos%,%#xend%)
+                for(#y,%#ypos%,%#yend%)
+                    for(#z,%#zpos%,%#zend%)
+                        getid(%#x%,%#y%,%#z%,&id,#data)
+                        if(&id != "air")
+                            &blocks[] = "%#x%;%#y%;%#z%"
+                        endif
+                    next
+                next
+            next
+        endunsafe
+        foreach(&blocks[],&blockpos)
+            split(";",%&blockpos%,&details[])
+            #x := %&details[0]%
+            #y := %&details[1]%
+            #z := %&details[2]%
+
+            getid(%#x%,%#y%,%#z%,&block,#datavar)
+            $$<jam_els_getdata.txt>
+            if(&data == "")
+                @&elsundo[] = "%#x%;%#y%;%#z%;%&block%;%#datavar%"
+            else
+                @&elsundo[] = "%#x%;%#y%;%#z%;%&block%;%&data%"
+            endif
+            echo("/setblock %#x% %#y% %#z% air 0 replace")
+        next
+    endif
+
+    log("&aStarting to build at %#xpos% %#ypos% %#zpos%")
+
+    foreach(@&elsblocks[],&block,#i)
+
+        if(#i != 0)
+            split(";",%&block%,&details[])
+            #xrel := %&details[0]%
+            #yrel := %&details[1]%
+            #zrel := %&details[2]%
+            &id = %&details[3]%
+            &bdata = %&details[5]%
+            if(&bdata == "")
+                &bdata = %&details[4]%
+            endif
+            
+            if(@elsflips[0])
+                #yrel = #dy-#yrel
+            endif
+            
+            if(@elsflips[1])
+                #zrel = #dz-#zrel
+            endif
+            
+            if(@elsflips[2])
+                #xrel = #dx-#xrel
+            endif
+            
+            #angle = @#elsrotate
+            if(#angle > 0)
+            
+                unsafe(40)
+                    do
+                    
+                        #addx = 0
+                        #addz = 0
+                        if(((#relx > 0) && (#relz < 0)) || ((#relx < 0) && (#relz > 0)))
+                            #addz = #dx
+                        else
+                            #addx = #dz
+                        endif
+                    
+                        dec(#angle,90)
+                        #store = #xrel
+                        #xrel = #zrel-#addx
+                        #zrel = -#store-#addz
+                    
+                    while(#angle > 0)
+                endunsafe
+                
+            endif
+            
+            #x = #xpos + #xrel
+            #y = #ypos + #yrel
+            #z = #zpos + #zrel
+            getid(%#x%,%#y%,%#z%,&blockid,&blockdata)
+            if((&blockid != &id) || (&bdata != &blockdata))
+                &data = ""
+                if(&blockid != "air")
+                    $$<jam_els_getdata.txt>
+                endif
+                if(&data == "")
+                    @&elsundo[] = "%#x%;%#y%;%#z%;%&blockid%;%#datavar%"
+                else
+                    @&elsundo[] = "%#x%;%#y%;%#z%;%&blockid%;%&data%"
+                endif
+                echo("/setblock %#x% %#y% %#z% %&id% %&bdata% replace")
+            endif
+        endif
+    next
+    log("Finished building")
+
+    wait(5t)
+    echo("/gamemode 1")
+    echo("/tp %#xprev% %#yprev% %#zprev% %#yawprev% %#pitchprev%")
+    stop("interceptor")
+
+unset(@elsbuilding)

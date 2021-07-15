@@ -1,0 +1,64 @@
+
+SET(#recipe,$$[1])
+
+//LOG(%#recipe%)
+
+ARRAYSIZE(@&bannerrecipes[],#size)
+DEC(#size,1)
+
+//LOG(%#size%)
+
+IF(#recipe<0)
+
+  DO()
+
+    INC(#recipe,%#size%)
+   // LOG(%#recipe%)
+
+  UNTIL(#recipe>0)
+
+ELSEIF(#recipe>#size)
+
+  DO()
+
+    DEC(#recipe,%#size%)
+   // LOG(%#recipe%)
+
+  UNTIL(#recipe<#size)
+
+ENDIF
+
+//LOG(%#recipe%)
+
+&recipe=%@&bannerrecipes[%#recipe%]%
+
+//LOG(%&recipe%)
+
+SPLIT(",",%&recipe%,&thisrecipe[])
+
+DO()
+
+  GETSLOT(dye,#slot)
+  IF(#slot<10)
+    SLOTCLICK(%#slot%,,1)
+  ENDIF
+
+UNTIL(#slot>9)
+
+GETSLOT(banner,#slot)
+INDEXOF(&thisrecipe[],#bslot,"2")
+SLOTCLICK(%#slot%)
+SLOTCLICK(%#bslot%)
+
+SLOTCLICK(10)
+
+FOR(#n,1,9)
+
+  IF(&thisrecipe[%#n%]=="1")
+    SLOTCLICK(%#n%,RMB,0)
+  ENDIF
+
+NEXT
+
+SLOTCLICK(10)
+

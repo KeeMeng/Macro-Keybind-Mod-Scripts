@@ -1,0 +1,10 @@
+$${
+
+IF(@#ezlookup>=1)
+    SET(@#ezlookup,0);
+    SETPROPERTY(ezlookup,text,Disabled)
+ELSE;
+    INC(@#ezlookup,1);
+    SETPROPERTY(ezlookup,text,Enabled)
+ENDIF
+}$$

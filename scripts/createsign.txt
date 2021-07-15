@@ -1,0 +1,15 @@
+$${
+
+PLACESIGN("","&4Exit","*Klick Mich*","",true)
+WAIT(800ms)
+PRESS(ESCAPE)
+WAIT(100ms)
+ECHO(/svs add <server> /spreadplayers 10779 10544 0 1 false <player>)
+WAIT(100ms)
+KEY(use)
+WAIT(100ms)
+ECHO(/svs confirmation true Willst du wirklich zum Spawn?)
+WAIT(100ms)
+KEY(use)
+
+}$$

@@ -1,0 +1,53 @@
+unset(@#elspos1[])
+unset(@#elspos2[])
+unset(@#elspos1)
+unset(@#elspos2)
+unset(@&elsblocks[])
+unset(@elsbuilding)
+unset(@elsflips[])
+unset(@#elsrotate)
+unset(@&elsundo[])
+unset(@&elscolors[])
+
+$$<jam_els_config.txt>
+
+
+if(((@&elsparticles != "reddust") || (@#elsparticlecount != 0)) && @elscolor)
+    log("&cDisabling color due to invalid configuration")
+    @&elsparticleargs = "0 0 0 0"
+endif
+
+exec("jam_els_particles.txt","Particles1",1,4,10)
+exec("jam_els_particles.txt","Particles2",1,5,11)
+exec("jam_els_particles.txt","Particles3",2,6,11)
+exec("jam_els_particles.txt","Particles4",2,7,12)
+exec("jam_els_particles.txt","Particles5",3,8,10)
+exec("jam_els_particles.txt","Particles6",3,9,12)
+
+unset(@&elshitvars[])
+
+unsafe(0)
+    foreach(env)
+        ifbeginswith("%VARNAME%","HIT_")
+            @&elshitvars[] = %VARNAME%
+        endif
+    next
+endunsafe
+
+
+@&elscolors[] = "0;0;0;0"
+@&elscolors[] = "0;0;170;1"
+@&elscolors[] = "0;170;0;2"
+@&elscolors[] = "0;170;170;3"
+@&elscolors[] = "170;0;0;4"
+@&elscolors[] = "170;0;170;5"
+@&elscolors[] = "255;170;0;6"
+@&elscolors[] = "170;170;170;7"
+@&elscolors[] = "85;85;85;8"
+@&elscolors[] = "85;85;255;9"
+@&elscolors[] = "85;255;85;a"
+@&elscolors[] = "85;255;255;b"
+@&elscolors[] = "255;85;85;c"
+@&elscolors[] = "255;85;255;d"
+@&elscolors[] = "255;255;85;e"
+@&elscolors[] = "255;255;255;f"

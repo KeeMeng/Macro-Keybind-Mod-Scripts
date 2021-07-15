@@ -1,0 +1,44 @@
+$${
+
+IF(false)
+
+IFMATCHES(%CHAT%,"^\§r\§a\[.+?\] \§r\§e\(\d{1,3}\)\: (\§r\§f.+?)\§r$")
+
+  MATCH(%CHAT%,"^\§r\§a\[.+?\] \§r\§e\(\d{1,3}\)\: (\§r\§f.+?)\§r$",{&ganames})
+  STRIP(&ganames,%&ganames%)
+  REPLACE(&ganames," ","")
+  &galines[]=%&ganames%
+
+ENDIF
+
+
+IFMATCHES(%CHAT%,"\§rTotal players online: \d{1,4}\§r")
+
+  ARRAYSIZE(&galines[],#gasize2)
+  DEC(#gasize2,1)
+  FOR(#gai2,0,%#gasize2%)
+
+    SPLIT(",",%&galines[%#gai2%]%,&gaout[])
+    ARRAYSIZE(&gaout[],#gasize)
+    DEC(#gasize,1)
+    FOR(#gai,0,%#gasize%)
+
+      INDEXOF(@&peaceful[],#isin,%&gaout[%#gai%]%)
+      IF(#isin==-1)
+        PUSH(@&gaonline[],%&gaout[%#gai%]%)
+      ENDIF
+
+    NEXT
+
+
+  NEXT
+
+  UNSET(&galines[])
+
+  EXEC(gantimulti.txt)
+
+ENDIF
+
+endif
+
+}$$

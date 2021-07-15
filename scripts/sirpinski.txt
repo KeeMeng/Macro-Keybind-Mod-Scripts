@@ -1,0 +1,47 @@
+$${
+
+
+&punktex[0]=-50
+&punktex[1]=50
+&punktex[2]=0
+
+&punktey[0]=60
+&punktey[1]=60
+&punktey[2]=110
+
+FOR(#i,0,2)
+  ECHO("/setblock %&punktex[%#out%]% %&punktey[%#out%]% 0 quartz_block")
+next
+
+&floatx="0"
+&floaty="60"
+
+@#sirpinski=0
+
+DO()
+
+  &floatxnew = "0"
+  &floatynew = "0"
+
+  Random(#out,2,0)
+  FSUB(&floatxnew,%&floatx%,%&punktex[%#out%]%)
+  FSUB(&floatynew,%&floaty%,%&punktey[%#out%]%)
+  //LOG("FSUB: x: %&floatxnew% y: %&floatynew%)
+  FDIV(&floatxnew,%&floatxnew%,"-2")
+  FDIV(&floatynew,%&floatynew%,"-2")
+  //LOG("FDIV: x: %&floatxnew% y: %&floatynew%)
+  FADD(&floatxnew,%&floatxnew%,%&floatx%)
+  FADD(&floatynew,%&floatynew%,%&floaty%)
+  //LOG("x: %&floatxnew% y: %&floatynew%)
+
+  &floatx = %&floatxnew%
+  &floaty = %&floatynew%
+
+  ECHO("/setblock %&floatx% %&floaty% 0 quartz_block")
+  INC(@#sirpinski,1)
+
+LOOP()
+
+
+
+}$$

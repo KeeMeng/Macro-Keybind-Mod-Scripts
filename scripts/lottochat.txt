@@ -1,0 +1,13 @@
+$${
+
+PROMPT(&input,$$[input]);
+GUI(chat)
+TYPE("/tellraw @a[score_lotto=0] {color:green,text:'[Lotto] '}");
+WAIT(100ms)
+PRESS(LEFT)
+WAIT(100ms)
+PRESS(LEFT)
+WAIT(100ms)
+TYPE(%&input%)
+
+}$$

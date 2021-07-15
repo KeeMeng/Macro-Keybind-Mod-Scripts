@@ -1,0 +1,6 @@
+$${
+
+SET(@#skygrid,1)
+ECHO(/system gserverchat skypvp)
+
+}$$

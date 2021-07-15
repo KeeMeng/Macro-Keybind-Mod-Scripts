@@ -1,0 +1,41 @@
+
+&kontothatshouldbedisplayed = "spthiel"
+&variablenamewhereitshouldbestored = "&konto"
+
+ifmatches(%CHAT%,"^\§6Bank: \§r\§aGerne\. Hier ist Ihre Kontoinformation:\§r$")
+  unset(@&kbankkontos[])
+  unset(@&kbankkontoowner[])
+  unset(@&kbankkontomoney[])
+  filter()
+endif
+
+ifmatches(%CHAT%,"^    \§r\§aAktuelles Geld dabei: \§r\§e([\d]+(?:\.[\d]+)?) Kadis\§r$")
+  match(%CHAT%,"^    \§r\§aAktuelles Geld dabei: \§r\§e([\d]+(?:\.[\d]+)?) Kadis\§r$",{@&pocketmoney})
+  filter()
+endif
+
+ifmatches(%CHAT%,"^    \§r\§aSie haben [\d]+ Konten\.\(max\. [\d]\)\§r$")
+  filter()
+endif
+
+ifmatches(%CHAT%,"^        \§r\§6\(?(.+?)\)?\§r\§a: \§r\§e([\d]+(?:\.[\d]+)?) Kadis\§r\§a von \§r\§e(.+?)\§r$")
+  match(%CHAT%,"^        \§r\§6\(?(.+?)\)?\§r\§a: \§r\§e([\d]+(?:\.[\d]+)?) Kadis\§r\§a von \§r\§e(.+?)\§r$",{&kontoname,&kontomoney,&kontoowner})
+  @&kbankkontos[] = %&kontoname%
+  @&kbankkontomoney[] = %&kontomoney%
+  @&kbankkontoowner[] = %&kontoowner%
+  
+  log("'%&kontoname%' == '%&kontothatshouldbedisplayed%'")
+
+  if(&kontoname == &kontothatshouldbedisplayed)
+  
+    regexreplace(&variablenamewhereitshouldbestored,"&|#","")
+    log("@& %&variablenamewhereitshouldbestored%")
+    @&%&variablenamewhereitshouldbestored% = %&kontomoney%
+  
+  endif
+  
+  filter()
+endif
+  
+
+

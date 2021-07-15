@@ -1,0 +1,79 @@
+$${
+
+unset(&colors[])
+
+//Delay between two messages if the original message is to long (in ms)
+//set to -1 to disable multiple messages sending
+#delaybetweenmessages = 1000
+
+//List of alternating colors (colors that'll get used in rotating order)
+&colors[] = "&5"
+&colors[] = "&4"
+&colors[] = "&6"
+
+
+//---------------------------------------------------------------------------------------
+// Don't modify below here unless you know what you are doing
+#maxchars = 256
+
+PROMPT(&text,"$$[Message]")
+
+arraysize(&colors[],#csize)
+
+if(#csize == 0)
+  log("&cError with coloredoutput: No colors defined")
+  stop()
+endif
+
+split("",%&text%,&chars[])
+arraysize(&chars[],#size)
+
+unset(&messages[])
+
+#i = 0
+#color = 0
+#charspermessage = ((%#maxchars%/3)-1)
+
+unsafe()
+  do()
+  
+    &send = ""
+    #nexti = %#i%+%#charspermessage%
+
+    if(%#nexti% > %#size%)
+      #nexti = %#size%
+      dec(#nexti,1)
+    endif
+
+    for(#i,%#i%,%#nexti%)
+
+     inc(#color,1)
+
+     if(#color == #csize)
+       #color = 0
+     endif
+
+     &send = "%&send%%&colors[%#color%]%%&chars[%#i%]%"
+
+    next
+
+    inc(#i,1)
+    &messages[] = %&send%
+
+  while((#delaybewteenmessage >= 0) && (#i < #size))
+endunsafe()
+
+arraysize(&messages,#size)
+dec(#size,1)
+
+if(#size < 0)
+  log("&cSomething went wrong")
+  stop()
+endif
+
+for(#i,0,%#size%)
+  echo(%&messages[%#i%]%)
+  wait(%#delaybetweenmessages%ms)
+next
+
+}$$

@@ -1,0 +1,74 @@
+$${
+
+PROMPT(&kitname,"$$[kitname]")
+PROMPT(#price,"$$[price]")
+
+LOGTO(kitpvpkits.txt,"  %&kitname%:")
+LOGTO(kitpvpkits.txt,"    Enabled: true")
+LOGTO(kitpvpkits.txt,"    Require-Permission: false")
+
+KEY(use)
+WAIT(300ms)
+
+GETSLOTITEM(0,&id,,#data)
+
+UCASE(%&id%,&id)
+
+IF(#data>=0)
+  LOGTO(kitpvpkits.txt,"    Item: %&id%:%#data%")
+ELSE
+  LOGTO(kitpvpkits.txt,"    Item: %&id%")
+ENDIF
+
+LOGTO(kitpvpkits.txt,"    Price: %#price%")
+LOGTO(kitpvpkits.txt,"    Armor:")
+
+GETSLOTITEM(1,&id)
+UCASE(%&id%,&id)
+LOGTO(kitpvpkits.txt,"      Helmet: '%&id% : 1'")
+GETSLOTITEM(2,&id)
+UCASE(%&id%,&id)
+LOGTO(kitpvpkits.txt,"      Chestplate: '%&id% : 1'")
+GETSLOTITEM(3,&id)
+UCASE(%&id%,&id)
+LOGTO(kitpvpkits.txt,"      Leggings: '%&id% : 1'")
+GETSLOTITEM(4,&id)
+UCASE(%&id%,&id)
+LOGTO(kitpvpkits.txt,"      Boots: '%&id% : 1'")
+LOGTO(kitpvpkits.txt,"    Items:")
+
+FOR(#i,9,17)
+
+  GETSLOTITEM(%#i%,&id,#stacksize,#data)
+  UCASE(%&id%,&id)
+  LOG(%&id%)
+  IF(#data>=1)
+    LOGTO(kitpvpkits.txt,"    - '%&id%:%#data% : %#stacksize%'")
+  ELSE
+    LOGTO(kitpvpkits.txt,"    - '%&id% : %#stacksize%'")
+  ENDIF
+    
+  
+NEXT
+
+
+FOR(#i,27,53)
+
+  GETSLOTITEM(%#i%,&id,#stacksize,#data)
+  UCASE(%&id%,&id)
+  LOG(%&id%)
+  IF(#data>=1)
+    LOGTO(kitpvpkits.txt,"    - '%&id%:%#data% : %#stacksize%'")
+  ELSE
+    LOGTO(kitpvpkits.txt,"    - '%&id% : %#stacksize%'")
+  ENDIF
+  
+NEXT
+
+LOGTO(kitpvpkits.txt,"    Abilities: []")
+LOGTO(kitpvpkits.txt,"    Potion-Effects: []")
+LOGTO(kitpvpkits.txt,"    Description:")
+LOGTO(kitpvpkits.txt,"    - 'Missing'")
+
+PRESS(ESCAPE)
+}$$
