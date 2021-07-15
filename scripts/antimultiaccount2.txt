@@ -1,51 +1,39 @@
+$${
+set&ip,$$[1]);
+set&pre,"&8[&bMacro&8]&f");
 
-LOG(it works)
+unset(@&multinames[]);
 
-&ip = $$[1]
-&pre="&8[&bMacro&8]&f"
-
-UNSET(@&multinames[])
-
-IF(@multiacc)
-  UNSET(@multiacc)
-  LOG(%&pre% Antimultiacc stopping)
-  STOP(antimulti)
-ELSE
-  SET(@multiacc)
-  LOG(%&pre% Antimultiacc starting)
-
-  DO()
-
-    ECHO(/lookup %&ip%)
-
-    WAIT(1000ms)
-
-    JOIN("|",@&oldmultinames[],&oldnames)
-    JOIN("|",@&multinames[],&newnames)
-
-    IF(&oldnames==&newnames)
-
-    ELSE
-
-      SPLIT("|",%&oldnames%,&old[])
-      SPLIT("|",%&newnames%,&new[])
-
-      ARRAYSIZE(&old[],#size)
-      DEC(#size,1)
-      
-      FOR(#n,0,%#size%)
-
-        IF(&old[%#n%]==&new[%#n%])
-
-        ELSE
-
-          ECHO(/gban %&new[%#n%]% Multiaccount)
-          BREAK()
-
-        ENDIF
-      NEXT
-    ENDIF
-  LOOP()
-ENDIF
-
-
+if(@multiacc);
+	unset(@multiacc);
+	log("%&pre% Antimultiacc stopping");
+	stop(antimulti);
+else;
+	set(@multiacc);
+	log("%&pre% Antimultiacc starting");
+	do();
+		
+		echo("/lookup %&ip%");
+		wait(1000ms);
+		
+		join("|",@&oldmultinames[],&oldnames);
+		join("|",@&multinames[],&newnames);
+		
+		if(&oldnames != &newnames);
+			
+			split("|",%&oldnames%,&old[]);
+			split("|",%&newnames%,&new[]);
+			
+			arraysize(&old[],#size);
+			dec(#size);
+			
+			for(#n,0,%#size%);
+				if(&old[%#n%] != &new[%#n%]);
+					echo("/gban %&new[%#n%]% Multiaccount");
+					break();
+				endif;
+			next;
+		endif;
+	loop();
+endif;
+}$$

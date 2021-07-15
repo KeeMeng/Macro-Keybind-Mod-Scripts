@@ -1,27 +1,26 @@
-
-IF(@multiacc)
-
-  &msg=%CHAT%
-
-  &pre="&8[&bMacro&8]&f"
-
-  IFCONTAINS(%&msg%,"§r§3")
-    IFCONTAINS(%&msg%,"§r§f,")
-
-      UNSET(#choosen)
-      UNSET(&names[])
-
-      STRIP(&chat,%&msg%)
-      REPLACE(&chat," ","")
-  
-      JOIN("|",@&multinames[],&zwischen)
-      SPLIT("|",%&zwischen%,@&oldmultinames[])
-
-      SPLIT(",","%&chat%",@&multinames[])
-
-      FILTER()
-
-    ENDIF
-  ENDIF
-ENDIF
-
+$${
+if(@multiacc);
+	
+	set(&msg,"%CHAT%");
+	set(&pre,"&8[&bMacro&8]&f");
+	
+	ifcontains(%&msg%,"§r§3");
+		ifcontains(%&msg%,"§r§f,");
+			
+			unset(#choosen);
+			unset(&names[]);
+			
+			strip(&chat,%&msg%);
+			replace(&chat," ","");
+			
+			join("|",@&multinames[],&zwischen);
+			split("|",%&zwischen%,@&oldmultinames[]);
+			
+			split(",","%&chat%",@&multinames[]);
+			
+			filter();
+			
+		endif;
+	endif;
+endif;
+}$$

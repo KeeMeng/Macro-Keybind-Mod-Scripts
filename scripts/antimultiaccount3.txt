@@ -1,109 +1,77 @@
 $${
 
-SET(&path,"C:\\\\Users\\\\redacted\\\\AppData\\\\Roaming\\\\.minecraft_1.11\\\\liteconfig\\\\common\\\\macros\\\\logs\\\\gebannt.txt")
+set(&path,"C:\\\\Users\\\\redacted\\\\AppData\\\\Roaming\\\\.minecraft_1.11\\\\liteconfig\\\\common\\\\macros\\\\logs\\\\gebannt.txt");
 
-READFILE(&banned[],%&path%)
+readfile(&banned[],%&path%);
 
-&pre="&8[&bMacro&8]&f"
+set(&pre,"&8[&bMacro&8]&f");
 
+ifcontains(%CHAT%,"§r§3");
+	ifcontains(%CHAT%,"§r§f,");
+		if(@galookup);
+			inc(@#gatester,1);
+			logto("antiglobal.txt","%CHAT%");
+		endif;
+		
+		if(@multiacc);
+		else;
+			set(@multiacc);
+			
+			unset(#choosen);
+			unset(&names[]);
+			
+			strip(&chat,%CHAT%);
+			replace(&chat," ","");
+			split(",","%&chat%",@&multinames[]);
+			
+			arraysize(@&multinames[],#size);
+			if(#size >= 3);
+				if(@galookup);
+				else;
+					log("%&pre% Multiaccount detected");
+					log("%&pre% /multi yes/no to akzept/deny");
+					
+					do();
+					until(@#multiaccchoose >= 1);
+					
+					set(#choosen,%@#multiaccchoose%);
+					set(@#multiaccchoose,0);
+					log(%#choosen%);
+					
+					if(#choosen == 2);
+						if(!@spbotshutdown);
+							arraysize(@&multinames[],#multisize);
+							dec(#multisize);
+							set(#ammount,0);
+							
+							for(#multi,0,%#multisize%);
+								indexof(&banned[],#isin,"%@&multinames[%#multi%]%");
+								
+								if(#isin == -1);
+									inc(#ammount,1);
+									logto("gebannt.txt","%@&multinames[%#multi%]%");
+									echo("/gban %@&multinames[%#multi%]% Multiaccount %@&spbotlt%");
+									wait(300ms);
+								endif;
+							next;
 
-IFCONTAINS(%CHAT%,"§r§3")
-  IFCONTAINS(%CHAT%,"§r§f,")
-
-    IF(@galookup)
-      INC(@#gatester,1)
-      LOGTO(antiglobal.txt,"%CHAT%")
-    ENDIF
-
-
-    IF(@multiacc)
-
-    ELSE
-
-      SET(@multiacc)
-
-      UNSET(#choosen)
-      UNSET(&names[])
-
-      STRIP(&chat,%CHAT%)
-      REPLACE(&chat," ","")
-      SPLIT(",","%&chat%",@&multinames[])
-
-      ARRAYSIZE(@&multinames[],#size)
-      IF(#size>=3)
-
-        IF(@galookup)
-
-
-        ELSE
-
-          LOG(%&pre% Multiaccount detected)
-          LOG(%&pre% /multi yes/no to akzept/deny)
- 
-          DO()
-
-          UNTIL(@#multiaccchoose>=1)
-
-          #choosen=%@#multiaccchoose%
-          @#multiaccchoose=0
-          LOG(%#choosen%)
-  
-          IF(#choosen==2)
-          
-            IF(!@spbotshutdown)
-
-              ARRAYSIZE(@&multinames[],#multisize)
-              DEC(#multisize,1)
-              #ammount = 0
-
-              FOR(#multi,0,%#multisize%)
-
-                INDEXOF(&banned[],#isin,"%@&multinames[%#multi%]%")
-
-                IF(#isin==-1)
-
-                  INC(#ammount,1)
-                  LOGTO(gebannt.txt,"%@&multinames[%#multi%]%")
-                  ECHO(/gban %@&multinames[%#multi%]% Multiaccount %@&spbotlt%)
-                  WAIT(300ms)
-
-                ENDIF
- 
-              NEXT
-
-              IF(!@&spbotlt == "")
-            
-                ECHO("/sp spbot » Task finished (%#ammount% of %#multisize% new Accounts found)")
-            
-              ELSE
-            
-                LOG("%&pre% Task finished (%#ammount% of %#multisize% new Accounts found)")
-             
-              ENDIF
-              
-            ELSE
-            
-              ECHO(/multiban %@&lastlookupip%)
-            
-            ENDIF
-
-          ELSE
-
-            LOG(%&pre% Permission denied)
-    
-          ENDIF
-
-        ENDIF     
-
-      ENDIF
-
-      UNSET(@multiacc)
-
-    ENDIF
-
-    UNSET(@spbot)
-
-  ENDIF
-ENDIF
+							if(!@&spbotlt == "");
+								echo("/sp spbot » Task finished (%#ammount% of %#multisize% new Accounts found)");
+							else;
+								log("%&pre% Task finished (%#ammount% of %#multisize% new Accounts found)");
+							endif;
+						else;
+							echo("/multiban %@&lastlookupip%");
+						endif;
+					else;
+						log("%&pre% Permission denied");
+					endif;
+				endif;
+			endif;
+			unset(@multiacc);
+		endif;
+		unset(@spbot);
+	endif;
+endif;
 
 }$$

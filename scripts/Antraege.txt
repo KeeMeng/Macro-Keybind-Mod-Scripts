@@ -1,23 +1,22 @@
+$${
+unset(@&antraege[]);
 
-UNSET(@&antraege[])
+set(&username,"spthiel");
+set(&password,"%244mpl3T3xt");
 
-&username="spthiel"
-&password="%244mpl3T3xt"
+exec("html2string.txt","convert","http://www.mondopia.de/entbannung/login.php?username=%&username%&passwort=%&password%&submit=Einloggen","true");
+wait(1000ms);
+do();
+until(!(@&h2sreturn == ""));
 
-EXEC(html2string.txt,"convert","http://www.mondopia.de/entbannung/login.php?username=%&username%&passwort=%&password%&submit=Einloggen","true")
-WAIT(1000ms)
-DO()
+set(&string,%@&h2sreturn%);
 
-UNTIL(!(@&h2sreturn==""))
+replace(&string,"&nbsp","");
+replace(&string,"a href=\"#\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=","");
+replace(&string,"\"","");
+replace(&string,">","|");
+replace(&string,"Output:|","");
+replace(&string,"||","|");
 
-&string=%@&h2sreturn%
-
-REPLACE(&string,"&nbsp","")
-REPLACE(&string,"a href=\"#\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=","")
-REPLACE(&string,"\"","")
-REPLACE(&string,">","|")
-REPLACE(&string,"Output:|","")
-REPLACE(&string,"||","|")
-
-SPLIT("|",%&string%,@&antraege[])
-
+split("|",%&string%,@&antraege[]);
+}$$

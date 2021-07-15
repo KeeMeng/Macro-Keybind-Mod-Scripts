@@ -1,111 +1,81 @@
 $${
 
-IFBEGINSWITH(%CHAT%,"/")
-  IFCONTAINS(%CHAT%,"MisterMichi02")
-//    FILTER
-    STOP
-  ENDIF
-ENDIF
+ifbeginswith(%CHAT%,"/");
+	ifcontains(%CHAT%,"MisterMichi02");
+		stop;
+	endif;
+endif;
 
-&pre="&8[&bMacro&8]&f"
+set(&pre,"&8[&bMacro&8]&f");
 
-IF(CHAT=="/skygrid")
-//  SET(@macro)
-  FILTER()
-  ECHO(/skypvp)
-ENDIF
+switch(CHAT);
+	case("/skygrid");
+		filter();
+		echo("/skypvp");
 
-IF(CHAT=="/sw start")
-//  SET(@macro)
-  FILTER()
-  ECHO(/swr start)
-ENDIF
+	case("/sw start");
+		filter();
+		echo("/swr start");
 
-IF(CHAT=="/is")
-//  SET(@macro)
-  FILTER()
-  ECHO(/is h)
-ENDIF
+	case("/is");
+		filter();
+		echo("/is h");
 
-IF(CHAT=="/home farm")
-//  SET(@macro)
-  FILTER()
-  ECHO(/home Farm)
-ENDIF
+	case("/home farm");
+		filter();
+		echo("/home Farm");
 
-IF(CHAT=="/wb")
-//  SET(@macro)
-  FILTER()
-  ECHO(/workbench)
-ENDIF
+	case("/wb");
+		filter();
+		echo("/workbench");
 
-IF(CHAT=="/givekey Mystery")
-//  SET(@macro)
-  FILTER()
-  ECHO(/crate givekey spthiel csgokey 1)
-ENDIF
+	case("/givekey Mystery");
+		filter();
+		echo("/crate givekey spthiel csgokey 1");
 
-IF(CHAT=="/givekey Vote")
-//  SET(@macro)
-  FILTER()
-  ECHO(/crate givekey spthiel roulettekey 1)
-ENDIF
+	case("/givekey Vote");
+		filter();
+		echo("/crate givekey spthiel roulettekey 1");
 
-IF(CHAT=="/glist")
-//  SET(@macro)
-  UNSET(@&gaonline[])
-ENDIF
+	case("/glist");
+		unset(@&gaonline[]);
 
+	case("/multi yes");
+		filter();
+		log("%&pre% Accepted");
+		set(@#multiaccchoose,2);
 
-IF(CHAT=="/multi yes")
-//  SET(@macro)
-  FILTER()
-  LOG(%&pre% Accepted)
-  @#multiaccchoose=2
-ENDIF
+	case("/multi no");
+		filter();
+		log("%&pre% Declined");
+		set(@#multiaccchoose,1);
 
-IF(CHAT=="/multi no")
-//  SET(@macro)
-  FILTER()
-  LOG(%&pre% Declined)
-  @#multiaccchoose=1
-ENDIF
+	case("/ms next");
+		filter();
+		log("%&pre% Next sponge");
+		set(@#mscondition,1);
 
-IF(CHAT=="/ms next")
-//  SET(@macro)
-  FILTER()
-  LOG(%&pre% Next sponge)
-  @#mscondition=1
-ENDIF
+	case("/ms cancel");
+		filter();
+		log("%&pre% Canceling");
+		set(@#mscondition,2);
 
-IF(CHAT=="/ms cancel")
-//  SET(@macro)
-  FILTER()
-  LOG(%&pre% Canceling)
-  @#mscondition=2
-ENDIF
+	case("/sw reset");
+		filter();
+		set(@#swmap,-1);
+		log("%&pre% Swmap reset");
 
-IF(CHAT=="/sw reset")
-//  SET(@macro)
-  FILTER()
-  SET(@#swmap,-1)
-  LOG(%&pre% Swmap reset)
-ENDIF
+	case("#unset");
+		filter();
+		unset(@multiacc);
+		log("%&pre% Multiacc reset");
 
-IF(CHAT=="#unset")
-//  SET(@macro)
-  FILTER()
-  UNSET(@multiacc)
-  LOG(%&pre% Multiacc reset)
-ENDIF
-
-IF(CHAT=="/sw next")
-//  SET(@macro)
-  FILTER()
-  INC(@#swmap,1)
-  LOG("%&pre% Next swmap: %@&skywarsmaps[%@#swmap%]% (%@#swmap%)")
-  ECHO(/sw edit %@&skywarsmaps[%@#swmap%]%)
-ENDIF
-
+	case("/sw next");
+		filter();
+		inc(@#swmap);
+		log("%&pre% Next swmap: %@&skywarsmaps[%@#swmap%]% (%@#swmap%)");
+		echo("/sw edit %@&skywarsmaps[%@#swmap%]%");
+		
+endswitch
 
 }$$

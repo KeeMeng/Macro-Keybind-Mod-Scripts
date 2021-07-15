@@ -1,39 +1,29 @@
+$${
+set(@#afktimes,600);
 
-SET(@#afktimes,600)
+log("antiafk gestartet");
 
-log(antiafk gestartet)
-
-do()
-
-  @#afklastmove = %TIMESTAMP%
-
-
-  #x = %XPOS%
-  #y = %YPOS%
-  #z = %ZPOS%
-
-  do()
-
-    #yet = %TIMESTAMP%
-
-
-    @#afkdiff = %#yet%-%@#afklastmove%
-
-    if((@#afkdiff > @#afktimes))
-
-      @#antiafkx = %XPOS%
-      @#antiafky = %XPOS%
-      @#antiafkz = %XPOS%
-
-      echo(/spawn)
-
-      do()
-
-      while((#x == XPOS)&&(#y == YPOS)&&(#z == ZPOS))
-     
-    endif
-
-  while((#x == XPOS)&&(#y == YPOS)&&(#z == ZPOS))
-
-loop()
-
+do();
+	set(@#afklastmove,%TIMESTAMP%);
+	set(#x,%XPOS%);
+	set(#y,%YPOS%);
+	set(#z,%ZPOS%);
+	
+	do();
+		set(#yet,%TIMESTAMP%);
+		set(@#afkdiff,%#yet% - %@#afklastmove%);
+		
+		if((@#afkdiff > @#afktimes));
+			
+			set(@#antiafkx,%XPOS%);
+			set(@#antiafky,%XPOS%);
+			set(@#antiafkz,%XPOS%);
+			
+			echo("/spawn");
+			
+			do();
+			while((#x == XPOS) && (#y == YPOS) && (#z == ZPOS));
+		endif;
+	while((#x == XPOS) && (#y == YPOS) && (#z == ZPOS));
+loop();
+}$$

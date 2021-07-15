@@ -1,50 +1,44 @@
+$${
+set(&pre,"&8[&bMacro&8]&f");
 
-&pre=&8[&bMacro&8]&f
+set(#show,$$[1]);
 
-#show=$$[1]
+indexof(@&antraege,#index,"spthiel");
 
-INDEXOF(@&antraege,#index,"spthiel")
-
-IF(#index<60)
-  #indexdown=%#index%-1
-  SETLABEL(antraege,"%@&antraege[%#indexdown%]%")
-    
-  &waname=%@&antraege[%#indexdown%]%
-  INC(#indexdown,1)
-  &wateam=%@&antraege[%#indexdown%]%
-  INC(#indexdown,2)
-  &wagrund=%@&antraege[%#indexdown%]%
-
-  SPLIT(" - ",%&wagrund%,&store[])
-
-  IF(#show=1)
-
-    REPLACE(&store[0],"Banbeginn: ","")
-    REPLACE(&store[1],"Banzeit: ","")
-    REPLACE(&store[2],"Bangrund: ","")
-    REPLACE(&store[3],"Stellungnahme: ","")
-    REPLACE(&store[3]," "," &7")
-
-    LOG(" ")
-    LOG(" ")
-    LOG(%&pre% Name:&7 %&waname%)
-    LOG(%&pre% Banbeginn:&7 %&store[0]%)
-    LOG(%&pre% Banzeit:&7 %&store[1]%)
-    LOG(%&pre% Grund:&7 %&store[2]%)
-    LOG(%&pre% Teamler:&7 %&wateam%)
-    LOG(%&pre% Stellungsnahme: &7%&store[3]%)
-    LOG(" ")
-
-  ELSE
-
-    LOG("%&pre% Du hast einen Antrag")
-
-  ENDIF
-
-ELSE
-
-  LOG("%&pre% Kein offener Antrag")
-
-ENDIF
-
-
+if(#index < 60);
+	set(#indexdown,%#index%-1);
+	setlabel(antraege,"%@&antraege[%#indexdown%]%");
+	
+	set(&waname,"%@&antraege[%#indexdown%]%");
+	inc(#indexdown,1);
+	set(&wateam,"%@&antraege[%#indexdown%]%");
+	inc(#indexdown,2);
+	set(&wagrund,"%@&antraege[%#indexdown%]%");
+	
+	split(" - ","%&wagrund%",&store[]);
+	
+	if(#show == 1);
+		
+		replace(&store[0],"Banbeginn: ","");
+		replace(&store[1],"Banzeit: ","");
+		replace(&store[2],"Bangrund: ","");
+		replace(&store[3],"Stellungnahme: ","");
+		replace(&store[3]," "," &7");
+		
+		log(" ");
+		log(" ");
+		log("%&pre% Name:&7 %&waname%");
+		log("%&pre% Banbeginn:&7 %&store[0]%");
+		log("%&pre% Banzeit:&7 %&store[1]%");
+		log("%&pre% Grund:&7 %&store[2]%");
+		log("%&pre% Teamler:&7 %&wateam%");
+		log("%&pre% Stellungsnahme: &7%&store[3]%");
+		log(" ");
+		
+	else;
+		log("%&pre% Du hast einen Antrag");
+	endif;
+else;
+	log("%&pre% Kein offener Antrag");
+endif;
+}$$

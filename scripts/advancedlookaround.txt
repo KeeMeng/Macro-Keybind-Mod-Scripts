@@ -1,42 +1,37 @@
+$${
+unset(&points[]);
 
-unset(&points[])
+set(&points[0],"0,0 1,3,4,5");
+set(&points[1],"90,0 0,2,4,5");
+set(&points[2],"180,0 1,3,4,5");
+set(&points[3],"270,0 2,0,4,5");
+set(&points[4],"90,90 0,1,2,3");
+set(&points[5],"270,270 0,1,2,3");
 
-&points[0]="0,0 1,3,4,5"
-&points[1]="90,0 0,2,4,5"
-&points[2]="180,0 1,3,4,5"
-&points[3]="270,0 2,0,4,5"
-&points[4]="90,90 0,1,2,3"
-&points[5]="270,270 0,1,2,3"
+set(#curpoint,0);
 
-#curpoint = 0
-
-do()
-
-  unsafe()
-
-  split(" ",%&points[%#curpoint%]%,&out[])
-
-  split(",",%&out[0]%,&lookto[])
-
-  endunsafe()
-  
-  look(%&lookto[0]%,%&lookto[1]%,0.01)
-
-  unsafe()
-
-  split(",",%&out[1]%,&nextpoints[])  
- 
-  arraysize(&nextpoints[],#size)
-  dec(#size,1)
-
-  random(#rnd,0,%#size%)
-
-  //log(%&nextpoints[%#rnd%]%)
-
-  set(#curpoint,%&nextpoints[%#rnd%]%)
-
-  //wait(100ms)
-
-  endunsafe()
-  
-loop
+do();
+	unsafe();
+		split(" ",%&points[%#curpoint%]%,&out[]);
+		split(",",%&out[0]%,&lookto[]);
+	endunsafe();
+	
+	look(%&lookto[0]%,%&lookto[1]%,0.01);
+	
+	unsafe();
+		split(",",%&out[1]%,&nextpoints[]);
+		
+		arraysize(&nextpoints[],#size);
+		dec(#size,1);
+		
+		random(#rnd,0,%#size%);
+		
+		//log("%&nextpoints[%#rnd%]%");
+		
+		set(#curpoint,%&nextpoints[%#rnd%]%);
+		
+		//wait(100ms);
+		
+	endunsafe();
+loop;
+}$$
